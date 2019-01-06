@@ -70,7 +70,7 @@ int main (){
     int tempInt; //used for data input
     cin >> tempString;
 
-    //need to see if team already exis
+    //need to see if team already exists
 
 
 
