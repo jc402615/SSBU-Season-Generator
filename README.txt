@@ -24,7 +24,7 @@ Stage 1. A set season (no settings or tuning available) that allows a player
 
          A single season should generate the 19 other teams (there is nothing
          special about this number I just feel that it should give a good
-         impression for initial use), set up the 19! (factorial) matches, tell
+         impression for initial use), set up the 190 matches, tell
          the user who their opponent is, allow data entry for the match, simulate
          computer battles for the week(1 match a week), and keep track of
          rankings, which will be used for creating the playoff bracket in
