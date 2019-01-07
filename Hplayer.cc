@@ -29,6 +29,12 @@ stageData Hplayer::getStageDataAtIndex(int index){
     return stageStats[index];
 }
 
+int Hplayer::getKills(){
+    return kills;
+}
+int Hplayer::getDeaths(){
+    return deaths;
+}
 
 void Hplayer::setUser(string newUser){
     user = newUser;
@@ -46,6 +52,12 @@ void Hplayer::setNumberOfMatchesPlayed(int newNumberOfMatchesPlayed){
     numberOfMatchesPlayed = newNumberOfMatchesPlayed;
 }
 
+void Hplayer::setKills(int newKills){
+    kills = newKills;
+}
+void Hplayer::setDeaths(int newDeaths){
+    deaths = newDeaths;
+}
 void Hplayer::setStageDataName(int index, string newName){
     stageStats[index].setName(newName);
 }
@@ -77,4 +89,14 @@ void Hplayer::increaseStageDataWins(int index){
 }
 void Hplayer::increaseStageDataNumberOfMatchesPlayed(int index){
     stageStats[index].increaseNumberOfMatchesPlayed();
+}
+
+void Hplayer::increaseKills(){
+    kills++;
+}
+void Hplayer::doubleIncreaseKills(){
+    kills += 2;
+}
+void Hplayer::increaseDeaths(){
+    deaths++;
 }

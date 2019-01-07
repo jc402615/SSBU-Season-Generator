@@ -1,5 +1,6 @@
 #include "stageData.h"
 #include "Hplayer.h"
+#include "Cplayer.h"
 #include <iostream>
 
 using namespace std;
@@ -29,7 +30,7 @@ int main(){
     cout << temp.getNumberOfMatchesPlayed() << endl;
     cout << "losses: " << temp.getLosses() << endl;
     */
-
+/*
     Hplayer temp;
     cout << "here is the fighter currently" << endl;
     cout << temp.getUser() << endl;
@@ -58,8 +59,32 @@ int main(){
     cout << temp.getNumberOfMatchesPlayed() << endl;
     cout << temp.getLosses() << endl;
     cout << temp.getStageDataAtIndex(0).getWins() << endl << endl;
+*/
+    Cplayer temp;
+    cout << "the cplayer starts as" << endl;
+    cout << temp.getId() << endl;
+    cout << temp.getFighter() << endl;
+    cout << temp.getLevel() << endl;
+    cout << temp.getKills() << endl;
+    cout << temp.getDeaths() << endl;
+
+    cout << "setting the cplayer" << endl;
+    temp.setId("Foxy Slayer");
+    temp.setFighter("Fox");
+    temp.setLevel(9);
+    temp.setKills(10);
+    temp.setDeaths(2);
+
+    temp.increaseLevel();
 
 
+
+    cout << "the cplayer is now" << endl;
+    cout << temp.getId() << endl;
+    cout << temp.getFighter() << endl;
+    cout << temp.getLevel() << endl;
+    cout << temp.getKills() << endl;
+    cout << temp.getDeaths() << endl;
 
     return 0;
 }

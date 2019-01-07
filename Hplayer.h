@@ -33,13 +33,16 @@ public:
     int getWins();
     int getNumberOfMatchesPlayed();
     stageData getStageDataAtIndex(int index);
-
+    int getKills();
+    int getDeaths();
     //setters
     void setUser(string newUser);
     void setFighter(string newFighter);
     void setCharacter(string newCharacter);
     void setWins(int newWins);
     void setNumberOfMatchesPlayed(int newNumberOfMatchesPlayed);
+    void setKills(int newKills);
+    void setDeaths(int newDeaths);
     //additonal setters for array of stageData
     void setStageDataName(int index, string newName);
     void setStageDataHasStrictEdges(int index, bool newHasStrictEdges);
@@ -53,6 +56,9 @@ public:
     int getLosses();
     void increaseStageDataWins(int index);
     void increaseStageDataNumberOfMatchesPlayed(int index);
+    void increaseKills();
+    void doubleIncreaseKills();
+    void increaseDeaths();
 private:
 
     string user; // the actual human being who controls this character
@@ -65,7 +71,8 @@ private:
     int numberOfMatchesPlayed; //total number of matches that player has played
     // losses = numberOfMatchesPlayed - wins
     stageData stageStats[103]; //hold all data for stage statistics for Hplayer
-
+    int kills; //number of kills/knockouts
+    int deaths; //number of times player has been killed
 
 };
 
