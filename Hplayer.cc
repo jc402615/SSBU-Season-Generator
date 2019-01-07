@@ -46,6 +46,21 @@ void Hplayer::setNumberOfMatchesPlayed(int newNumberOfMatchesPlayed){
     numberOfMatchesPlayed = newNumberOfMatchesPlayed;
 }
 
+void Hplayer::setStageDataName(int index, string newName){
+    stageStats[index].setName(newName);
+}
+void Hplayer::setStageDataHasStrictEdges(int index, bool newHasStrictEdges){
+    stageStats[index].setHasStrictEdges(newHasStrictEdges);
+}
+void Hplayer::setStageDataHasSevereHazards(int index, bool newHasSevereHazards){
+    stageStats[index].setHasSevereHazards(newHasSevereHazards);
+}
+void Hplayer::setStageDataWins(int index, int newWins){
+    stageStats[index].setWins(newWins);
+}
+void Hplayer::setStageDataNumberOfMatchesPlayed(int index, int newNumberOfMatchesPlayed){
+    stageStats[index].setNumberOfMatchesPlayed(newNumberOfMatchesPlayed);
+}
 
 void Hplayer::increaseWins(){
     wins++;
@@ -55,4 +70,11 @@ void Hplayer::increaseNumberOfMatchesPlayed(){
 }
 int Hplayer::getLosses(){
     return (numberOfMatchesPlayed - wins);
+}
+
+void Hplayer::increaseStageDataWins(int index){
+    stageStats[index].increaseWins();
+}
+void Hplayer::increaseStageDataNumberOfMatchesPlayed(int index){
+    stageStats[index].increaseNumberOfMatchesPlayed();
 }

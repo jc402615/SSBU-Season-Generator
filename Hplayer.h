@@ -40,11 +40,19 @@ public:
     void setCharacter(string newCharacter);
     void setWins(int newWins);
     void setNumberOfMatchesPlayed(int newNumberOfMatchesPlayed);
+    //additonal setters for array of stageData
+    void setStageDataName(int index, string newName);
+    void setStageDataHasStrictEdges(int index, bool newHasStrictEdges);
+    void setStageDataHasSevereHazards(int index, bool newHasSevereHazards);
+    void setStageDataWins(int index, int newWins);
+    void setStageDataNumberOfMatchesPlayed(int index, int newNumberOfMatchesPlayed);
 
     //helpers
     void increaseWins();
     void increaseNumberOfMatchesPlayed();
     int getLosses();
+    void increaseStageDataWins(int index);
+    void increaseStageDataNumberOfMatchesPlayed(int index);
 private:
 
     string user; // the actual human being who controls this character

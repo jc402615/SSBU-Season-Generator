@@ -29,6 +29,7 @@ int main(){
     cout << temp.getNumberOfMatchesPlayed() << endl;
     cout << "losses: " << temp.getLosses() << endl;
     */
+
     Hplayer temp;
     cout << "here is the fighter currently" << endl;
     cout << temp.getUser() << endl;
@@ -37,15 +38,17 @@ int main(){
     cout << temp.getWins() << endl;
     cout << temp.getNumberOfMatchesPlayed() << endl;
     cout << temp.getLosses() << endl;
-    cout << temp.getStageDataAtIndex(0).getName() << endl << endl;
+    cout << temp.getStageDataAtIndex(0).getWins() << endl << endl;
 
     cout << "setting player" << endl;
     temp.setUser("Joey");
     temp.setFighter("Kirby");
     temp.setCharacter("JJ");
     temp.setWins(20);
+    temp.increaseWins();
     temp.setNumberOfMatchesPlayed(30);
-    temp.getStageDataAtIndex(0).setName("Stage 0"); //doesn't update stages
+    temp.setStageDataWins(0, 100);
+    temp.increaseStageDataWins(0);
 
     cout << "now the player is " << endl << endl;
     cout << temp.getUser() << endl;
@@ -54,6 +57,9 @@ int main(){
     cout << temp.getWins() << endl;
     cout << temp.getNumberOfMatchesPlayed() << endl;
     cout << temp.getLosses() << endl;
-    cout << temp.getStageDataAtIndex(0).getName() << endl << endl;
+    cout << temp.getStageDataAtIndex(0).getWins() << endl << endl;
+
+
+
     return 0;
 }
