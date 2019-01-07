@@ -2,6 +2,7 @@
 #include "Hplayer.h"
 #include "Cplayer.h"
 #include "Hteam.h"
+#include "Cteam.h"
 #include <iostream>
 
 using namespace std;
@@ -32,7 +33,7 @@ int main(){
     cout << "losses: " << temp.getLosses() << endl;
     */
 
-    Hplayer Htemp;
+    //Hplayer Htemp;
     /*cout << "here is the fighter currently" << endl;
     cout << Htemp.getUser() << endl;
     cout << Htemp.getFighter() << endl;
@@ -42,6 +43,7 @@ int main(){
     cout << temp.getLosses() << endl;
     cout << temp.getStageDataAtIndex(0).getWins() << endl << endl;
     */
+   /*
     cout << "setting player" << endl;
     Htemp.setUser("Joey");
     Htemp.setFighter("Kirby");
@@ -50,6 +52,7 @@ int main(){
     Htemp.setNumberOfMatchesPlayed(30);
     Htemp.setStageDataWins(0, 100);
     Htemp.increaseStageDataWins(0);
+    */
 /*
     cout << "now the player is " << endl << endl;
     cout << temp.getUser() << endl;
@@ -61,7 +64,7 @@ int main(){
     cout << temp.getStageDataAtIndex(0).getWins() << endl << endl;
     */
 
-/*
+
     Cplayer temp;
     cout << "the cplayer starts as" << endl;
     cout << temp.getId() << endl;
@@ -73,13 +76,51 @@ int main(){
     cout << "setting the cplayer" << endl;
     temp.setId("Foxy Slayer");
     temp.setFighter("Fox");
-    temp.setLevel(9);
+    temp.setLevel(8);
     temp.setKills(10);
     temp.setDeaths(2);
 
-    temp.increaseLevel();
+    Cteam cpuTeam;
+    cout << cpuTeam.getTeamName() << endl;
+    cout << cpuTeam.getWins() << endl;
+    cout << cpuTeam.getLosses() << endl;
+    cpuTeam.printTeamMembers();
+    cout << endl << cpuTeam.getNumberOfPlayers() << endl;
 
+    cpuTeam.addTeamMember(temp);
+    cpuTeam.addTeamMember(temp);
+    cpuTeam.setTeamName("Compute and Destroy");
+    cpuTeam.setWins(12);
+    cpuTeam.setLosses(1);
 
+    cout << "\n\n\n\n\nNow the team is" << endl;
+    cout << cpuTeam.getTeamName() << endl;
+    cout << cpuTeam.getWins() << endl;
+    cout << cpuTeam.getLosses() << endl;
+    cpuTeam.printTeamMembers();
+    cout << endl << cpuTeam.getNumberOfPlayers() << endl;
+    cpuTeam.printRecord();
+    cout << endl;
+
+    cout << "\n\n\n\n\ninfo about team member 2: " << endl;
+    cout << cpuTeam.getTeamMemberAtIndex(1).getId() << endl;
+    cout << cpuTeam.getTeamMemberAtIndex(1).getKills() << endl;
+    cout << cpuTeam.getTeamMemberAtIndex(1).getDeaths() << endl;
+    cout << cpuTeam.getTeamMemberAtIndex(1).getFighter() << endl;
+    cout << cpuTeam.getTeamMemberAtIndex(1).getLevel() << endl;
+
+    cout << "changing team member data\n\n\n\n\n\n\n" << endl;
+    cpuTeam.doubleIncreaseTeamMemberKillsAtIndex(1);
+    cpuTeam.decreaseTeamMemberLevelAtIndex(1);
+    cpuTeam.increaseTeamMemberDeathsAtIndex(1);
+
+    cout << cpuTeam.getTeamMemberAtIndex(1).getId() << endl;
+    cout << cpuTeam.getTeamMemberAtIndex(1).getKills() << endl;
+    cout << cpuTeam.getTeamMemberAtIndex(1).getDeaths() << endl;
+    cout << cpuTeam.getTeamMemberAtIndex(1).getFighter() << endl;
+    cout << cpuTeam.getTeamMemberAtIndex(1).getLevel() << endl;
+
+/*
 
     cout << "the cplayer is now" << endl;
     cout << temp.getId() << endl;
@@ -89,6 +130,7 @@ int main(){
     cout << temp.getDeaths() << endl;
 */
 
+/*
     Hteam humanTeam;
     cout << "Hteam now" << endl;
     cout << humanTeam.getTeamName() << endl;
@@ -126,5 +168,6 @@ int main(){
     cout << humanTeam.getTeamMemberAtIndex(0).getStageDataAtIndex(0).getWins();
     humanTeam.increaseTeamMemberStageDataWinsAtIndices(0,0);
     cout << humanTeam.getTeamMemberAtIndex(0).getStageDataAtIndex(0).getWins();
+    */
     return 0;
 }
