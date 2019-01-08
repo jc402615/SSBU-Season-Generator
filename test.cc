@@ -170,12 +170,20 @@ int main(){
     humanTeam.increaseTeamMemberStageDataWinsAtIndices(0,0);
     cout << humanTeam.getTeamMemberAtIndex(0).getStageDataAtIndex(0).getWins();
     */
+   /*
     ifstream ins;
     ins.open("test.txt");
     bool tempBool = false;
     cout << "bool is currently " << tempBool << endl;
     ins >> tempBool;
     cout << "now bool is " << tempBool << endl;
+    */
+   Hplayer temp;
+   for(int i = 0; i < 103; i++){
+       cout << temp.getStageDataAtIndex(i).getName() << endl;
+       cout << temp.getStageDataAtIndex(i).getHasStrictEdges() << endl;
+       cout << temp.getStageDataAtIndex(i).getHasSevereHazards() << endl;
+   }
+   return 0;
 
-    return 0;
 }

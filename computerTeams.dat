@@ -1,0 +1,11 @@
+team1 name
+team1 number of players
+team1 wins
+team1 losses
+player1 team1 id       ---|
+player1 team1 fighter     |
+player1 team1 level       | repeat for each player on team
+player1 team1 kills       |
+player1 team1 deaths    --|
+
+now do the same for team 2 

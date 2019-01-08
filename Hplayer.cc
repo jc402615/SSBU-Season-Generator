@@ -1,4 +1,7 @@
 #include "Hplayer.h"
+#include <fstream>
+#include <iostream>
+#include <cstdlib>
 
 Hplayer::Hplayer(){
     user = "NO USER";
@@ -6,7 +9,28 @@ Hplayer::Hplayer(){
     character = "NO CHARACTER";
     wins = 0;
     numberOfMatchesPlayed = 0;
-    //stage data will already be constructed through its own
+
+    //now need to read in set elements about stages
+    string tempString;
+    bool tempBool;
+
+    ifstream inFile;
+    inFile.open("stages.dat");
+    if(inFile.fail()){
+        cout << "Error: \"stages.dat\" not found. closing program" << endl;
+        exit(1);
+    }
+    for(int i = 0; i < 103; i++){
+        getline(inFile, tempString);
+        setStageDataName(i, tempString);
+        inFile >> tempBool;
+        inFile.ignore();
+        setStageDataHasStrictEdges(i, tempBool);
+        inFile >> tempBool;
+        inFile.ignore();
+        setStageDataHasSevereHazards(i, tempBool);
+    }
+    inFile.close();
 }
 
 

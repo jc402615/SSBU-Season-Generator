@@ -223,5 +223,5 @@ void loadComputerTeamNames(vector<Cteam> &computerTeams){
             getline(inFile, tempString);
         }
     }
-
+    inFile.close();
 }
