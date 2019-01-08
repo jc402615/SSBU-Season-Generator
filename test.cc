@@ -4,6 +4,7 @@
 #include "Hteam.h"
 #include "Cteam.h"
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -64,7 +65,7 @@ int main(){
     cout << temp.getStageDataAtIndex(0).getWins() << endl << endl;
     */
 
-
+    /*
     Cplayer temp;
     cout << "the cplayer starts as" << endl;
     cout << temp.getId() << endl;
@@ -169,5 +170,12 @@ int main(){
     humanTeam.increaseTeamMemberStageDataWinsAtIndices(0,0);
     cout << humanTeam.getTeamMemberAtIndex(0).getStageDataAtIndex(0).getWins();
     */
+    ifstream ins;
+    ins.open("test.txt");
+    bool tempBool = false;
+    cout << "bool is currently " << tempBool << endl;
+    ins >> tempBool;
+    cout << "now bool is " << tempBool << endl;
+
     return 0;
 }
