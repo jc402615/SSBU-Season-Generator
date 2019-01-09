@@ -71,9 +71,17 @@ void Hteam::increaseTeamMemberStageDataNumberOfMatchesPlayed(int memberIndex, in
     teamMembers[memberIndex].increaseStageDataNumberOfMatchesPlayed(stageIndex);
 }
 
-void Hteam::addTeamMember(Hplayer &newTeamMember){
-    teamMembers.push_back(newTeamMember);
-    numberOfPlayers++;
+bool Hteam::addTeamMember(Hplayer newTeamMember){
+    if(!isAlreadyOnTeam(newTeamMember.getCharacter())){
+        teamMembers.push_back(newTeamMember);
+        numberOfPlayers++;
+        return true;
+    }
+    else{
+        cout << "Unable to add player: already on team." << endl;
+        return false;
+    }
+
 }
 
 int Hteam::getTotalMatchesPlayed(){
@@ -107,4 +115,13 @@ void Hteam::increaseWins(){
 
 void Hteam::increaseLosses(){
     losses++;
+}
+
+bool Hteam::isAlreadyOnTeam(string HplayerCharName){
+    for(int i = 0; i < numberOfPlayers; i++){
+        if(teamMembers[i].getCharacter() == HplayerCharName){
+            return true;
+        }
+    }
+    return false;
 }

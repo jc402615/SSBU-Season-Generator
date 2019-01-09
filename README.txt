@@ -31,3 +31,11 @@ Stage 1. A set season (no settings or tuning available) that allows a player
          the future.
 
 Stage 2. To be determined.
+
+Other features to be added
+-tracking for stages that are scrolling
+-tracking a Human players 1v1 2v2 3v3 4v4 matches separately
+-a Hplayer keeps life stats, the team keeps season based stats, add kill and death
+ tracking for teams to compare over the season, instead of only tracking all time
+ kill/death data (which also allows differential tracking for tie breakers)
+-

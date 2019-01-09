@@ -179,11 +179,12 @@ int main(){
     cout << "now bool is " << tempBool << endl;
     */
    Hplayer temp;
-   for(int i = 0; i < 103; i++){
-       cout << temp.getStageDataAtIndex(i).getName() << endl;
-       cout << temp.getStageDataAtIndex(i).getHasStrictEdges() << endl;
-       cout << temp.getStageDataAtIndex(i).getHasSevereHazards() << endl;
-   }
+   Hteam tempTeam;
+   tempTeam.addTeamMember(temp);
+   cout << tempTeam.getNumberOfPlayers();
+   temp.setCharacter("hey");
+   tempTeam.addTeamMember(temp);
+   cout << tempTeam.getNumberOfPlayers();
    return 0;
 
 }

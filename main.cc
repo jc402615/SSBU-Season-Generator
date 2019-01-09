@@ -100,6 +100,15 @@ void printAllUserTeams(vector<Hteam> &userTeams);
 //  Post Conditions: does not return a value
 //*****************************************************************
 
+Hplayer createAHplayer();
+//*****************************************************************
+//  Function:   createAHplayer
+//  Purpose:    gets input from user to create a new Hplayer
+//  Parameters: none
+//  Pre Conditions: none
+//  Post Conditions: returns the Hplayer with stats given by user
+//*****************************************************************
+
 int main (){
     //read in previous data from disk
     vector<Hteam> userTeams;
@@ -110,36 +119,53 @@ int main (){
 
     //end reading of data
     system("CLS"); //clears the screen -- << flush; to clear iostream
-    printBasicMenu(userTeams); //intro
+
+    bool returnToIntro = true;
+    bool returnToCharacterName = true;
 
     string tempString; //used for data input
     int tempInt; //used for data input
     Hteam activeTeam; //the team that is currently in use
+    Hplayer tempHplayer;
 
-    cin >> tempString;
+    while(returnToIntro){
+        printBasicMenu(userTeams); //intro
 
-    //need to see if team already exists
-    tempInt = isAlreadyATeam(tempString, userTeams);
-    if( tempInt== -1){
-        cout << tempString << " does not appear to be a team yet." << endl;
-        cout << "Would you like to start this team (y/n): ";
         cin >> tempString;
-        if(tempString == "y" || tempString == "Y" || tempString == "yes" || tempString == "Yes"){
-            activeTeam.setTeamName(tempString);
-            cout << "\nHow many players are on your team (including yourself): ";
-            cin >> tempInt;
-            activeTeam.setNumberOfPlayers(tempInt);
-            //function to display all current characters
-            //ask if they would like to add an existing character to their team or create a new one
+
+        //need to see if team already exists
+        tempInt = isAlreadyATeam(tempString, userTeams);
+        if( tempInt == -1){
+            cout << tempString << " does not appear to be a team yet." << endl;
+            cout << "Would you like to start this team (y/n): ";
+            returnToIntro = false;
+            cin >> tempString;
+
+            if(tempString == "y" || tempString == "Y" || tempString == "yes" || tempString == "Yes"){
+                activeTeam.setTeamName(tempString);
+                cout << "\nHow many players are on your team (including yourself): ";
+                cin >> tempInt;
+                activeTeam.setNumberOfPlayers(tempInt);
+                for(int i = 0; i < activeTeam.getNumberOfPlayers(); i++){
+                    returnToCharacterName = true;
+                    while(returnToCharacterName){
+                        cout << "Please enter information for player " << i << " of your team." << endl;
+                        if(activeTeam.addTeamMember(createAHplayer())){
+                            returnToIntro = false;
+                        }
+                    }
+                }
+            }
+            else{
+                //they want to enter another team name, return them to main menu
+            }
         }
         else{
-            //they want to enter another team name
+            //continue using a current team
+            activeTeam = userTeams[tempInt];
         }
-    }
-    else{
-        //continue using a current team
-        activeTeam = userTeams[tempInt];
-    }
+    } //end of intro sequence, active Team should now be set and ready to move on
+
 
 
 
@@ -341,4 +367,23 @@ void printAllUserTeams(vector<Hteam> &userTeams){
         }
         cout << "#" << endl;
     }
+}
+
+Hplayer createAHplayer(){
+    //function to print a help menu
+    Hplayer newPlayer;
+    string s;
+
+    cout << "\nUser: ";
+    cin >> s;
+    newPlayer.setUser(s);
+    cout << "\nFighter: ";
+    cin >> s;
+    newPlayer.setFighter(s);
+    cout << "\nCharacter: ";
+    cin >> s;
+    newPlayer.setCharacter(s);
+
+    return newPlayer;
+
 }

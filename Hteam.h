@@ -37,7 +37,7 @@ public:
     void setNumberOfPlayers(int newNumberOfPlayers);
     void setWins(int newWins);
     void setLosses(int newLosses);
-    void addTeamMember(Hplayer &newTeamMember);
+    bool addTeamMember(Hplayer newTeamMember); //returns true if added successfully 
 
     //addtional helpers for Hplayer teamMembers stats
     void increaseTeamMemberWinsAtIndex(int index);
@@ -54,6 +54,7 @@ public:
     void printTeamMembers();
     void increaseWins();
     void increaseLosses();
+    bool isAlreadyOnTeam(string HplayerCharName);
 
 private:
     string teamName;
