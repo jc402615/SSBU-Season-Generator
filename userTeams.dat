@@ -1,2 +1,27 @@
-Killers111!
-Killers222$
+teamName1
+number of players on team
+wins of team
+losses of team
+player1 user
+player1 fighter
+player1 character
+player1 wins
+player1 number of matches
+player1 kills
+player1 deaths
+stage 1 name                ---|
+stage 1 has strictEdges        |
+stage 1 has severe hazards     | repeats for all 103 stages
+stage 1 wins                   |
+stage 1 number of matches      |
+stage 2 name               ----|
+....
+....
+player2 user
+player2 fighter
+player2 character
+player2 wins
+player 2 number of matches
+player2 kills
+player2 deaths
+player2 stage 1 name

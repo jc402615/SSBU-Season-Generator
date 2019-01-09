@@ -26,7 +26,7 @@
 using namespace std;
 
 //function prototypes
-void printBasicMenu();
+void printBasicMenu(vector<Hteam> &userTeams);
 //*****************************************************************
 //  Function:   printBasicMenu
 //  Purpose:    prints out the header of the program
@@ -45,7 +45,7 @@ void loadData(vector<Hteam> userTeams, vector<Cteam> computerTeams);
 //  Post Conditions: does not return a value
 //*****************************************************************
 
-void loadUserTeamNames(vector<Hteam> &userTeams);
+void loadUserTeams(vector<Hteam> &userTeams);
 //*****************************************************************
 //  Function:   loadUserTeamNames
 //  Purpose:    reads in user teams from file and stores them in vector
@@ -54,7 +54,7 @@ void loadUserTeamNames(vector<Hteam> &userTeams);
 //  Post Conditions: does not return a value
 //*****************************************************************
 
-void loadComputerTeamNames(vector<Cteam> &computerTeams);
+void loadComputerTeams(vector<Cteam> &computerTeams);
 //*****************************************************************
 //  Function:   loadComputerTeamNames
 //  Purpose:    reads in computer teams from file and stores them in vector
@@ -63,6 +63,42 @@ void loadComputerTeamNames(vector<Cteam> &computerTeams);
 //  Post Conditions: does not return a value
 //*****************************************************************
 
+void saveUserTeams(vector<Hteam> &userTeams);
+//*****************************************************************
+//  Function:   saveUserTeams
+//  Purpose:    writes all user based team data to disk
+//  Parameters: userTeams - the vector that holds all of the user teams to save
+//  Pre Conditions: userTeams contains the userTeams
+//  Post Conditions: the data is saved to a file called userTeams.dat
+//*****************************************************************
+
+void saveComputerTeams(vector<Cteam> &computerTeams);
+//*****************************************************************
+//  Function:   saveComputerTeams
+//  Purpose:    writes all computer based team data to disk
+//  Parameters: computerTeams - the vector that holds all of the cpu teams to save
+//  Pre Conditions: computerTeams contains all the cpu teams
+//  Post Conditions: the data is saved to a file called computerTeams.dat
+//*****************************************************************
+
+int isAlreadyATeam(string teamName, vector<Hteam> &userTeams);
+//*****************************************************************
+//  Function:   isAlreadyATeam
+//  Purpose:    determines whether teamName is already a Team
+//  Parameters: teamName - the name to check for
+//              userTeams - the vector of Hteams to check in
+//  Pre Conditions: userTeams already contains all Hteams
+//  Post Conditions: returns the index of the matching team, or -1 if not found
+//*****************************************************************
+
+void printAllUserTeams(vector<Hteam> &userTeams);
+//*****************************************************************
+//  Function:   printAllUserTeams
+//  Purpose:    simply lists out all existing teams to aid in user selection
+//  Parameters: userTeams - the vector containing all the team names to print
+//  Pre Conditions: userTeams already holds the necessary teams
+//  Post Conditions: does not return a value
+//*****************************************************************
 
 int main (){
     //read in previous data from disk
@@ -74,37 +110,62 @@ int main (){
 
     //end reading of data
     system("CLS"); //clears the screen -- << flush; to clear iostream
-    printBasicMenu(); //intro
+    printBasicMenu(userTeams); //intro
 
     string tempString; //used for data input
     int tempInt; //used for data input
+    Hteam activeTeam; //the team that is currently in use
+
     cin >> tempString;
 
     //need to see if team already exists
+    tempInt = isAlreadyATeam(tempString, userTeams);
+    if( tempInt== -1){
+        cout << tempString << " does not appear to be a team yet." << endl;
+        cout << "Would you like to start this team (y/n): ";
+        cin >> tempString;
+        if(tempString == "y" || tempString == "Y" || tempString == "yes" || tempString == "Yes"){
+            activeTeam.setTeamName(tempString);
+            cout << "\nHow many players are on your team (including yourself): ";
+            cin >> tempInt;
+            activeTeam.setNumberOfPlayers(tempInt);
+            //function to display all current characters
+            //ask if they would like to add an existing character to their team or create a new one
+        }
+        else{
+            //they want to enter another team name
+        }
+    }
+    else{
+        //continue using a current team
+        activeTeam = userTeams[tempInt];
+    }
 
 
 
     return 0;
 }
 
-void printBasicMenu(){
+void printBasicMenu(vector<Hteam> &userTeams){
     cout << "#################################################" << endl;
     cout << "#  Super Smash Bros. Ultimate Season Generator  #" << endl;
     cout << "#                                               #" << endl;
     cout << "#  By: OpenSkyze                                #" << endl;
     cout << "#################################################" << endl;
-    cout << "#  Please enter your team name to begin:     #" << endl;
+    printAllUserTeams(userTeams);
+    cout << "#################################################" << endl;
+    cout << "#  Please enter your team name to begin:        #" << endl;
     cout << "#################################################" << endl << endl;
     cout << "Team Name: ";
 
 }
 
 void loadData(vector<Hteam> &userTeams, vector<Cteam> &computerTeams){
-    loadUserTeamNames(userTeams);
-    loadComputerTeamNames(computerTeams);
+    loadUserTeams(userTeams);
+    loadComputerTeams(computerTeams);
 }
 
-void loadUserTeamNames(vector<Hteam> &userTeams){
+void loadUserTeams(vector<Hteam> &userTeams){
     ifstream inFile;
     inFile.open("userTeams.dat");
     if(inFile.fail()){
@@ -151,14 +212,6 @@ void loadUserTeamNames(vector<Hteam> &userTeams){
                 tempPlayer.setDeaths(tempInt);
                 //read in stage Data
                 for(int j = 0; j < 103; j++){
-                    getline(inFile, tempString);
-                    tempPlayer.setStageDataName(j, tempString);
-                    inFile >> tempBool;
-                    inFile.ignore();
-                    tempPlayer.setStageDataHasStrictEdges(j, tempBool);
-                    inFile >> tempBool;
-                    inFile.ignore();
-                    tempPlayer.setStageDataHasSevereHazards(j, tempBool);
                     inFile >> tempInt;
                     inFile.ignore();
                     tempPlayer.setStageDataWins(j, tempInt);
@@ -175,7 +228,7 @@ void loadUserTeamNames(vector<Hteam> &userTeams){
     inFile.close();
 }
 
-void loadComputerTeamNames(vector<Cteam> &computerTeams){
+void loadComputerTeams(vector<Cteam> &computerTeams){
     ifstream inFile;
     inFile.open("computerTeams.dat");
     if(inFile.fail()){
@@ -224,4 +277,68 @@ void loadComputerTeamNames(vector<Cteam> &computerTeams){
         }
     }
     inFile.close();
+}
+
+void saveUserTeams(vector<Hteam> &userTeams){
+    ofstream outFile;
+    outFile.open("userTeams.dat");
+    for(int i = 0; i < userTeams.size(); i++){
+        outFile << userTeams[i].getTeamName() << endl;
+        outFile << userTeams[i].getNumberOfPlayers() << endl;
+        outFile << userTeams[i].getWins() << endl;
+        outFile << userTeams[i].getLosses() << endl;
+        for(int j = 0; j < userTeams[i].getNumberOfPlayers(); j++){
+            outFile << userTeams[i].getTeamMemberAtIndex(j).getUser() << endl;
+            outFile << userTeams[i].getTeamMemberAtIndex(j).getFighter() << endl;
+            outFile << userTeams[i].getTeamMemberAtIndex(j).getCharacter() << endl;
+            outFile << userTeams[i].getTeamMemberAtIndex(j).getWins() << endl;
+            outFile << userTeams[i].getTeamMemberAtIndex(j).getNumberOfMatchesPlayed() << endl;
+            outFile << userTeams[i].getTeamMemberAtIndex(j).getKills() << endl;
+            outFile << userTeams[i].getTeamMemberAtIndex(j).getDeaths() << endl;
+            for(int k = 0; k < 103; k++){
+                outFile << userTeams[i].getTeamMemberAtIndex(j).getStageDataAtIndex(k).getWins() << endl;
+                outFile << userTeams[i].getTeamMemberAtIndex(j).getStageDataAtIndex(k).getNumberOfMatchesPlayed() << endl;
+            }
+        }
+    }
+
+    outFile.close();
+}
+
+void saveComputerTeams(vector<Cteam> &computerTeams){
+    ofstream outFile;
+    outFile.open("computerTeams.dat");
+    for(int i = 0; i < computerTeams.size(); i++){
+        outFile << computerTeams[i].getTeamName() << endl;
+        outFile << computerTeams[i].getNumberOfPlayers() << endl;
+        outFile << computerTeams[i].getWins() << endl;
+        outFile << computerTeams[i].getLosses() << endl;
+        for(int j = 0; j < computerTeams[i].getNumberOfPlayers(); j++){
+            outFile << computerTeams[i].getTeamMemberAtIndex(j).getId() << endl;
+            outFile << computerTeams[i].getTeamMemberAtIndex(j).getFighter() << endl;
+            outFile << computerTeams[i].getTeamMemberAtIndex(j).getLevel() << endl;
+            outFile << computerTeams[i].getTeamMemberAtIndex(j).getKills() << endl;
+            outFile << computerTeams[i].getTeamMemberAtIndex(j).getDeaths() << endl;
+        }
+    }
+}
+
+int isAlreadyATeam(string teamName, vector<Hteam> &userTeams){
+    for(int i = 0; i < userTeams.size(); i++){
+        if(userTeams[i].getTeamName() == teamName){
+            return i;
+        }
+    }
+    return -1;
+}
+
+void printAllUserTeams(vector<Hteam> &userTeams){
+    for(int i = 0; i < userTeams.size(); i++){
+        cout << "# • " << userTeams[i].getTeamName();
+        size_t spaces = 45 - userTeams[i].getTeamName().length();
+        for(int j = 0; j < spaces; j++){
+            cout << " ";
+        }
+        cout << "#" << endl;
+    }
 }
