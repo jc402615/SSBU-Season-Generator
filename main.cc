@@ -36,7 +36,7 @@ void printBasicMenu(vector<Hteam> &userTeams);
 //*****************************************************************
 
 
-void loadData(vector<Hteam> userTeams, vector<Cteam> computerTeams);
+void loadData(vector<Hteam> &userTeams, vector<Cteam> &computerTeams);
 //*****************************************************************
 //  Function:   loadData
 //  Purpose:    loads previous data from stored files
@@ -109,6 +109,15 @@ Hplayer createAHplayer();
 //  Post Conditions: returns the Hplayer with stats given by user
 //*****************************************************************
 
+void printCreateAPlayerHelpMenu();
+//*****************************************************************
+//  Function:   printCreateAPlayerHelpMenu
+//  Purpose:    displays what each attribute of a Hplayer's character respresents
+//  Parameters: none
+//  Pre Conditions: none
+//  Post Conditions: does not return a value
+//*****************************************************************
+
 int main (){
     //read in previous data from disk
     vector<Hteam> userTeams;
@@ -138,20 +147,25 @@ int main (){
         if( tempInt == -1){
             cout << tempString << " does not appear to be a team yet." << endl;
             cout << "Would you like to start this team (y/n): ";
-            returnToIntro = false;
             cin >> tempString;
 
             if(tempString == "y" || tempString == "Y" || tempString == "yes" || tempString == "Yes"){
+                returnToIntro = false;
                 activeTeam.setTeamName(tempString);
                 cout << "\nHow many players are on your team (including yourself): ";
                 cin >> tempInt;
-                activeTeam.setNumberOfPlayers(tempInt);
-                for(int i = 0; i < activeTeam.getNumberOfPlayers(); i++){
+                //debug
+                cout << activeTeam.getNumberOfPlayers();
+                for(size_t i = 0; i < tempInt; i++){
+                    //debug
+                    cout << "i: " << i << endl;
+                    bool b = (i < activeTeam.getNumberOfPlayers());
+                    cout << "i < #Players: " << b << endl;
                     returnToCharacterName = true;
                     while(returnToCharacterName){
-                        cout << "Please enter information for player " << i << " of your team." << endl;
+                        cout << "Please enter information for player " << i + 1 << " of your team." << endl;
                         if(activeTeam.addTeamMember(createAHplayer())){
-                            returnToIntro = false;
+                            returnToCharacterName = false;
                         }
                     }
                 }
@@ -173,15 +187,15 @@ int main (){
 }
 
 void printBasicMenu(vector<Hteam> &userTeams){
-    cout << "#################################################" << endl;
-    cout << "#  Super Smash Bros. Ultimate Season Generator  #" << endl;
-    cout << "#                                               #" << endl;
-    cout << "#  By: OpenSkyze                                #" << endl;
-    cout << "#################################################" << endl;
+    cout << "######################################################" << endl;
+    cout << "#  Super Smash Bros. Ultimate Season Generator       #" << endl;
+    cout << "#                                                    #" << endl;
+    cout << "#  By: OpenSkyze                                     #" << endl;
+    cout << "######################################################" << endl;
     printAllUserTeams(userTeams);
-    cout << "#################################################" << endl;
-    cout << "#  Please enter your team name to begin:        #" << endl;
-    cout << "#################################################" << endl << endl;
+    cout << "######################################################" << endl;
+    cout << "#  Please enter your team name to begin:             #" << endl;
+    cout << "######################################################" << endl << endl;
     cout << "Team Name: ";
 
 }
@@ -202,7 +216,6 @@ void loadUserTeams(vector<Hteam> &userTeams){
         int tempInt;
         Hplayer tempPlayer;
         Hteam tempTeam;
-        bool tempBool;
 
         getline(inFile, tempString); //priming read
         while(!inFile.eof()){ //read in all teams and add them to list
@@ -308,7 +321,7 @@ void loadComputerTeams(vector<Cteam> &computerTeams){
 void saveUserTeams(vector<Hteam> &userTeams){
     ofstream outFile;
     outFile.open("userTeams.dat");
-    for(int i = 0; i < userTeams.size(); i++){
+    for(size_t i = 0; i < userTeams.size(); i++){
         outFile << userTeams[i].getTeamName() << endl;
         outFile << userTeams[i].getNumberOfPlayers() << endl;
         outFile << userTeams[i].getWins() << endl;
@@ -334,7 +347,7 @@ void saveUserTeams(vector<Hteam> &userTeams){
 void saveComputerTeams(vector<Cteam> &computerTeams){
     ofstream outFile;
     outFile.open("computerTeams.dat");
-    for(int i = 0; i < computerTeams.size(); i++){
+    for(size_t i = 0; i < computerTeams.size(); i++){
         outFile << computerTeams[i].getTeamName() << endl;
         outFile << computerTeams[i].getNumberOfPlayers() << endl;
         outFile << computerTeams[i].getWins() << endl;
@@ -350,7 +363,7 @@ void saveComputerTeams(vector<Cteam> &computerTeams){
 }
 
 int isAlreadyATeam(string teamName, vector<Hteam> &userTeams){
-    for(int i = 0; i < userTeams.size(); i++){
+    for(size_t i = 0; i < userTeams.size(); i++){
         if(userTeams[i].getTeamName() == teamName){
             return i;
         }
@@ -359,10 +372,10 @@ int isAlreadyATeam(string teamName, vector<Hteam> &userTeams){
 }
 
 void printAllUserTeams(vector<Hteam> &userTeams){
-    for(int i = 0; i < userTeams.size(); i++){
+    for(size_t i = 0; i < userTeams.size(); i++){
         cout << "# • " << userTeams[i].getTeamName();
-        size_t spaces = 45 - userTeams[i].getTeamName().length();
-        for(int j = 0; j < spaces; j++){
+        size_t spaces = 50 - userTeams[i].getTeamName().length();
+        for(size_t j = 0; j < spaces; j++){
             cout << " ";
         }
         cout << "#" << endl;
@@ -370,7 +383,7 @@ void printAllUserTeams(vector<Hteam> &userTeams){
 }
 
 Hplayer createAHplayer(){
-    //function to print a help menu
+    printCreateAPlayerHelpMenu();
     Hplayer newPlayer;
     string s;
 
@@ -386,4 +399,14 @@ Hplayer createAHplayer(){
 
     return newPlayer;
 
+}
+
+void printCreateAPlayerHelpMenu(){
+    cout << "######################################################" << endl;
+    cout << "#           Create A Player - Help Menu              #" << endl;
+    cout << "######################################################" << endl;
+    cout << "# User:      Human player's name                     #" << endl;
+    cout << "# Fighter:   Which playable fighter will you use?    #" << endl;
+    cout << "# Character: (UserName/Profile) of your character    #" << endl;
+    cout << "######################################################" << endl;
 }

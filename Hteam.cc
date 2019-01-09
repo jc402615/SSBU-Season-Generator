@@ -118,7 +118,7 @@ void Hteam::increaseLosses(){
 }
 
 bool Hteam::isAlreadyOnTeam(string HplayerCharName){
-    for(int i = 0; i < numberOfPlayers; i++){
+    for(size_t i = 0; i < teamMembers.size(); i++){
         if(teamMembers[i].getCharacter() == HplayerCharName){
             return true;
         }
