@@ -38,6 +38,7 @@ public:
     void setWins(int newWins);
     void setLosses(int newLosses);
     void addTeamMember(Cplayer &newTeamMember);
+    //must increment the numberOfPlayers by 1
 
     //helpers
     int getTotalMatchesPlayed();
@@ -45,6 +46,7 @@ public:
     void printTeamMembers();
     void increaseWins();
     void increaseLosses();
+    void removeAllTeamMembers();
 
     //additional helpers
     void increaseTeamMemberKillsAtIndex(int index);

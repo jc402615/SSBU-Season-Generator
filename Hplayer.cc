@@ -9,6 +9,8 @@ Hplayer::Hplayer(){
     character = "NO CHARACTER";
     wins = 0;
     numberOfMatchesPlayed = 0;
+    kills = 0;
+    deaths = 0;
 
     //now need to read in set elements about stages
     string tempString;

@@ -74,7 +74,6 @@ void Hteam::increaseTeamMemberStageDataNumberOfMatchesPlayed(int memberIndex, in
 bool Hteam::addTeamMember(Hplayer newTeamMember){
     if(!isAlreadyOnTeam(newTeamMember.getCharacter())){
         teamMembers.push_back(newTeamMember);
-        numberOfPlayers++;
         return true;
     }
     else{
@@ -124,4 +123,12 @@ bool Hteam::isAlreadyOnTeam(string HplayerCharName){
         }
     }
     return false;
+}
+
+void Hteam::increaseNumberOfPlayers(){
+    numberOfPlayers++;
+}
+
+void Hteam::removeAllTeamMembers(){
+    teamMembers.clear();
 }

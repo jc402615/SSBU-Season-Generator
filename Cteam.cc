@@ -46,7 +46,6 @@ void Cteam::setLosses(int newLosses){
 
 void Cteam::addTeamMember(Cplayer &newTeamMember){
     teamMembers.push_back(newTeamMember);
-    numberOfPlayers++;
 }
 
 int Cteam::getTotalMatchesPlayed(){
@@ -100,4 +99,8 @@ void Cteam::increaseTeamMemberLevelAtIndex(int index){
 
 void Cteam::decreaseTeamMemberLevelAtIndex(int index){
     teamMembers[index].decreaseLevel();
+}
+
+void Cteam::removeAllTeamMembers(){
+    teamMembers.clear();
 }
