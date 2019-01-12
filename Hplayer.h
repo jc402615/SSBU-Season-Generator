@@ -47,6 +47,7 @@ public:
     void setStageDataName(int index, string newName);
     void setStageDataHasStrictEdges(int index, bool newHasStrictEdges);
     void setStageDataHasSevereHazards(int index, bool newHasSevereHazards);
+    void setStageDataHasScrolling(int index, bool newHasScrolling);
     void setStageDataWins(int index, int newWins);
     void setStageDataNumberOfMatchesPlayed(int index, int newNumberOfMatchesPlayed);
 

@@ -33,8 +33,10 @@ Stage 1. A set season (no settings or tuning available) that allows a player
 Stage 2. To be determined.
 
 Other features to be added
--tracking for stages that are scrolling
--tracking a Human players 1v1 2v2 3v3 4v4 matches separately
+-tracking a Human players 1v1 2v2 3v3 4v4 matches separately: can be done by looking
+    at the numberOfPlayers on each team. A team with 2 players will always feature 2v2
+    battles, so add to total, then to the corresponding 1,2,3,4 player match holders
+    when displaying stats 
 -a Hplayer keeps life stats, the team keeps season based stats, add kill and death
  tracking for teams to compare over the season, instead of only tracking all time
  kill/death data (which also allows differential tracking for tie breakers)

@@ -140,7 +140,7 @@ int main (){
     cout << "After loading team member 1 of team 2 is: " << userTeams[1].getTeamMemberAtIndex(0).getUser() << endl;
     cout << "              team member 1 of team 3 is: " << userTeams[2].getTeamMemberAtIndex(0).getUser() << endl;
     //end reading of data
-    //system("CLS"); //clears the screen -- << flush; to clear iostream
+    system("CLS"); //clears the screen -- << flush; to clear iostream
 
     bool returnToIntro = true;
     bool returnToCharacterName = true;
@@ -168,8 +168,6 @@ int main (){
                 activeTeam.setTeamName(tempString);
                 cout << "\nHow many players are on your team (including yourself): ";
                 cin >> tempInt;
-                //debug
-                cout << activeTeam.getNumberOfPlayers();
                 for(size_t i = 0; i < tempInt; i++){
                     returnToCharacterName = true;
                     while(returnToCharacterName){
@@ -196,6 +194,12 @@ int main (){
     //need season / matches
     //option to view stats / next match or all previous matches of the season
     //option to quit
+    for(int u = 0; u < 103; u++){
+        cout << activeTeam.getTeamMemberAtIndex(0).getStageDataAtIndex(u).getName() << endl;
+        cout << activeTeam.getTeamMemberAtIndex(0).getStageDataAtIndex(u).getHasStrictEdges() << endl;
+        cout << activeTeam.getTeamMemberAtIndex(0).getStageDataAtIndex(u).getHasSevereHazards() << endl;
+        cout << activeTeam.getTeamMemberAtIndex(0).getStageDataAtIndex(u).getHasScrolling() << endl;
+    }
 
     saveData(userTeams, computerTeams);
 
@@ -279,8 +283,6 @@ void loadUserTeams(vector<Hteam> &userTeams){
                     tempPlayer.setStageDataNumberOfMatchesPlayed(j, tempInt);
                 } //finished reading stage data for player
                 tempTeam.addTeamMember(tempPlayer);
-                //debug
-                cout << "adding this player to team: " << tempPlayer.getUser() << "   " << i << endl;
             } //finished reading all players
             userTeams.push_back(tempTeam);
             getline(inFile, tempString);
@@ -347,11 +349,7 @@ void saveUserTeams(vector<Hteam> &userTeams){
     outFile.open("userTeams.dat");
     for(size_t i = 0; i < userTeams.size(); i++){
         outFile << userTeams[i].getTeamName() << endl;
-        //debug
-        cout << "writing team: " << userTeams[i].getTeamName() << "to file" << endl;
         outFile << userTeams[i].getNumberOfPlayers() << endl;
-        //debug
-        cout << "got number of players to be: " << userTeams[i].getNumberOfPlayers() << endl;
         outFile << userTeams[i].getWins() << endl;
         outFile << userTeams[i].getLosses() << endl;
         for(int j = 0; j < userTeams[i].getNumberOfPlayers(); j++){
@@ -402,8 +400,8 @@ int isAlreadyATeam(string teamName, vector<Hteam> &userTeams){
 
 void printAllUserTeams(vector<Hteam> &userTeams){
     for(size_t i = 0; i < userTeams.size(); i++){
-        cout << "# • " << userTeams[i].getTeamName();
-        size_t spaces = 50 - userTeams[i].getTeamName().length();
+        cout << "# - " << userTeams[i].getTeamName();
+        size_t spaces = 47 - userTeams[i].getTeamName().length();
         for(size_t j = 0; j < spaces; j++){
             cout << " ";
         }

@@ -31,6 +31,9 @@ Hplayer::Hplayer(){
         inFile >> tempBool;
         inFile.ignore();
         setStageDataHasSevereHazards(i, tempBool);
+        inFile >> tempBool;
+        inFile.ignore();
+        setStageDataHasScrolling(i, tempBool);
     }
     inFile.close();
 }
@@ -93,6 +96,11 @@ void Hplayer::setStageDataHasStrictEdges(int index, bool newHasStrictEdges){
 void Hplayer::setStageDataHasSevereHazards(int index, bool newHasSevereHazards){
     stageStats[index].setHasSevereHazards(newHasSevereHazards);
 }
+
+void Hplayer::setStageDataHasScrolling(int index, bool newHasScrolling){
+    stageStats[index].setHasScrolling(newHasScrolling);
+}
+
 void Hplayer::setStageDataWins(int index, int newWins){
     stageStats[index].setWins(newWins);
 }
