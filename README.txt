@@ -23,7 +23,7 @@ Stage 1. A set season (no settings or tuning available) that allows a player
          challengers in every single match.
 
          A single season should generate the 19 other teams (there is nothing
-         special about this number I just feel that it should give a good
+         special about this number I just feel that 20 teams should give a good
          impression for initial use), set up the 190 matches, tell
          the user who their opponent is, allow data entry for the match, simulate
          computer battles for the week(1 match a week), and keep track of
@@ -36,8 +36,17 @@ Other features to be added
 -tracking a Human players 1v1 2v2 3v3 4v4 matches separately: can be done by looking
     at the numberOfPlayers on each team. A team with 2 players will always feature 2v2
     battles, so add to total, then to the corresponding 1,2,3,4 player match holders
-    when displaying stats 
+    when displaying stats
+-track stage kills and deaths
+-keep track of win/lose streak; will be used to adjust simulation of cpu Teams
+-ability for cpu teams to actually improve or get worse over time/ playoff teams get boost??
+-different season options/ playoff setups
 -a Hplayer keeps life stats, the team keeps season based stats, add kill and death
  tracking for teams to compare over the season, instead of only tracking all time
  kill/death data (which also allows differential tracking for tie breakers)
--
+-records: win streaks, losing streaks, all time wins user/fighter/character,
+ all time losses, top x,y,z (10, 5,1 i.e.) finishes in a season 1 = champions, all time kos,
+ all time deaths, season kills, season deaths, stage records et cetera.
+ -multi human team seasons
+ tbI = to be implemented
+-simulation improvements, use record, streaks(tbI), and player tier list(tbI) in calculation

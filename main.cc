@@ -16,6 +16,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <vector>
+#include <windows.h>     //used for creation of folders
 #include "stageData.h"
 #include "Hplayer.h"
 #include "Cplayer.h"
@@ -194,12 +195,13 @@ int main (){
     //need season / matches
     //option to view stats / next match or all previous matches of the season
     //option to quit
-    for(int u = 0; u < 103; u++){
-        cout << activeTeam.getTeamMemberAtIndex(0).getStageDataAtIndex(u).getName() << endl;
-        cout << activeTeam.getTeamMemberAtIndex(0).getStageDataAtIndex(u).getHasStrictEdges() << endl;
-        cout << activeTeam.getTeamMemberAtIndex(0).getStageDataAtIndex(u).getHasSevereHazards() << endl;
-        cout << activeTeam.getTeamMemberAtIndex(0).getStageDataAtIndex(u).getHasScrolling() << endl;
-    }
+
+    //print season menu
+    // bunch of stars showing week of season and next match/stage/opponent including record
+    //1. play match
+    //2. view season standing/ stat page
+    //3. view all time stats -> records page
+
 
     saveData(userTeams, computerTeams);
 
