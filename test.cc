@@ -7,10 +7,13 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <cmath>
 
 using namespace std;
 
 void printOdds();
+
+void printKills();
 
 int main(){
     cout << "Welcome to testing area!!" << endl << endl;
@@ -192,15 +195,17 @@ int main(){
    cout << tempTeam.getNumberOfPlayers();
    */
 
-   /* this is for match testing
+   // this is for match testing
    vector<Hteam> userTeams;
    vector<Cteam> computerTeams;
    Hteam tempTeam;
    Cteam CtempTeam;
+   Cteam CtempTeam2;
    Cplayer tempCPlayer;
    Hplayer tempHPlayer;
    Match match;
 
+/*
    tempHPlayer.setUser("Joey");
    tempHPlayer.setFighter("Kirby");
    tempHPlayer.setCharacter("JJ");
@@ -210,16 +215,28 @@ int main(){
    tempTeam.addTeamMember(tempHPlayer);
    tempTeam.setNumberOfPlayers(1);
    tempTeam.setTeamName("Killers");
-
+*/
    tempCPlayer.setId("Foxy Fighter");
-   tempCPlayer.setLevel(7);
+   tempCPlayer.setLevel(9);
    tempCPlayer.setFighter("Fox");
-   CtempTeam.setNumberOfPlayers(1);
+
+   CtempTeam.setNumberOfPlayers(2);
+   CtempTeam.addTeamMember(tempCPlayer);
    CtempTeam.addTeamMember(tempCPlayer);
    CtempTeam.setTeamName("Silver Foxes");
 
-   match.addHumanTeam(tempTeam);
+   tempCPlayer.setId("Flying Bird");
+   tempCPlayer.setLevel(2);
+   tempCPlayer.setFighter("Falco");
+
+   CtempTeam2.setNumberOfPlayers(2);
+   CtempTeam2.addTeamMember(tempCPlayer);
+   CtempTeam2.addTeamMember(tempCPlayer);
+   CtempTeam2.setTeamName("Flying Birds");
+
+   //match.addHumanTeam(tempTeam);
    match.addCpuTeam(CtempTeam);
+   match.addCpuTeam(CtempTeam2);
    match.setStageName("Battlefield");
 
    cout << "is this match human: " << match.isHumanMatch() << endl;
@@ -227,11 +244,13 @@ int main(){
    cout << "is mixed match: " << match.isMixedMatch() << endl;
 
 
-   userTeams.push_back(tempTeam);
+   //userTeams.push_back(tempTeam);
    computerTeams.push_back(CtempTeam);
-   match.play(userTeams, computerTeams);
+   computerTeams.push_back(CtempTeam2);
+   match.playStock(userTeams, computerTeams,6);
 
    cout << "\n\n\n\n\n\nThese are the teams in the array now: " << endl;
+   /*
    cout << userTeams[0].getWins() << endl;
    cout << userTeams[0].getLosses() << endl;
    cout << userTeams[0].getTeamMemberAtIndex(0).getWins() << endl;
@@ -241,18 +260,39 @@ int main(){
    cout << userTeams[0].getTeamMemberAtIndex(0).getStageDataAtIndex(0).getName() << endl;
    cout << userTeams[0].getTeamMemberAtIndex(0).getStageDataAtIndex(0).getWins() << endl;
    cout << userTeams[0].getTeamMemberAtIndex(0).getStageDataAtIndex(0).getNumberOfMatchesPlayed() << endl;
-
+   */
    cout << "\n\n\n\nhere is the cpu team: " << endl;
    cout << computerTeams[0].getWins() << endl;
    cout << computerTeams[0].getLosses() << endl;
    cout << computerTeams[0].getTeamMemberAtIndex(0).getKills() << endl;
    cout << computerTeams[0].getTeamMemberAtIndex(0).getDeaths() << endl;
+   cout << computerTeams[0].getTeamMemberAtIndex(1).getKills() << endl;
+   cout << computerTeams[0].getTeamMemberAtIndex(1).getDeaths() << endl;
+
+   cout << "\n\n\n\nhere is the second cpu team: " << endl;
+   cout << computerTeams[1].getWins() << endl;
+   cout << computerTeams[1].getLosses() << endl;
+   cout << computerTeams[1].getTeamMemberAtIndex(0).getKills() << endl;
+   cout << computerTeams[1].getTeamMemberAtIndex(0).getDeaths() << endl;
+   cout << computerTeams[1].getTeamMemberAtIndex(1).getKills() << endl;
+   cout << computerTeams[1].getTeamMemberAtIndex(1).getDeaths() << endl;
 
    match.printWinner();
 
-   */
+
 
    printOdds();
+
+   cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n";
+   srand(time(0));
+   for(int i = 0; i < 10; i++){
+       cout << "your rand number is: " << rand() % 100 + 1 << endl;
+   }
+   cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n";
+   printKills();
+   cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n";
+   cout << match.getProbabilityOfWinFor(CtempTeam) << endl;
+   cout << match.getProbabilityOfWinFor(CtempTeam2) << endl;
    return 0;
 
 }
@@ -262,7 +302,18 @@ void printOdds(){
     for(double i = 1; i < 10; i++){
         cout << i << "   ";
         for(double j = 1; j < 10; j++){
-            cout << setw(2) << setprecision(2) << static_cast<int>(((i*i)/(i*i + j*j))*100) << "%   ";
+            cout << setw(4) << setprecision(3) << (((i*i)/(i*i + j*j))*100) << "%   ";
+        }
+        cout << endl;
+    }
+}
+
+void printKills(){
+    cout << "      1      2      3      4      5      6      7      8      9" << endl;
+    for(double i = 1; i < 10; i++){
+        cout << i << "   ";
+        for(double j = 1; j < 10; j++){
+            cout << setw(4) << setprecision(3) <<  round(5 * (0.1 + (((i*i)/(i*i + j*j))))) << "   ";
         }
         cout << endl;
     }

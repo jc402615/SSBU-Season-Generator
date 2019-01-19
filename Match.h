@@ -19,6 +19,9 @@
 
 #include <vector>
 #include <string>
+#include <ctime>
+#include <cstdlib>
+#include <cmath>
 #include "Hteam.h"
 #include "Cteam.h"
 
@@ -35,12 +38,16 @@ public:
     bool isCpuMatch();
     bool isMixedMatch();
 
-    void play(vector<Hteam> &userTeams, vector<Cteam> &cpuTeams);
+    void playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, int stockLives);
     //runs the match and collects data depending on what type of teams
     //are involved in the match
     void printWinner();
     void setStageName(string newStageName);
     string getStageName();
+
+    //simulation functions
+    double getProbabilityOfWinFor(Cteam team);
+    int getNumberOfKillsForLosingTeam(int maxKills, double probabilityOfWin);
 
 private:
     vector<Hteam> humanTeams; //holds human team combatants

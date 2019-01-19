@@ -17,6 +17,7 @@
 #include <fstream>
 #include <vector>
 #include <windows.h>     //used for creation of folders
+#include <ctime> //used for seeding rand
 #include "stageData.h"
 #include "Hplayer.h"
 #include "Cplayer.h"
@@ -132,6 +133,7 @@ void saveData(vector<Hteam> &userTeams, vector<Cteam> &computerTeams);
 
 
 int main (){
+    srand(time(0)); //seeds random number generator 
     //read in previous data from disk
     vector<Hteam> userTeams;
     vector<Cteam> computerTeams;

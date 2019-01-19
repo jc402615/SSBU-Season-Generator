@@ -50,3 +50,8 @@ Other features to be added
  -multi human team seasons
  tbI = to be implemented
 -simulation improvements, use record, streaks(tbI), and player tier list(tbI) in calculation
+-currently, only stock based seasons are supported, but other types can be implemented;
+the only difficulty is setting up the simulation of the matches
+-although not mandatory, data entry for matches should have safe guards for invalid 
+data entries, such as kills and deaths matching, kills in a match not exceeding the amount of lives,
+no negative values etc. ---> do with functions that ask for specific values and dont return until they get a valid one
