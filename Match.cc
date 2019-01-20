@@ -30,7 +30,102 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
     if(isHumanMatch()){
         //just need to collect data for both teams
         //update data & stage data for both teams
-        //THIS PART OF THE FUNCTION WILL BE USED FOR MULTITEAM SEASONS IN THE FUTURE
+        vector<Hteam>::iterator it1;
+        vector<Hteam>::iterator it2;
+        int stageIndex;
+
+        it1 = userTeams.begin();
+        it2 = userTeams.begin();
+        while(it1 -> getTeamName() != humanTeams[0].getTeamName()){
+            it1++;
+        } //it2 points at humanTeams[0]
+        while(it2 -> getTeamName() != humanTeams[1].getTeamName()){
+            it2++;
+        } //it2 points at humanTeams[1]
+        stageIndex = 0;
+        while(humanTeams[0].getTeamMemberAtIndex(0).getStageDataAtIndex(stageIndex).getName() != stageName){
+            stageIndex++;
+        } //now stage Index matches the stage that the match will be played at
+
+        //get winner
+        string userInput;
+        int userInputInt;
+        cout << "Were the " << humanTeams[0].getTeamName() << " successful? (y/n): ";
+        cin >> userInput;
+
+        if(userInput == "y" || userInput == "Y" || userInput == "yes" || userInput == "Yes"){
+            cout << "\nCongratulations, " << humanTeams[0].getTeamName() << endl;
+            Hwinner = humanTeams[0];
+
+            it1 -> increaseWins();
+            it2 -> increaseLosses();
+
+            for(int a = 0; a < it1 -> getNumberOfPlayers(); a++){
+                it1 -> increaseTeamMemberWinsAtIndex(a);
+                it1 -> increaseTeamMemberStageDataWinsAtIndices(a, stageIndex);
+            }
+
+        }
+        else{
+            //the humanTeams[1] team won
+            cout << "\nCongratulations, " << humanTeams[1].getTeamName() << endl;
+            Hwinner = humanTeams[1];
+
+            it1 -> increaseLosses();
+            it2 -> increaseWins();
+
+            for(int a = 0; a < it2 -> getNumberOfPlayers(); a++){
+                it2 -> increaseTeamMemberWinsAtIndex(a);
+                it2 -> increaseTeamMemberStageDataWinsAtIndices(a, stageIndex);
+            }
+
+        }
+
+        //things that will always be increased regardless
+        for(int a = 0; a < it1 -> getNumberOfPlayers(); a++){
+            it1 -> increaseTeamMemberNumberOfMatchesPlayedAtIndex(a);
+            it1 -> increaseTeamMemberStageDataNumberOfMatchesPlayed(a, stageIndex);
+        }
+        for(int a = 0; a < it2 -> getNumberOfPlayers(); a++){
+            it2 -> increaseTeamMemberNumberOfMatchesPlayedAtIndex(a);
+            it2 -> increaseTeamMemberStageDataNumberOfMatchesPlayed(a, stageIndex);
+        }
+
+        //now get kills and deaths
+        cout << "\nPlease enter data from the match for each player: " << endl;
+        cout << "First, for the " << humanTeams[0].getTeamName() << endl << endl;
+        for (int a = 0; a < it1 -> getNumberOfPlayers(); a++){
+            cout << "For " << it1 -> getTeamMemberAtIndex(a).getCharacter() << " :" << endl;
+            cout << "KO's: ";
+            cin >> userInputInt;
+            for(int b = 0; b < userInputInt; b++){
+                it1 -> increaseTeamMemberKillsAtIndex(a);
+            }
+            cout << "\nFalls: ";
+            cin >> userInputInt;
+            for(int b = 0; b < userInputInt; b++){
+                it1 -> increaseTeamMemberDeathsAtIndex(a);
+            }
+            cout << endl;
+        }
+
+        cout << "Now, for the " << humanTeams[1].getTeamName() << endl << endl;
+        for (int a = 0; a < it2 -> getNumberOfPlayers(); a++){
+            cout << "For " << it2 -> getTeamMemberAtIndex(a).getCharacter() << " :" << endl;
+            cout << "KO's: ";
+            cin >> userInputInt;
+            for(int b = 0; b < userInputInt; b++){
+                it2 -> increaseTeamMemberKillsAtIndex(a);
+            }
+            cout << "\nFalls: ";
+            cin >> userInputInt;
+            for(int b = 0; b < userInputInt; b++){
+                it2 -> increaseTeamMemberDeathsAtIndex(a);
+            }
+            cout << endl;
+        }
+
+
     }
     else if(isMixedMatch()){
         vector<Hteam>::iterator humanIt; //used to walk through user team vector
@@ -94,7 +189,7 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
             cout << "KO's: ";
             cin >> userInputInt;
             for(int b = 0; b < userInputInt; b++){
-                humanIt -> increaseTeamMemberKillsAtIndex(0);
+                humanIt -> increaseTeamMemberKillsAtIndex(a);
             }
             cout << "\nFalls: ";
             cin >> userInputInt;
@@ -243,6 +338,99 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
         }
         else{
             Cwinner = cpuTeams[1];
+            it1 -> increaseLosses();
+            it2 -> increaseWins();
+
+            //now need to distribute kills and deaths
+            //kills
+            int levelsOfTeam1 = 0;
+            int levelsOfTeam2 = 0;
+            for(int i = 0; i < cpuTeams[0].getNumberOfPlayers(); i++){
+                levelsOfTeam1 += cpuTeams[0].getTeamMemberAtIndex(i).getLevel();
+            }
+            for(int i = 0; i < cpuTeams[1].getNumberOfPlayers(); i++){
+                levelsOfTeam2 += cpuTeams[1].getTeamMemberAtIndex(i).getLevel();
+            }
+
+            //for winning team
+            vector<int> breakPoints; //holds the values for each of the team members liklihood to get the kill
+            breakPoints.push_back(cpuTeams[1].getTeamMemberAtIndex(0).getLevel());
+            for(int i = 1; i < cpuTeams[1].getNumberOfPlayers(); i++){
+                breakPoints.push_back(cpuTeams[1].getTeamMemberAtIndex(i).getLevel() + breakPoints[i - 1]);
+            }
+
+            int indexOfMember;
+            for(int j = 0; j < maxKills; j++){ //need to distribute the max number of kills of the winning team
+                indexOfMember = 0;
+                randomNum = (rand() % levelsOfTeam1) + 1;
+                //debug
+                cout << randomNum << endl;
+                while(randomNum > breakPoints[indexOfMember]){
+                    indexOfMember++;
+                }
+                it2 -> increaseTeamMemberKillsAtIndex(indexOfMember);
+            }
+
+            //for losing team
+            vector<int> breakPoints2;
+            breakPoints2.push_back(cpuTeams[0].getTeamMemberAtIndex(0).getLevel());
+            for(int i = 1; i < cpuTeams[0].getNumberOfPlayers(); i++){
+                breakPoints2.push_back(cpuTeams[0].getTeamMemberAtIndex(i).getLevel() + breakPoints2[i - 1]);
+            }
+
+            int maxLosingKills = getNumberOfKillsForLosingTeam(maxKills, getProbabilityOfWinFor(cpuTeams[0]));
+            for(int j = 0; j < maxLosingKills; j++){
+                indexOfMember = 0;
+                randomNum = (rand() % levelsOfTeam1) + 1;
+                //debug
+                cout << randomNum << endl;
+                while(randomNum > breakPoints2[indexOfMember]){
+                    indexOfMember++;
+                }
+                it1 -> increaseTeamMemberKillsAtIndex(indexOfMember);
+            }
+            //all kills have now been distributed
+
+            //deaths
+            //for losing team
+            for(int i = 0; i < cpuTeams[0].getNumberOfPlayers(); i++){
+                for(int j = 0; j < stockLives; j++){
+                    it1 -> increaseTeamMemberDeathsAtIndex(i);
+                }
+            }
+
+            //for winning team
+            int maxLosingDeaths = maxLosingKills;
+            vector<int> deathCounter;
+            for(int i = 0; i < cpuTeams[1].getNumberOfPlayers(); i++){
+                deathCounter.push_back(0);
+            } //used to measure how many deaths each team member has been given so far
+
+            vector<int> reverseBreakPoints;
+            reverseBreakPoints.push_back(10 - cpuTeams[1].getTeamMemberAtIndex(0).getLevel());
+            for(int i = 1; i < cpuTeams[1].getNumberOfPlayers(); i++){
+                reverseBreakPoints.push_back(10 - cpuTeams[1].getTeamMemberAtIndex(i).getLevel() + reverseBreakPoints[i - 1]);
+            } //reverseBreakPoints is now filled
+
+            int totalOfReverseBreakPoints = 10 * cpuTeams[1].getNumberOfPlayers() - levelsOfTeam2;
+            for(int i = 0; i < maxLosingDeaths; i++){
+                bool retry = true;
+                while(retry == true){
+                    indexOfMember = 0;
+                    randomNum = (rand() % totalOfReverseBreakPoints) + 1;
+                    //debug
+                    cout << randomNum << endl;
+                    while(randomNum > reverseBreakPoints[indexOfMember]){
+                        indexOfMember++;
+                    }
+                    if(deathCounter[indexOfMember] < stockLives){
+                        it2 -> increaseTeamMemberDeathsAtIndex(indexOfMember);
+                        deathCounter[indexOfMember]++;
+                        retry = false;
+                    }
+                }
+
+            } //all deaths and kills have been assigned appropriately
         }
 
 
@@ -285,8 +473,8 @@ double Match::getProbabilityOfWinFor(Cteam team){
         return ((pow(levelsOfTeam2,2))/((pow(levelsOfTeam1,2)) + pow(levelsOfTeam2,2)));
     }
     else{
-        return -9999; //this should never happen
         cout << "error: invalid cpu teams in match" << endl;
+        return -9999; //this should never happen
     }
 }
 

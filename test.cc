@@ -199,25 +199,38 @@ int main(){
    vector<Hteam> userTeams;
    vector<Cteam> computerTeams;
    Hteam tempTeam;
+   Hteam tempTeam2;
    Cteam CtempTeam;
    Cteam CtempTeam2;
    Cplayer tempCPlayer;
    Hplayer tempHPlayer;
    Match match;
 
-/*
+
    tempHPlayer.setUser("Joey");
    tempHPlayer.setFighter("Kirby");
    tempHPlayer.setCharacter("JJ");
-   tempHPlayer.setWins(10);
-   tempHPlayer.setKills(100);
-   tempHPlayer.setNumberOfMatchesPlayed(11);
    tempTeam.addTeamMember(tempHPlayer);
-   tempTeam.setNumberOfPlayers(1);
+   tempHPlayer.setUser("Jenna");
+   tempHPlayer.setFighter("Zelda");
+   tempHPlayer.setCharacter("Quackers");
+   tempTeam.addTeamMember(tempHPlayer);
+   tempTeam.setNumberOfPlayers(2);
    tempTeam.setTeamName("Killers");
-*/
+
+   tempHPlayer.setUser("JOE");
+   tempHPlayer.setFighter("Yoshi");
+   tempHPlayer.setCharacter("RE4");
+   tempTeam2.addTeamMember(tempHPlayer);
+   tempHPlayer.setUser("Jonny");
+   tempHPlayer.setFighter("Fox");
+   tempHPlayer.setCharacter("JOnBoy");
+   tempTeam2.addTeamMember(tempHPlayer);
+   tempTeam2.setNumberOfPlayers(2);
+   tempTeam2.setTeamName("Other Guys");
+/*
    tempCPlayer.setId("Foxy Fighter");
-   tempCPlayer.setLevel(9);
+   tempCPlayer.setLevel(7);
    tempCPlayer.setFighter("Fox");
 
    CtempTeam.setNumberOfPlayers(2);
@@ -226,17 +239,18 @@ int main(){
    CtempTeam.setTeamName("Silver Foxes");
 
    tempCPlayer.setId("Flying Bird");
-   tempCPlayer.setLevel(2);
+   tempCPlayer.setLevel(5);
    tempCPlayer.setFighter("Falco");
 
    CtempTeam2.setNumberOfPlayers(2);
    CtempTeam2.addTeamMember(tempCPlayer);
    CtempTeam2.addTeamMember(tempCPlayer);
    CtempTeam2.setTeamName("Flying Birds");
-
-   //match.addHumanTeam(tempTeam);
-   match.addCpuTeam(CtempTeam);
-   match.addCpuTeam(CtempTeam2);
+*/
+   match.addHumanTeam(tempTeam);
+   match.addHumanTeam(tempTeam2);
+  // match.addCpuTeam(CtempTeam);
+   //match.addCpuTeam(CtempTeam2);
    match.setStageName("Battlefield");
 
    cout << "is this match human: " << match.isHumanMatch() << endl;
@@ -244,15 +258,18 @@ int main(){
    cout << "is mixed match: " << match.isMixedMatch() << endl;
 
 
-   //userTeams.push_back(tempTeam);
-   computerTeams.push_back(CtempTeam);
-   computerTeams.push_back(CtempTeam2);
+   userTeams.push_back(tempTeam);
+   userTeams.push_back(tempTeam2);
+   //computerTeams.push_back(CtempTeam);
+   //computerTeams.push_back(CtempTeam2);
    match.playStock(userTeams, computerTeams,6);
 
    cout << "\n\n\n\n\n\nThese are the teams in the array now: " << endl;
-   /*
+
+   cout << "human team 1: " << endl;
    cout << userTeams[0].getWins() << endl;
    cout << userTeams[0].getLosses() << endl;
+   cout << "for player1: " << endl;
    cout << userTeams[0].getTeamMemberAtIndex(0).getWins() << endl;
    cout << userTeams[0].getTeamMemberAtIndex(0).getNumberOfMatchesPlayed() << endl;
    cout << userTeams[0].getTeamMemberAtIndex(0).getKills() << endl;
@@ -260,7 +277,36 @@ int main(){
    cout << userTeams[0].getTeamMemberAtIndex(0).getStageDataAtIndex(0).getName() << endl;
    cout << userTeams[0].getTeamMemberAtIndex(0).getStageDataAtIndex(0).getWins() << endl;
    cout << userTeams[0].getTeamMemberAtIndex(0).getStageDataAtIndex(0).getNumberOfMatchesPlayed() << endl;
-   */
+   cout << "for player2: " << endl;
+   cout << userTeams[0].getTeamMemberAtIndex(1).getWins() << endl;
+   cout << userTeams[0].getTeamMemberAtIndex(1).getNumberOfMatchesPlayed() << endl;
+   cout << userTeams[0].getTeamMemberAtIndex(1).getKills() << endl;
+   cout << userTeams[0].getTeamMemberAtIndex(1).getDeaths() << endl;
+   cout << userTeams[0].getTeamMemberAtIndex(1).getStageDataAtIndex(0).getName() << endl;
+   cout << userTeams[0].getTeamMemberAtIndex(1).getStageDataAtIndex(0).getWins() << endl;
+   cout << userTeams[0].getTeamMemberAtIndex(1).getStageDataAtIndex(0).getNumberOfMatchesPlayed() << endl;
+
+
+   cout << "human team 2: " << endl;
+   cout << userTeams[1].getWins() << endl;
+   cout << userTeams[1].getLosses() << endl;
+   cout << "for player1: " << endl;
+   cout << userTeams[1].getTeamMemberAtIndex(0).getWins() << endl;
+   cout << userTeams[1].getTeamMemberAtIndex(0).getNumberOfMatchesPlayed() << endl;
+   cout << userTeams[1].getTeamMemberAtIndex(0).getKills() << endl;
+   cout << userTeams[1].getTeamMemberAtIndex(0).getDeaths() << endl;
+   cout << userTeams[1].getTeamMemberAtIndex(0).getStageDataAtIndex(0).getName() << endl;
+   cout << userTeams[1].getTeamMemberAtIndex(0).getStageDataAtIndex(0).getWins() << endl;
+   cout << userTeams[1].getTeamMemberAtIndex(0).getStageDataAtIndex(0).getNumberOfMatchesPlayed() << endl;
+   cout << "for player2: " << endl;
+   cout << userTeams[1].getTeamMemberAtIndex(1).getWins() << endl;
+   cout << userTeams[1].getTeamMemberAtIndex(1).getNumberOfMatchesPlayed() << endl;
+   cout << userTeams[1].getTeamMemberAtIndex(1).getKills() << endl;
+   cout << userTeams[1].getTeamMemberAtIndex(1).getDeaths() << endl;
+   cout << userTeams[1].getTeamMemberAtIndex(1).getStageDataAtIndex(0).getName() << endl;
+   cout << userTeams[1].getTeamMemberAtIndex(1).getStageDataAtIndex(0).getWins() << endl;
+   cout << userTeams[1].getTeamMemberAtIndex(1).getStageDataAtIndex(0).getNumberOfMatchesPlayed() << endl;
+   /*
    cout << "\n\n\n\nhere is the cpu team: " << endl;
    cout << computerTeams[0].getWins() << endl;
    cout << computerTeams[0].getLosses() << endl;
@@ -276,23 +322,9 @@ int main(){
    cout << computerTeams[1].getTeamMemberAtIndex(0).getDeaths() << endl;
    cout << computerTeams[1].getTeamMemberAtIndex(1).getKills() << endl;
    cout << computerTeams[1].getTeamMemberAtIndex(1).getDeaths() << endl;
-
+   */
    match.printWinner();
 
-
-
-   printOdds();
-
-   cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n";
-   srand(time(0));
-   for(int i = 0; i < 10; i++){
-       cout << "your rand number is: " << rand() % 100 + 1 << endl;
-   }
-   cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n";
-   printKills();
-   cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n";
-   cout << match.getProbabilityOfWinFor(CtempTeam) << endl;
-   cout << match.getProbabilityOfWinFor(CtempTeam2) << endl;
    return 0;
 
 }
