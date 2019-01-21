@@ -217,7 +217,7 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
 
     }
     else if(isCpuMatch()){
-        srand(time(0));
+        //srand(time(0));
         //need to run a simulation of the match
         vector<Cteam>::iterator it1;
         vector<Cteam>::iterator it2;
@@ -432,7 +432,8 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
 
             } //all deaths and kills have been assigned appropriately
         }
-
+        cout << getProbabilityOfWinFor(cpuTeams[0]);
+        cout << getProbabilityOfWinFor(cpuTeams[1]);
 
     }
 }

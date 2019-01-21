@@ -17,6 +17,8 @@ void printKills();
 
 int main(){
     cout << "Welcome to testing area!!" << endl << endl;
+    srand(time(0));
+
     /*
     stageData temp;
     cout << temp.getName() << endl;
@@ -206,7 +208,7 @@ int main(){
    Hplayer tempHPlayer;
    Match match;
 
-
+/*
    tempHPlayer.setUser("Joey");
    tempHPlayer.setFighter("Kirby");
    tempHPlayer.setCharacter("JJ");
@@ -228,7 +230,8 @@ int main(){
    tempTeam2.addTeamMember(tempHPlayer);
    tempTeam2.setNumberOfPlayers(2);
    tempTeam2.setTeamName("Other Guys");
-/*
+*/
+
    tempCPlayer.setId("Foxy Fighter");
    tempCPlayer.setLevel(7);
    tempCPlayer.setFighter("Fox");
@@ -246,11 +249,11 @@ int main(){
    CtempTeam2.addTeamMember(tempCPlayer);
    CtempTeam2.addTeamMember(tempCPlayer);
    CtempTeam2.setTeamName("Flying Birds");
-*/
-   match.addHumanTeam(tempTeam);
-   match.addHumanTeam(tempTeam2);
-  // match.addCpuTeam(CtempTeam);
-   //match.addCpuTeam(CtempTeam2);
+
+  // match.addHumanTeam(tempTeam);
+   //match.addHumanTeam(tempTeam2);
+   match.addCpuTeam(CtempTeam);
+   match.addCpuTeam(CtempTeam2);
    match.setStageName("Battlefield");
 
    cout << "is this match human: " << match.isHumanMatch() << endl;
@@ -258,14 +261,14 @@ int main(){
    cout << "is mixed match: " << match.isMixedMatch() << endl;
 
 
-   userTeams.push_back(tempTeam);
-   userTeams.push_back(tempTeam2);
-   //computerTeams.push_back(CtempTeam);
-   //computerTeams.push_back(CtempTeam2);
+   //userTeams.push_back(tempTeam);
+   //userTeams.push_back(tempTeam2);
+   computerTeams.push_back(CtempTeam);
+   computerTeams.push_back(CtempTeam2);
    match.playStock(userTeams, computerTeams,6);
 
    cout << "\n\n\n\n\n\nThese are the teams in the array now: " << endl;
-
+/*
    cout << "human team 1: " << endl;
    cout << userTeams[0].getWins() << endl;
    cout << userTeams[0].getLosses() << endl;
@@ -306,7 +309,8 @@ int main(){
    cout << userTeams[1].getTeamMemberAtIndex(1).getStageDataAtIndex(0).getName() << endl;
    cout << userTeams[1].getTeamMemberAtIndex(1).getStageDataAtIndex(0).getWins() << endl;
    cout << userTeams[1].getTeamMemberAtIndex(1).getStageDataAtIndex(0).getNumberOfMatchesPlayed() << endl;
-   /*
+   */
+
    cout << "\n\n\n\nhere is the cpu team: " << endl;
    cout << computerTeams[0].getWins() << endl;
    cout << computerTeams[0].getLosses() << endl;
@@ -322,8 +326,9 @@ int main(){
    cout << computerTeams[1].getTeamMemberAtIndex(0).getDeaths() << endl;
    cout << computerTeams[1].getTeamMemberAtIndex(1).getKills() << endl;
    cout << computerTeams[1].getTeamMemberAtIndex(1).getDeaths() << endl;
-   */
+
    match.printWinner();
+
 
    return 0;
 

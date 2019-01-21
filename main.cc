@@ -132,18 +132,33 @@ void saveData(vector<Hteam> &userTeams, vector<Cteam> &computerTeams);
 //  Post Conditions: does not return a value
 //*****************************************************************
 
+void loadGenerationData(vector<string> &fighters, vector<string> &idNames,
+                        vector<string> &adjectives, vector<string> &nouns);
+//*****************************************************************
+//  Function:   loadGenerationData
+//  Purpose:    loads strings from files into the appropriate array
+//  Parameters: fighters - holds the names of playable characters
+//              idNames - holds the names of ids for cpu players
+//              adjectives - for team name generation
+//              nouns - for team name generation
+//  Pre Conditions: files should be stored in the similarly named files .dat
+//  Post Conditions: the vectors will be filled with all the data from the files
+//*****************************************************************
 
 int main (){
     srand(time(0)); //seeds random number generator
     //read in previous data from disk
     vector<Hteam> userTeams;
-    vector<Cteam> computerTeams;
+    vector<string> fighters;   //used for random team generation
+    vector<string> idNames;    //used for random team generation
+    vector<string> adjectives; //used for random team generation
+    vector<string> nouns;      //used for random team generation
 
     //functions to read in all data types from stored files
-    loadData(userTeams, computerTeams);
-    cout << "After loading team member 1 of team 2 is: " << userTeams[1].getTeamMemberAtIndex(0).getUser() << endl;
-    cout << "              team member 1 of team 3 is: " << userTeams[2].getTeamMemberAtIndex(0).getUser() << endl;
+    loadUserTeams(userTeams);
+    loadGenerationData(fighters, idNames, adjectives, nouns);
     //end reading of data
+
     system("CLS"); //clears the screen -- << flush; to clear iostream
 
     bool returnToIntro = true;
@@ -206,10 +221,13 @@ int main (){
     //3. view all time stats -> records page
 
 
-    saveData(userTeams, computerTeams);
+
+
+
+    saveUserTeams(userTeams);
 
     return 0;
-}
+} // end of main function
 
 void printBasicMenu(vector<Hteam> &userTeams){
     cout << "######################################################" << endl;
@@ -446,4 +464,56 @@ void printCreateAPlayerHelpMenu(){
 void saveData(vector<Hteam> &userTeams, vector<Cteam> &computerTeams){
     saveUserTeams(userTeams);
     saveComputerTeams(computerTeams);
+}
+
+void loadGenerationData(vector<string> &fighters, vector<string> &idNames,
+                        vector<string> &adjectives, vector<string> &nouns)
+{
+    ifstream inFile;
+    string readingString;
+
+    inFile.open("fighters.dat");
+    if(inFile.fail()){
+        cout << "Error, unable to locate \"fighters.dat\"" << endl;
+    }
+    getline(inFile, readingString);
+    while(!inFile.eof()){
+        fighters.push_back(readingString);
+        getline(inFile, readingString);
+    }
+    inFile.close();
+
+    inFile.open("idNames.dat");
+    if(inFile.fail()){
+        cout << "Error, unable to locate \"idNames.dat\"" << endl;
+    }
+    getline(inFile, readingString);
+    while(!inFile.eof()){
+        idNames.push_back(readingString);
+        getline(inFile, readingString);
+    }
+    inFile.close();
+
+    inFile.open("adjectives.dat");
+    if(inFile.fail()){
+        cout << "Error, unable to locate \"adjectives.dat\"" << endl;
+    }
+    getline(inFile, readingString);
+    while(!inFile.eof()){
+        adjectives.push_back(readingString);
+        getline(inFile, readingString);
+    }
+    inFile.close();
+
+    inFile.open("nouns.dat");
+    if(inFile.fail()){
+        cout << "Error, unable to locate \"nouns.dat\"" << endl;
+    }
+    getline(inFile, readingString);
+    while(!inFile.eof()){
+        nouns.push_back(readingString);
+        getline(inFile, readingString);
+    }
+    inFile.close();
+    //each of the reference arrays should now be filled
 }
