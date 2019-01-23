@@ -4,6 +4,7 @@
 #include "Hteam.h"
 #include "Cteam.h"
 #include "Match.h"
+#include "Season.h"
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -329,6 +330,14 @@ int main(){
 
    match.printWinner();
 
+   cout << "testing round robin generation" << endl;
+   Season season;
+   season.setTotalNumberOfTeams(10);
+   vector<string> tester = season.generateSchedule();
+   for(int i  = 0; i < tester.size(); i++){
+       cout << "here is string " << i << endl;
+       cout << tester[i] << endl;
+   }
 
    return 0;
 

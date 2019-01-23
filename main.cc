@@ -246,18 +246,7 @@ int main (){
     //3. view all time stats -> records page
 
 
-    //debug
-    Cteam temp9 = generateRandomComputerTeam(10, fighters, idNames, adjectives, nouns);
-    cout << temp9.getTeamName() << endl;
-    cout << temp9.getNumberOfPlayers() << endl;
-    cout << temp9.getWins() << endl;
-    for(int i = 0; i < temp9.getNumberOfPlayers(); i++){
-        cout << "here is player " << i << " : " << endl;
-        cout << temp9.getTeamMemberAtIndex(i).getId() << endl;
-        cout << temp9.getTeamMemberAtIndex(i).getFighter() << endl;
-        cout << temp9.getTeamMemberAtIndex(i).getLevel() << endl;
-        cout << endl << endl << endl;
-    }
+
 
     saveUserTeams(userTeams);
 

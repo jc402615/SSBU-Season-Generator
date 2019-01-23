@@ -1,0 +1,109 @@
+#include "Season.h"
+
+Season::Season(){
+    totalNumberOfTeams = 0;
+    numberOfHumanTeams = 0;
+}
+
+void Season::setTotalNumberOfTeams(int newTotalNumberOfTeams){
+    totalNumberOfTeams = newTotalNumberOfTeams;
+}
+
+void Season::setNumberOfHumanTeams(int newNumberOfHumanTeams){
+    numberOfHumanTeams = newNumberOfHumanTeams;
+}
+
+int Season::getTotalNumberOfTeams(){
+    return totalNumberOfTeams;
+}
+
+int Season::getNumberOfHumanTeams(){
+    return numberOfHumanTeams;
+}
+
+//helpers
+int Season::getNumberOfComputerTeams(){
+    return (totalNumberOfTeams - numberOfHumanTeams);
+}
+
+void Season::addHumanTeamByNameFrom(string teamName, vector<Hteam> &userTeams){
+    vector<Hteam>::iterator it = userTeams.begin();
+    while(it -> getTeamName() != teamName){
+        it++;
+    } //leaves iterator pointing at the correct team within userTeams
+    activeHumanTeams.push_back(it);
+}
+
+void Season::setComputerTeams(vector<Cteam> &newComputerTeams){
+    computerTeams = newComputerTeams;
+}
+
+
+
+
+
+
+
+
+
+vector<string> Season::generateSchedule(){
+    vector<int> topRow;
+    vector<int> bottomRow;
+    vector<string> encodedOutput;
+
+    //need to fill encodedOutput with the correct amount of empty strings
+    for(int i = 0; i < totalNumberOfTeams - 1; i++){
+        encodedOutput.push_back("");
+    }
+
+    //in case there is an even number of teams
+    if(totalNumberOfTeams % 2 == 0){
+        for(int i = 1; i <= totalNumberOfTeams/2; i++){
+            topRow.push_back(i);
+        }
+        for(int i = totalNumberOfTeams/2 + 1; i <= totalNumberOfTeams; i++){
+            bottomRow.push_back(i);
+        }
+    }
+    else{ //there is an odd number
+        for(int i = 1; i <= totalNumberOfTeams/2 + 1; i++){
+            topRow.push_back(i);
+        }
+        for(int i = totalNumberOfTeams/2 + 2; i <= totalNumberOfTeams; i++){
+            bottomRow.push_back(i);
+        }
+        //need the bye team
+        bottomRow.push_back(0);
+    }
+
+    //the topRow and bottomRow appropriately filled
+    fillCodedOutputWith(encodedOutput, topRow, bottomRow);
+    //function to randomly switch around weeks so that each season isn't identical
+    return encodedOutput;
+}
+
+void Season::fillCodedOutputWith(vector<string> &encodedOutput, vector<int> &topRow, vector<int> &bottomRow){
+    for(int i = 0; i < totalNumberOfTeams - 1; i++){ //for each week i
+        for(size_t j = 0; j < topRow.size(); j++){ //each matchup j per week
+            encodedOutput[i].append(to_string(topRow[j]));
+            encodedOutput[i].append(" ");
+            encodedOutput[i].append(to_string(bottomRow[j]));
+            encodedOutput[i].append(" ");
+        }
+        //the string has been completed, so rotate the teams
+        rotateRoundRobinTeams(topRow, bottomRow);
+    }
+}
+
+void Season::rotateRoundRobinTeams(vector<int> &topRow, vector<int> &bottomRow){
+    int holder = topRow[1];
+    topRow[1] = bottomRow[0];
+
+    for(size_t i = 2; i < topRow.size(); i++){
+        swap(topRow[i], holder);
+    } //top row has been fixed
+
+    for(int i = (bottomRow.size() - 1); i >= 0; i--){ //type int is necessay so that overflow does not occur
+        swap(bottomRow[i], holder);                   //note that this will create a compiler warning, but not an error
+    }
+}
