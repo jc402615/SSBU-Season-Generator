@@ -38,9 +38,13 @@ public:
 
     void setTotalNumberOfTeams(int newTotalNumberOfTeams);
     void setNumberOfHumanTeams(int newNumberOfHumanTeams);
+    void setNumberOfPlayersPerTeam(int newNumberOfPlayersPerTeam);
+    void setBattleAmount(int newBattleAmount);
 
     int getTotalNumberOfTeams();
     int getNumberOfHumanTeams();
+    int getNumberOfPlayersPerTeam();
+    int getBattleAmount();
 
     //helpers
     int getNumberOfComputerTeams();
@@ -50,7 +54,10 @@ public:
     //sets computerTeams to be the same as the argument newComputerTeams
     void generateMatchups(vector<string> &encodedOutput, vector<string> stages);
     //generates all of the matchups for the season
-
+    void generateRestOfCpuTeams(vector<string> &fighters, vector<string> &idNames,
+                                vector<string> &adjectives, vector<string> &nouns);
+    //requires rand to be seeded, all the vectors to be filled, totalNumberOfTeams and numberOfHumanTeams
+    //already set, ...?
 
 private:
     vector<string> generateSchedule();
@@ -60,9 +67,15 @@ private:
     void rotateRoundRobinTeams(vector<int> &topRow, vector<int> &bottomRow);
     void randomizeWeeklySchedule(vector<string> &encodedOutput);
     //switches around the indices of the vector, while keeping the data intact
+    Cplayer generateRandomComputerPlayer(vector<string> &fighters, vector<string> &idNames);
+    Cteam generateRandomComputerTeam(int numberOfPlayers, vector<string> &fighters,
+                                     vector<string> &idNames, vector<string> &adjectives,
+                                     vector<string> &nouns);
 
     int totalNumberOfTeams;
     int numberOfHumanTeams;
+    int numberOfPlayersPerTeam;
+    int battleAmount; //the number of lives or minutes in a battle
 
     vector<vector<Hteam>::iterator> activeHumanTeams;  //holds pointers to all the human teams in the season, located in the global vector
     vector<Cteam> computerTeams;      //holds all the computer teams in the season

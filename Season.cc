@@ -13,12 +13,28 @@ void Season::setNumberOfHumanTeams(int newNumberOfHumanTeams){
     numberOfHumanTeams = newNumberOfHumanTeams;
 }
 
+void Season::setNumberOfPlayersPerTeam(int newNumberOfPlayersPerTeam){
+    numberOfPlayersPerTeam = newNumberOfPlayersPerTeam;
+}
+
+void Season::setBattleAmount(int newBattleAmount){
+    battleAmount = newBattleAmount;
+}
+
 int Season::getTotalNumberOfTeams(){
     return totalNumberOfTeams;
 }
 
 int Season::getNumberOfHumanTeams(){
     return numberOfHumanTeams;
+}
+
+int Season::getNumberOfPlayersPerTeam(){
+    return numberOfPlayersPerTeam;
+}
+
+int Season::getBattleAmount(){
+    return battleAmount;
 }
 
 //helpers
@@ -83,11 +99,19 @@ void Season::generateMatchups(vector<string> &encodedOutput, vector<string> stag
     }
 }
 
+void Season::generateRestOfCpuTeams(vector<string> &fighters, vector<string> &idNames,
+                                    vector<string> &adjectives, vector<string> &nouns)
+{
+    vector<Cteam> newComputerTeams;
+    Cteam tempTeam;
 
+    for(int i = 0; i < totalNumberOfTeams - numberOfHumanTeams; i++){
+        tempTeam = generateRandomComputerTeam(numberOfPlayersPerTeam, fighters, idNames,adjectives, nouns);
+        newComputerTeams.push_back(tempTeam);
+    } //now newComputerTeams holds all the needed cpuTeams
 
-
-
-
+    computerTeams = newComputerTeams;
+}
 
 vector<string> Season::generateSchedule(){
     vector<int> topRow;
@@ -184,4 +208,41 @@ void Season::randomizeWeeklySchedule(vector<string> &encodedOutput){
         index2 = rand() % encodedOutput.size();
         swap(encodedOutput[index1], encodedOutput[index2]);
     }
+}
+
+Cplayer Season::generateRandomComputerPlayer(vector<string> &fighters, vector<string> &idNames){
+    Cplayer tempPlayer;
+    int randomNumber;
+
+    randomNumber = rand() % idNames.size();
+    tempPlayer.setId(idNames[randomNumber]);
+
+    randomNumber = rand() % fighters.size();
+    tempPlayer.setFighter(fighters[randomNumber]);
+
+    randomNumber = (rand() % 9) + 1;
+    tempPlayer.setLevel(randomNumber);
+
+    return tempPlayer;
+
+}
+
+Cteam Season::generateRandomComputerTeam(int numberOfPlayers, vector<string> &fighters,
+                                 vector<string> &idNames, vector<string> &adjectives,
+                                 vector<string> &nouns)
+{
+        Cteam tempTeam;
+        Cplayer tempPlayer;
+        int rand1 = rand() % adjectives.size();
+        int rand2 = rand() % nouns.size();
+
+        tempTeam.setTeamName(adjectives[rand1] + " " + nouns[rand2]);
+        tempTeam.setNumberOfPlayers(numberOfPlayers);
+
+        for(int i = 0; i < numberOfPlayers; i++){
+            tempPlayer = generateRandomComputerPlayer(fighters, idNames);
+            tempTeam.addTeamMember(tempPlayer);
+        }
+
+        return tempTeam;
 }
