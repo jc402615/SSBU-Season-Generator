@@ -9,6 +9,7 @@
 #include <fstream>
 #include <iomanip>
 #include <cmath>
+#include <sstream>
 
 using namespace std;
 
@@ -339,6 +340,20 @@ int main(){
        cout << tester[i] << endl;
    }
 
+/*
+   cout << "\n\n\n\n\n\n\n Stringstream testing" << endl;
+   int output;
+   stringstream strStream;
+
+   for(int i = 0; i < tester.size(); i++){
+       strStream << tester[i];
+       for(int j = 0; j < 10; j++){
+           strStream >> output;
+           cout << output << " ";
+       }
+       cout << endl;
+   }
+*/
    return 0;
 
 }

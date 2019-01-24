@@ -44,6 +44,8 @@ public:
     void printWinner();
     void setStageName(string newStageName);
     string getStageName();
+    void randomlySetStage(vector<string> &stages);
+    //uses the names within stages and randomly assigns one to stageName
 
     //simulation functions
     double getProbabilityOfWinFor(Cteam team);

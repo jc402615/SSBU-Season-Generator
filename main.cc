@@ -24,6 +24,8 @@
 #include "Cplayer.h"
 #include "Hteam.h"
 #include "Cteam.h"
+#include "Match.h"
+#include "Season.h"
 
 
 using namespace std;
@@ -133,7 +135,8 @@ void saveData(vector<Hteam> &userTeams, vector<Cteam> &computerTeams);
 //*****************************************************************
 
 void loadGenerationData(vector<string> &fighters, vector<string> &idNames,
-                        vector<string> &adjectives, vector<string> &nouns);
+                        vector<string> &adjectives, vector<string> &nouns,
+                        vector<string> &stages);
 //*****************************************************************
 //  Function:   loadGenerationData
 //  Purpose:    loads strings from files into the appropriate array
@@ -169,7 +172,6 @@ Cplayer generateRandomComputerPlayer(vector<string> &fighters, vector<string> &i
 
 
 
-
 int main (){
     srand(time(0)); //seeds random number generator
     //read in previous data from disk
@@ -178,10 +180,11 @@ int main (){
     vector<string> idNames;    //used for random team generation
     vector<string> adjectives; //used for random team generation
     vector<string> nouns;      //used for random team generation
+    vector<string> stages;     //used for random stageGeneration
 
     //functions to read in all data types from stored files
     loadUserTeams(userTeams);
-    loadGenerationData(fighters, idNames, adjectives, nouns);
+    loadGenerationData(fighters, idNames, adjectives, nouns, stages);
     //end reading of data
 
     system("CLS"); //clears the screen -- << flush; to clear iostream
@@ -491,10 +494,12 @@ void saveData(vector<Hteam> &userTeams, vector<Cteam> &computerTeams){
 }
 
 void loadGenerationData(vector<string> &fighters, vector<string> &idNames,
-                        vector<string> &adjectives, vector<string> &nouns)
+                        vector<string> &adjectives, vector<string> &nouns,
+                        vector<string> &stages)
 {
     ifstream inFile;
     string readingString;
+    int ignoreNum;
 
     inFile.open("fighters.dat");
     if(inFile.fail()){
@@ -539,6 +544,20 @@ void loadGenerationData(vector<string> &fighters, vector<string> &idNames,
         getline(inFile, readingString);
     }
     inFile.close();
+
+    inFile.open("stages.dat");
+    if(inFile.fail()){
+        cout << "Error, unable to locate \"stages.dat\"" << endl;
+    }
+    getline(inFile, readingString);
+    while(!inFile.eof()){
+        stages.push_back(readingString);
+        inFile >> ignoreNum;
+        inFile >> ignoreNum;    //ignore the three flags for stageData use
+        inFile >> ignoreNum;
+        inFile.ignore();        //ignore the extra newline character
+        getline(inFile,readingString);
+    }
     //each of the reference arrays should now be filled
 }
 

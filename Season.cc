@@ -38,7 +38,50 @@ void Season::setComputerTeams(vector<Cteam> &newComputerTeams){
     computerTeams = newComputerTeams;
 }
 
+void Season::generateMatchups(vector<string> &encodedOutput, vector<string> stages){
+    Match tempMatch;
+    vector<Match> weeklyMatchups;
+    stringstream sso;
+    int tempInt;
 
+    for(int i = 0; i < encodedOutput.size(); i++){//for each week
+        weeklyMatchups.clear();
+        sso.str("");            //start from scrath each iteration
+
+        //store first line of match ups in stringstream
+        sso << encodedOutput[i];
+        for(int j = 0; j < encodedOutput.size()/2 + 1; j++){
+            tempMatch.clearBothTeams(); //clear the teams from the match
+
+            //set first team
+            sso >> tempInt;
+            if(tempInt <= numberOfHumanTeams){
+                tempMatch.addHumanTeam(*activeHumanTeams[tempInt - 1]);
+            }
+            else{
+                tempMatch.addCpuTeam(computerTeams[tempInt - numberOfHumanTeams - 1]);
+            }
+            //set second team
+            sso >> tempInt;
+            if(tempInt <= numberOfHumanTeams){
+                tempMatch.addHumanTeam(*activeHumanTeams[tempInt - 1]);
+            }
+            else{
+                tempMatch.addCpuTeam(computerTeams[tempInt - numberOfHumanTeams - 1]);
+            }
+
+            //now just need to set a stage for the match
+            tempMatch.randomlySetStage(stages);
+
+            //the match has been completed
+            weeklyMatchups.push_back(tempMatch);
+        }
+
+        //now the matches for the first week are stored in weeklyMatchups
+        matchups.push_back(weeklyMatchups);
+
+    }
+}
 
 
 
@@ -52,9 +95,17 @@ vector<string> Season::generateSchedule(){
     vector<string> encodedOutput;
 
     //need to fill encodedOutput with the correct amount of empty strings
-    for(int i = 0; i < totalNumberOfTeams - 1; i++){
-        encodedOutput.push_back("");
+    if(totalNumberOfTeams % 2 == 0){
+        for(int i = 0; i < totalNumberOfTeams - 1; i++){
+            encodedOutput.push_back("");
+        }
     }
+    else{
+        for(int i = 0; i < totalNumberOfTeams; i++){
+            encodedOutput.push_back("");
+        }
+    }
+
 
     //in case there is an even number of teams
     if(totalNumberOfTeams % 2 == 0){
@@ -78,21 +129,38 @@ vector<string> Season::generateSchedule(){
 
     //the topRow and bottomRow appropriately filled
     fillCodedOutputWith(encodedOutput, topRow, bottomRow);
-    //function to randomly switch around weeks so that each season isn't identical
+    //randomly switch around weeks so that each season isn't identical
+    randomizeWeeklySchedule(encodedOutput);
+
     return encodedOutput;
 }
 
 void Season::fillCodedOutputWith(vector<string> &encodedOutput, vector<int> &topRow, vector<int> &bottomRow){
-    for(int i = 0; i < totalNumberOfTeams - 1; i++){ //for each week i
-        for(size_t j = 0; j < topRow.size(); j++){ //each matchup j per week
-            encodedOutput[i].append(to_string(topRow[j]));
-            encodedOutput[i].append(" ");
-            encodedOutput[i].append(to_string(bottomRow[j]));
-            encodedOutput[i].append(" ");
+    if(totalNumberOfTeams % 2 == 0){//there is an even amount of teams
+        for(int i = 0; i < totalNumberOfTeams - 1; i++){ //for each week i
+            for(size_t j = 0; j < topRow.size(); j++){ //each matchup j per week
+                encodedOutput[i].append(to_string(topRow[j]));
+                encodedOutput[i].append(" ");
+                encodedOutput[i].append(to_string(bottomRow[j]));
+                encodedOutput[i].append(" ");
+            }
+            //the string has been completed, so rotate the teams
+            rotateRoundRobinTeams(topRow, bottomRow);
         }
-        //the string has been completed, so rotate the teams
-        rotateRoundRobinTeams(topRow, bottomRow);
     }
+    else{
+        for(int i = 0; i < totalNumberOfTeams; i++){ //need an extra week for the bye
+            for(size_t j = 0; j < topRow.size(); j++){ //each matchup j per week
+                encodedOutput[i].append(to_string(topRow[j]));
+                encodedOutput[i].append(" ");
+                encodedOutput[i].append(to_string(bottomRow[j]));
+                encodedOutput[i].append(" ");
+            }
+            //the string has been completed, so rotate the teams
+            rotateRoundRobinTeams(topRow, bottomRow);
+        }
+    }
+
 }
 
 void Season::rotateRoundRobinTeams(vector<int> &topRow, vector<int> &bottomRow){
@@ -105,5 +173,15 @@ void Season::rotateRoundRobinTeams(vector<int> &topRow, vector<int> &bottomRow){
 
     for(int i = (bottomRow.size() - 1); i >= 0; i--){ //type int is necessay so that overflow does not occur
         swap(bottomRow[i], holder);                   //note that this will create a compiler warning, but not an error
+    }
+}
+
+void Season::randomizeWeeklySchedule(vector<string> &encodedOutput){
+    int index1;
+    int index2;
+    for(int i = 0; i < totalNumberOfTeams; i++){
+        index1 = rand() % encodedOutput.size();
+        index2 = rand() % encodedOutput.size();
+        swap(encodedOutput[index1], encodedOutput[index2]);
     }
 }

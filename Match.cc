@@ -456,6 +456,11 @@ string Match::getStageName(){
     return stageName;
 }
 
+void Match::randomlySetStage(vector<string> &stages){
+    int randNum = rand() % stages.size();
+    setStageName(stages[randNum]);
+}
+
 double Match::getProbabilityOfWinFor(Cteam team){
     int levelsOfTeam1 = 0;
     int levelsOfTeam2 = 0;

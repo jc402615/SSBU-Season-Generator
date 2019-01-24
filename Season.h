@@ -20,6 +20,9 @@
 #include <cstdlib>
 #include <vector>
 #include <string>
+#include <sstream>
+#include "Cplayer.h"
+#include "Hplayer.h"
 #include "CTeam.h"
 #include "Hteam.h"
 #include "Match.h"
@@ -29,6 +32,9 @@ using namespace std;
 class Season{
 public:
     Season();
+
+    //!!!!!!!!!!!!!!!!!!!!!
+    void makeNew(string activeTeamName);  /////contains all the questions and details when starting a brand new season from scratch for new Teams
 
     void setTotalNumberOfTeams(int newTotalNumberOfTeams);
     void setNumberOfHumanTeams(int newNumberOfHumanTeams);
@@ -42,15 +48,19 @@ public:
     //places an iterator pointing to the team with teamName located in userTeams into activeHumanTeams
     void setComputerTeams(vector<Cteam> &newComputerTeams);
     //sets computerTeams to be the same as the argument newComputerTeams
-    void generateMatchups(string &encodedOutput);
+    void generateMatchups(vector<string> &encodedOutput, vector<string> stages);
     //generates all of the matchups for the season
-vector<string> generateSchedule();
-private:
 
+
+private:
+    vector<string> generateSchedule();
     //uses a basic number format to fill the initial table used to make the round robin matchups
     void fillCodedOutputWith(vector<string> &encodedOutput, vector<int> &topRow, vector<int> &bottomRow);
     //places the matchups into the encodedOutput vector, where each string contains the matchups for the week
     void rotateRoundRobinTeams(vector<int> &topRow, vector<int> &bottomRow);
+    void randomizeWeeklySchedule(vector<string> &encodedOutput);
+    //switches around the indices of the vector, while keeping the data intact
+
     int totalNumberOfTeams;
     int numberOfHumanTeams;
 
