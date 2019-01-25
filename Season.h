@@ -52,21 +52,26 @@ public:
     //places an iterator pointing to the team with teamName located in userTeams into activeHumanTeams
     void setComputerTeams(vector<Cteam> &newComputerTeams);
     //sets computerTeams to be the same as the argument newComputerTeams
-    void generateMatchups(vector<string> &encodedOutput, vector<string> stages);
-    //generates all of the matchups for the season
+    void generateSchedule(vector<string> &stages);
+    //uses a basic number format to fill the initial table used to make the round robin matchups
+    //this is the function to use to generate all season matchups
     void generateRestOfCpuTeams(vector<string> &fighters, vector<string> &idNames,
                                 vector<string> &adjectives, vector<string> &nouns);
     //requires rand to be seeded, all the vectors to be filled, totalNumberOfTeams and numberOfHumanTeams
     //already set, ...?
+    void printOutAllMatchups();
+    void printOutAllMatchupsForWeek(int weekNum);
 
 private:
-    vector<string> generateSchedule();
-    //uses a basic number format to fill the initial table used to make the round robin matchups
+
     void fillCodedOutputWith(vector<string> &encodedOutput, vector<int> &topRow, vector<int> &bottomRow);
     //places the matchups into the encodedOutput vector, where each string contains the matchups for the week
     void rotateRoundRobinTeams(vector<int> &topRow, vector<int> &bottomRow);
     void randomizeWeeklySchedule(vector<string> &encodedOutput);
     //switches around the indices of the vector, while keeping the data intact
+    void generateMatchups(vector<string> &encodedOutput, vector<string> &stages);
+    //generates all of the matchups for the season
+
     Cplayer generateRandomComputerPlayer(vector<string> &fighters, vector<string> &idNames);
     Cteam generateRandomComputerTeam(int numberOfPlayers, vector<string> &fighters,
                                      vector<string> &idNames, vector<string> &adjectives,

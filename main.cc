@@ -226,8 +226,19 @@ int main (){
     //2. view season standing/ stat page
     //3. view all time stats -> records page
 
+    Season season;
+    season.setTotalNumberOfTeams(9);
+    season.setNumberOfHumanTeams(2);
+    season.setNumberOfPlayersPerTeam(1);
+    season.setBattleAmount(3);
 
+    season.addHumanTeamByNameFrom("1ers", userTeams);
+    season.addHumanTeamByNameFrom("Myteam", userTeams);
 
+    season.generateRestOfCpuTeams(fighters, idNames, adjectives, nouns);
+    season.generateSchedule(stages);
+    season.printOutAllMatchups();
+    season.printOutAllMatchupsForWeek(3);
 
     saveUserTeams(userTeams);
 

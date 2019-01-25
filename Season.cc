@@ -54,46 +54,50 @@ void Season::setComputerTeams(vector<Cteam> &newComputerTeams){
     computerTeams = newComputerTeams;
 }
 
-void Season::generateMatchups(vector<string> &encodedOutput, vector<string> stages){
+void Season::generateMatchups(vector<string> &encodedOutput, vector<string> &stages){
     Match tempMatch;
     vector<Match> weeklyMatchups;
     stringstream sso;
-    int tempInt;
+    int tempInt1;
+    int tempInt2;
 
     for(int i = 0; i < encodedOutput.size(); i++){//for each week
         weeklyMatchups.clear();
-        sso.str("");            //start from scrath each iteration
+        sso.str("");            //start from scratch each iteration
 
         //store first line of match ups in stringstream
         sso << encodedOutput[i];
         for(int j = 0; j < encodedOutput.size()/2 + 1; j++){
             tempMatch.clearBothTeams(); //clear the teams from the match
 
-            //set first team
-            sso >> tempInt;
-            if(tempInt <= numberOfHumanTeams){
-                tempMatch.addHumanTeam(*activeHumanTeams[tempInt - 1]);
-            }
-            else{
-                tempMatch.addCpuTeam(computerTeams[tempInt - numberOfHumanTeams - 1]);
-            }
-            //set second team
-            sso >> tempInt;
-            if(tempInt <= numberOfHumanTeams){
-                tempMatch.addHumanTeam(*activeHumanTeams[tempInt - 1]);
-            }
-            else{
-                tempMatch.addCpuTeam(computerTeams[tempInt - numberOfHumanTeams - 1]);
+            sso >> tempInt1;
+            sso >> tempInt2;
+
+            if(tempInt1 != 0 && tempInt2 != 0){//then its not a bye, place teams in match
+                if(tempInt1 <= numberOfHumanTeams){
+                    tempMatch.addHumanTeam(*activeHumanTeams[tempInt1 - 1]);
+                }
+                else{
+                    tempMatch.addCpuTeam(computerTeams[tempInt1 - numberOfHumanTeams - 1]);
+                }
+
+                if(tempInt2 <= numberOfHumanTeams){
+                    tempMatch.addHumanTeam(*activeHumanTeams[tempInt2 - 1]);
+                }
+                else{
+                    tempMatch.addCpuTeam(computerTeams[tempInt2 - numberOfHumanTeams - 1]);
+                }
+
+                //now just need to set a stage for the match
+                tempMatch.randomlySetStage(stages);
+
+                //the match has been completed
+                weeklyMatchups.push_back(tempMatch);
             }
 
-            //now just need to set a stage for the match
-            tempMatch.randomlySetStage(stages);
-
-            //the match has been completed
-            weeklyMatchups.push_back(tempMatch);
         }
 
-        //now the matches for the first week are stored in weeklyMatchups
+        //now the matches for the week are stored in weeklyMatchups
         matchups.push_back(weeklyMatchups);
 
     }
@@ -113,7 +117,25 @@ void Season::generateRestOfCpuTeams(vector<string> &fighters, vector<string> &id
     computerTeams = newComputerTeams;
 }
 
-vector<string> Season::generateSchedule(){
+void Season::printOutAllMatchups(){
+    for(int i = 0; i < matchups.size(); i++){
+        cout << "Week " << i + 1 << ": " << endl << endl;
+        for(int j = 0; j < matchups[0].size(); j++){
+            matchups[i][j].printMatchup();
+        }
+    }
+}
+
+void Season::printOutAllMatchupsForWeek(int weekNum){
+    int index = weekNum - 1;
+
+    for(int j = 0; j < matchups[0].size(); j++){
+        matchups[index][j].printMatchup();
+    }
+
+}
+
+void Season::generateSchedule(vector<string> &stages){
     vector<int> topRow;
     vector<int> bottomRow;
     vector<string> encodedOutput;
@@ -156,7 +178,7 @@ vector<string> Season::generateSchedule(){
     //randomly switch around weeks so that each season isn't identical
     randomizeWeeklySchedule(encodedOutput);
 
-    return encodedOutput;
+    generateMatchups(encodedOutput, stages);
 }
 
 void Season::fillCodedOutputWith(vector<string> &encodedOutput, vector<int> &topRow, vector<int> &bottomRow){

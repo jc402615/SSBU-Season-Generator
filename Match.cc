@@ -439,6 +439,31 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
 }
 
 void Match::printWinner(){
+    if(isHumanMatch()){
+        if(Hwinner.getTeamName() == humanTeams[0].getTeamName() ||
+           Hwinner.getTeamName() == humanTeams[1].getTeamName())
+        {
+               cout << Hwinner.getTeamName();
+        }
+    }
+    else if(isCpuMatch()){
+        if(Cwinner.getTeamName() == cpuTeams[0].getTeamName() ||
+           Cwinner.getTeamName() == cpuTeams[1].getTeamName())
+        {
+               cout << Cwinner.getTeamName();
+        }
+    }
+    else{ //is mixed Match
+        if(Hwinner.getTeamName() == humanTeams[0].getTeamName() ||
+           Cwinner.getTeamName() == cpuTeams[0].getTeamName())
+        {
+               cout << Hwinner.getTeamName();
+        }
+    }
+
+    /* Deprecated. New version allows for no winner to be printed if match has
+       not been played yet
+
     if(Hwinner.getTeamName() == "NO TEAM NAME"){
         //then a human team did not win
         cout << Cwinner.getTeamName();
@@ -446,6 +471,20 @@ void Match::printWinner(){
     else{
         //a human team must have won
         cout << Hwinner.getTeamName();
+    }
+
+    */
+}
+
+void Match::printMatchup(){
+    if(isHumanMatch()){
+        cout << humanTeams[0].getTeamName() << " vs. " << humanTeams[1].getTeamName() << "     Result: "; printWinner(); cout << endl;
+    }
+    else if(isCpuMatch()){
+        cout << cpuTeams[0].getTeamName() << " vs. " << cpuTeams[1].getTeamName() << "     Result: "; printWinner(); cout << endl;
+    }
+    else{//is mixed match
+        cout << humanTeams[0].getTeamName() << " vs. " << cpuTeams[0].getTeamName() << "     Result: "; printWinner(); cout << endl;
     }
 }
 

@@ -42,6 +42,7 @@ public:
     //runs the match and collects data depending on what type of teams
     //are involved in the match
     void printWinner();
+    void printMatchup();
     void setStageName(string newStageName);
     string getStageName();
     void randomlySetStage(vector<string> &stages);
