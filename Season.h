@@ -21,6 +21,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <windows.h>
 #include "Cplayer.h"
 #include "Hplayer.h"
 #include "CTeam.h"
@@ -61,6 +62,8 @@ public:
     //already set, ...?
     void printOutAllMatchups();
     void printOutAllMatchupsForWeek(int weekNum);
+    void createAHTeam(string newTeamName, vector<Hteam> &userTeams, int numPlayers = 0, bool newIsMainTeam = true);
+    //the team will placed into userTeams after it has been created
 
 private:
 
@@ -76,6 +79,8 @@ private:
     Cteam generateRandomComputerTeam(int numberOfPlayers, vector<string> &fighters,
                                      vector<string> &idNames, vector<string> &adjectives,
                                      vector<string> &nouns);
+    Hplayer createAHplayer();
+    void printCreateAPlayerHelpMenu();
 
     int totalNumberOfTeams;
     int numberOfHumanTeams;

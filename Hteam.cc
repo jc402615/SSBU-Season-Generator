@@ -4,6 +4,7 @@
 Hteam::Hteam(){
     teamName = "NO TEAM NAME";
     numberOfPlayers = 0;
+    isMainTeam = false;
     wins = 0;
     losses = 0;
 }
@@ -27,6 +28,10 @@ Hplayer Hteam::getTeamMemberAtIndex(int index){
     return teamMembers[index];
 }
 
+bool Hteam::getIsMainTeam(){
+    return isMainTeam;
+}
+
 void Hteam::setTeamName(string newTeamName){
     teamName = newTeamName;
 }
@@ -41,6 +46,10 @@ void Hteam::setWins(int newWins){
 
 void Hteam::setLosses(int newLosses){
     losses = newLosses;
+}
+
+void Hteam::setIsMainTeam(bool newIsMainTeam){
+    isMainTeam = newIsMainTeam;
 }
 
 void Hteam::increaseTeamMemberWinsAtIndex(int index){

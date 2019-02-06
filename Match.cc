@@ -478,14 +478,15 @@ void Match::printWinner(){
 
 void Match::printMatchup(){
     if(isHumanMatch()){
-        cout << humanTeams[0].getTeamName() << " vs. " << humanTeams[1].getTeamName() << "     Result: "; printWinner(); cout << endl;
+        cout << left << setw(22) << humanTeams[0].getTeamName() << " vs. " << setw(22) << humanTeams[1].getTeamName() << "     Winner: "; printWinner(); cout << endl;
     }
     else if(isCpuMatch()){
-        cout << cpuTeams[0].getTeamName() << " vs. " << cpuTeams[1].getTeamName() << "     Result: "; printWinner(); cout << endl;
+        cout << left << setw(22) << cpuTeams[0].getTeamName() << " vs. " << setw(22) << cpuTeams[1].getTeamName() << "     Winner: "; printWinner(); cout << endl;
     }
     else{//is mixed match
-        cout << humanTeams[0].getTeamName() << " vs. " << cpuTeams[0].getTeamName() << "     Result: "; printWinner(); cout << endl;
+        cout << left << setw(22) << humanTeams[0].getTeamName() << " vs. " << setw(22) << cpuTeams[0].getTeamName() << "     Winner: "; printWinner(); cout << endl;
     }
+    cout << right; //reset adjusted alignment
 }
 
 void Match::setStageName(string newStageName){

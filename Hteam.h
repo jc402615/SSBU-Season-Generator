@@ -31,6 +31,7 @@ public:
     int getWins();
     int getLosses();
     Hplayer getTeamMemberAtIndex(int index);
+    bool getIsMainTeam();
 
     //setters
     void setTeamName(string newTeamName);
@@ -39,6 +40,7 @@ public:
     void setLosses(int newLosses);
     bool addTeamMember(Hplayer newTeamMember); //returns true if added successfully
     //!!!! anytime a teamMember is added, need to increment the numberOfPlayers by one
+    void setIsMainTeam(bool newIsMainTeam);
 
     //addtional helpers for Hplayer teamMembers stats
     void increaseTeamMemberWinsAtIndex(int index);
@@ -57,7 +59,7 @@ public:
     void increaseLosses();
     bool isAlreadyOnTeam(string HplayerCharName);
     void increaseNumberOfPlayers();
-    void removeAllTeamMembers(); //useful for when loading data 
+    void removeAllTeamMembers(); //useful for when loading data
 
 private:
     string teamName;
@@ -65,6 +67,7 @@ private:
     int wins;  //number of wins
     int losses;//numbers of losses
     vector<Hplayer> teamMembers; //holds the human players on the team
+    bool isMainTeam; //whether or not the team has its own season
 };
 
 #endif

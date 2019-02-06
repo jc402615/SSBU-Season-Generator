@@ -97,6 +97,16 @@ int isAlreadyATeam(string teamName, vector<Hteam> &userTeams);
 //  Post Conditions: returns the index of the matching team, or -1 if not found
 //*****************************************************************
 
+int isAlreadyAMainTeam(string teamName, vector<Hteam> &userTeams);
+//*****************************************************************
+//  Function:   isAlreadyAMainTeam
+//  Purpose:    determines whether teamName is already a team with its own season
+//  Parameters: teamName - the name to check for
+//              userTeams - the vector of Hteams to check in
+//  Pre Conditions: userTeams already contains all Hteams
+//  Post Conditions: returns the index of the matching team, or -1 if not found
+//*****************************************************************
+
 void printAllUserTeams(vector<Hteam> &userTeams);
 //*****************************************************************
 //  Function:   printAllUserTeams
@@ -106,21 +116,13 @@ void printAllUserTeams(vector<Hteam> &userTeams);
 //  Post Conditions: does not return a value
 //*****************************************************************
 
-Hplayer createAHplayer();
+void printAllMainUserTeams(vector<Hteam> &userTeams);
 //*****************************************************************
-//  Function:   createAHplayer
-//  Purpose:    gets input from user to create a new Hplayer
-//  Parameters: none
-//  Pre Conditions: none
-//  Post Conditions: returns the Hplayer with stats given by user
-//*****************************************************************
-
-void printCreateAPlayerHelpMenu();
-//*****************************************************************
-//  Function:   printCreateAPlayerHelpMenu
-//  Purpose:    displays what each attribute of a Hplayer's character respresents
-//  Parameters: none
-//  Pre Conditions: none
+//  Function:   printAllMainUserTeams
+//  Purpose:    simply lists out all existing teams that are the headers
+//              of their own season
+//  Parameters: userTeams - the vector containing all the team names to print
+//  Pre Conditions: userTeams already holds the necessary teams
 //  Post Conditions: does not return a value
 //*****************************************************************
 
@@ -176,10 +178,13 @@ int main (){
     Hteam activeTeam; //the team that is currently in use
     Hplayer tempHplayer;
 
+    printBasicMenu(userTeams);
+/*
     while(returnToIntro){
         printBasicMenu(userTeams); //intro
 
         cin >> tempString;
+
 
         //need to see if team already exists
         tempInt = isAlreadyATeam(tempString, userTeams);
@@ -216,6 +221,7 @@ int main (){
         }
     } //end of intro sequence, active Team should now be set and ready to move on
 
+*/
     //need season / matches
     //option to view stats / next match or all previous matches of the season
     //option to quit
@@ -226,20 +232,45 @@ int main (){
     //2. view season standing/ stat page
     //3. view all time stats -> records page
 
+
     Season season;
-    season.setTotalNumberOfTeams(9);
+    season.setTotalNumberOfTeams(30);
     season.setNumberOfHumanTeams(2);
     season.setNumberOfPlayersPerTeam(1);
     season.setBattleAmount(3);
 
+
+    //season.createAHTeam("Slayers", userTeams, 1, true);
+
+    season.addHumanTeamByNameFrom("Beetles", userTeams);
     season.addHumanTeamByNameFrom("1ers", userTeams);
-    season.addHumanTeamByNameFrom("Myteam", userTeams);
+
+
 
     season.generateRestOfCpuTeams(fighters, idNames, adjectives, nouns);
     season.generateSchedule(stages);
     season.printOutAllMatchups();
     season.printOutAllMatchupsForWeek(3);
 
+    cout << "\n\n\n\n\n\n";
+    /*
+    season.createAHTeam("Murder", userTeams);
+    season.createAHTeam("Murder2", userTeams, 1, false);
+
+    cout << userTeams[userTeams.size() - 1].getTeamName() << endl;
+    cout << userTeams[userTeams.size() - 1].getNumberOfPlayers() << endl;
+    cout << userTeams[userTeams.size() - 1].getIsMainTeam() << endl;
+*/
+    /*
+    cin >> tempInt;
+    cout << userTeams[userTeams.size() - 1].getTeamName() << endl;
+    cout << userTeams[userTeams.size() - 1].getTeamMemberAtIndex(0).getUser() << endl;
+    cout << userTeams[userTeams.size() - 1].getTeamMemberAtIndex(0).getFighter() << endl;
+    cout << userTeams[userTeams.size() - 1].getTeamMemberAtIndex(0).getCharacter() << endl;
+    cout << userTeams[userTeams.size() - 1].getTeamMemberAtIndex(1).getUser() << endl;
+    cout << userTeams[userTeams.size() - 1].getTeamMemberAtIndex(1).getFighter() << endl;
+    cout << userTeams[userTeams.size() - 1].getTeamMemberAtIndex(1).getCharacter() << endl;
+    */
     saveUserTeams(userTeams);
 
     return 0;
@@ -251,7 +282,9 @@ void printBasicMenu(vector<Hteam> &userTeams){
     cout << "#                                                    #" << endl;
     cout << "#  By: OpenSkyze                                     #" << endl;
     cout << "######################################################" << endl;
-    printAllUserTeams(userTeams);
+    cout << "#                 Existing Teams                     #" << endl;
+    cout << "######################################################" << endl;
+    printAllMainUserTeams(userTeams);
     cout << "######################################################" << endl;
     cout << "#  Please enter your team name to begin:             #" << endl;
     cout << "######################################################" << endl << endl;
@@ -274,6 +307,7 @@ void loadUserTeams(vector<Hteam> &userTeams){
         string tempString;
         string tempString3;
         int tempInt;
+        bool tempBool;
         Hplayer tempPlayer;
         Hteam tempTeam;
 
@@ -286,6 +320,8 @@ void loadUserTeams(vector<Hteam> &userTeams){
             inFile >> tempInt;
             tempTeam.setNumberOfPlayers(tempInt);
             inFile.ignore(); //ignore \n character
+            inFile >> tempBool;
+            tempTeam.setIsMainTeam(tempBool);
             inFile >> tempInt;
             tempTeam.setWins(tempInt);
             inFile.ignore();
@@ -389,6 +425,7 @@ void saveUserTeams(vector<Hteam> &userTeams){
     for(size_t i = 0; i < userTeams.size(); i++){
         outFile << userTeams[i].getTeamName() << endl;
         outFile << userTeams[i].getNumberOfPlayers() << endl;
+        outFile << userTeams[i].getIsMainTeam() << endl;
         outFile << userTeams[i].getWins() << endl;
         outFile << userTeams[i].getLosses() << endl;
         for(int j = 0; j < userTeams[i].getNumberOfPlayers(); j++){
@@ -437,10 +474,19 @@ int isAlreadyATeam(string teamName, vector<Hteam> &userTeams){
     return -1;
 }
 
+int isAlreadyAMainTeam(string teamName, vector<Hteam> &userTeams){
+    for(size_t i = 0; i < userTeams.size(); i++){
+        if(userTeams[i].getTeamName() == teamName && userTeams[i].getIsMainTeam() == true){
+            return i;
+        }
+    }
+    return -1;
+}
+
 void printAllUserTeams(vector<Hteam> &userTeams){
     for(size_t i = 0; i < userTeams.size(); i++){
         cout << "# - " << userTeams[i].getTeamName();
-        size_t spaces = 47 - userTeams[i].getTeamName().length();
+        size_t spaces = 49 - userTeams[i].getTeamName().length();
         for(size_t j = 0; j < spaces; j++){
             cout << " ";
         }
@@ -448,33 +494,17 @@ void printAllUserTeams(vector<Hteam> &userTeams){
     }
 }
 
-Hplayer createAHplayer(){
-    printCreateAPlayerHelpMenu();
-    Hplayer newPlayer;
-    string s;
-
-    cout << "\nUser: ";
-    cin >> s;
-    newPlayer.setUser(s);
-    cout << "\nFighter: ";
-    cin >> s;
-    newPlayer.setFighter(s);
-    cout << "\nCharacter: ";
-    cin >> s;
-    newPlayer.setCharacter(s);
-
-    return newPlayer;
-
-}
-
-void printCreateAPlayerHelpMenu(){
-    cout << "######################################################" << endl;
-    cout << "#           Create A Player - Help Menu              #" << endl;
-    cout << "######################################################" << endl;
-    cout << "# User:      Human player's name                     #" << endl;
-    cout << "# Fighter:   Which playable fighter will you use?    #" << endl;
-    cout << "# Character: (UserName/Profile) of your character    #" << endl;
-    cout << "######################################################" << endl;
+void printAllMainUserTeams(vector<Hteam> &userTeams){
+    for(size_t i = 0; i < userTeams.size(); i++){
+        if(userTeams[i].getIsMainTeam()){
+            cout << "# - " << userTeams[i].getTeamName();
+            size_t spaces = 49 - userTeams[i].getTeamName().length();
+            for(size_t j = 0; j < spaces; j++){
+                cout << " ";
+            }
+            cout << "#" << endl;
+        }
+    }
 }
 
 void saveData(vector<Hteam> &userTeams, vector<Cteam> &computerTeams){

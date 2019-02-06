@@ -5,6 +5,15 @@ Season::Season(){
     numberOfHumanTeams = 0;
 }
 
+void Season::makeNew(string activeTeamName){
+    string s = activeTeamName + " Season";
+    LPCSTR folderName = s.c_str();
+    CreateDirectory(folderName, NULL); //this folder will hold the season data corresponding to the main team
+                                       //including the computerTeams info
+
+
+}
+
 void Season::setTotalNumberOfTeams(int newTotalNumberOfTeams){
     totalNumberOfTeams = newTotalNumberOfTeams;
 }
@@ -45,7 +54,10 @@ int Season::getNumberOfComputerTeams(){
 void Season::addHumanTeamByNameFrom(string teamName, vector<Hteam> &userTeams){
     vector<Hteam>::iterator it = userTeams.begin();
     while(it -> getTeamName() != teamName){
+        cout << userTeams.size() << endl;
+        cout << it -> getTeamName() << endl;
         it++;
+        cout << it -> getTeamName() << endl;
     } //leaves iterator pointing at the correct team within userTeams
     activeHumanTeams.push_back(it);
 }
@@ -69,7 +81,6 @@ void Season::generateMatchups(vector<string> &encodedOutput, vector<string> &sta
         sso << encodedOutput[i];
         for(int j = 0; j < encodedOutput.size()/2 + 1; j++){
             tempMatch.clearBothTeams(); //clear the teams from the match
-
             sso >> tempInt1;
             sso >> tempInt2;
 
@@ -88,6 +99,7 @@ void Season::generateMatchups(vector<string> &encodedOutput, vector<string> &sta
                     tempMatch.addCpuTeam(computerTeams[tempInt2 - numberOfHumanTeams - 1]);
                 }
 
+
                 //now just need to set a stage for the match
                 tempMatch.randomlySetStage(stages);
 
@@ -99,7 +111,6 @@ void Season::generateMatchups(vector<string> &encodedOutput, vector<string> &sta
 
         //now the matches for the week are stored in weeklyMatchups
         matchups.push_back(weeklyMatchups);
-
     }
 }
 
@@ -119,8 +130,19 @@ void Season::generateRestOfCpuTeams(vector<string> &fighters, vector<string> &id
 
 void Season::printOutAllMatchups(){
     for(int i = 0; i < matchups.size(); i++){
-        cout << "Week " << i + 1 << ": " << endl << endl;
+        if(i < 9){
+            cout << "********************************************************************************" << endl;
+            cout << "*                            Week " << i + 1 << "                                            *" << endl;
+            cout << "********************************************************************************" << endl;
+        }
+        else{ //if double digit then one less space 
+            cout << "********************************************************************************" << endl;
+            cout << "*                            Week " << i + 1 << "                                           *" << endl;
+            cout << "********************************************************************************" << endl;
+        }
+
         for(int j = 0; j < matchups[0].size(); j++){
+            cout << "* ";
             matchups[i][j].printMatchup();
         }
     }
@@ -179,6 +201,32 @@ void Season::generateSchedule(vector<string> &stages){
     randomizeWeeklySchedule(encodedOutput);
 
     generateMatchups(encodedOutput, stages);
+
+}
+
+void Season::createAHTeam(string newTeamName, vector<Hteam> &userTeams, int numPlayers, bool newIsMainTeam){
+    Hteam tempTeam;
+    Hplayer tempPlayer;
+    int userInput;
+
+    tempTeam.setTeamName(newTeamName);
+    tempTeam.setIsMainTeam(newIsMainTeam);
+    if(numPlayers == 0){ //then the number of players is not restricted
+        cout << "How many players are on your team: ";
+        cin >> userInput;
+        tempTeam.setNumberOfPlayers(userInput);
+        cin.ignore(); //dont want the new line character from previous entry
+    }
+    else{ //the number of players has already been set
+        tempTeam.setNumberOfPlayers(numPlayers);
+    }
+
+    for(int i = 0; i < tempTeam.getNumberOfPlayers(); i++){
+        tempPlayer = createAHplayer();
+        tempTeam.addTeamMember(tempPlayer);
+    } //all team members have been added
+
+    userTeams.push_back(tempTeam);
 }
 
 void Season::fillCodedOutputWith(vector<string> &encodedOutput, vector<int> &topRow, vector<int> &bottomRow){
@@ -206,7 +254,6 @@ void Season::fillCodedOutputWith(vector<string> &encodedOutput, vector<int> &top
             rotateRoundRobinTeams(topRow, bottomRow);
         }
     }
-
 }
 
 void Season::rotateRoundRobinTeams(vector<int> &topRow, vector<int> &bottomRow){
@@ -267,4 +314,33 @@ Cteam Season::generateRandomComputerTeam(int numberOfPlayers, vector<string> &fi
         }
 
         return tempTeam;
+}
+
+Hplayer Season::createAHplayer(){
+    printCreateAPlayerHelpMenu();
+    Hplayer newPlayer;
+    string s;
+
+    cout << "\nUser: ";
+    getline(cin, s);
+    newPlayer.setUser(s);
+    cout << "\nFighter: ";
+    getline(cin, s);
+    newPlayer.setFighter(s);
+    cout << "\nCharacter: ";
+    getline(cin, s);
+    newPlayer.setCharacter(s);
+
+    return newPlayer;
+
+}
+
+void Season::printCreateAPlayerHelpMenu(){
+    cout << "######################################################" << endl;
+    cout << "#           Create A Player - Help Menu              #" << endl;
+    cout << "######################################################" << endl;
+    cout << "# User:      Human player's name                     #" << endl;
+    cout << "# Fighter:   Which playable fighter will you use?    #" << endl;
+    cout << "# Character: (UserName/Profile) of your character    #" << endl;
+    cout << "######################################################" << endl;
 }
