@@ -60,6 +60,8 @@ public:
     void increaseKills();
     void doubleIncreaseKills();
     void increaseDeaths();
+    int getKDDifferential();
+    
 private:
 
     string user; // the actual human being who controls this character

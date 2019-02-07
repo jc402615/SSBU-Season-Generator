@@ -134,3 +134,7 @@ void Hplayer::doubleIncreaseKills(){
 void Hplayer::increaseDeaths(){
     deaths++;
 }
+
+int Hplayer::getKDDifferential(){
+    return (kills - deaths);
+}

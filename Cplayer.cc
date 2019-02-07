@@ -83,3 +83,7 @@ void Cplayer::doubleIncreaseKills(){
 void Cplayer::increaseDeaths(){
     deaths++;
 }
+
+int Cplayer::getKDDifferential(){
+    return (kills - deaths);
+}

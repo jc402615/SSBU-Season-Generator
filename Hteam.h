@@ -32,6 +32,10 @@ public:
     int getLosses();
     Hplayer getTeamMemberAtIndex(int index);
     bool getIsMainTeam();
+    int getTeamKills();
+    int getTeamDeaths();
+    int getWinStreak();
+    int getRank();
 
     //setters
     void setTeamName(string newTeamName);
@@ -41,6 +45,10 @@ public:
     bool addTeamMember(Hplayer newTeamMember); //returns true if added successfully
     //!!!! anytime a teamMember is added, need to increment the numberOfPlayers by one
     void setIsMainTeam(bool newIsMainTeam);
+    void setTeamKills(int newTeamKills);
+    void setTeamDeaths(int newTeamDeaths);
+    void setWinStreak(int newWinStreak);
+    void setRank(int newRank);
 
     //addtional helpers for Hplayer teamMembers stats
     void increaseTeamMemberWinsAtIndex(int index);
@@ -60,6 +68,11 @@ public:
     bool isAlreadyOnTeam(string HplayerCharName);
     void increaseNumberOfPlayers();
     void removeAllTeamMembers(); //useful for when loading data
+    void increaseTeamKills();
+    void increaseTeamDeaths();
+    void increaseWinStreak();
+    void decreaseWinStreak();
+    int getKDDifferential();
 
 private:
     string teamName;
@@ -68,6 +81,10 @@ private:
     int losses;//numbers of losses
     vector<Hplayer> teamMembers; //holds the human players on the team
     bool isMainTeam; //whether or not the team has its own season
+    int teamKills; //number of kills accumulated by the team in total
+    int teamDeaths; //number of deaths accumulated by the team in total
+    int winStreak; //the number of games won (if +) or lossed (if -) consecutively
+    int rank;
 };
 
 #endif

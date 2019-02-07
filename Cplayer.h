@@ -47,6 +47,8 @@ public:
     void increaseKills();
     void doubleIncreaseKills();
     void increaseDeaths();
+    int getKDDifferential();
+    
 private:
     string id; //this is to identify each CPU as seperate if desired
     string fighter; //the playable character

@@ -58,3 +58,4 @@ no negative values etc. ---> do with functions that ask for specific values and 
 -> this also applies to creating a character
 
 -ability to track damage dealt and received during a match for players (maybe even for stages)
+-ability track winStreak for a human's character 

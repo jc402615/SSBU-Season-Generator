@@ -58,7 +58,9 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
             Hwinner = humanTeams[0];
 
             it1 -> increaseWins();
+            it1 -> increaseWinStreak();
             it2 -> increaseLosses();
+            it2 -> decreaseWinStreak();
 
             for(int a = 0; a < it1 -> getNumberOfPlayers(); a++){
                 it1 -> increaseTeamMemberWinsAtIndex(a);
@@ -72,7 +74,9 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
             Hwinner = humanTeams[1];
 
             it1 -> increaseLosses();
+            it1 -> decreaseWinStreak();
             it2 -> increaseWins();
+            it2 -> increaseWinStreak();
 
             for(int a = 0; a < it2 -> getNumberOfPlayers(); a++){
                 it2 -> increaseTeamMemberWinsAtIndex(a);
@@ -100,11 +104,13 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
             cin >> userInputInt;
             for(int b = 0; b < userInputInt; b++){
                 it1 -> increaseTeamMemberKillsAtIndex(a);
+                it1 -> increaseTeamKills();
             }
             cout << "\nFalls: ";
             cin >> userInputInt;
             for(int b = 0; b < userInputInt; b++){
                 it1 -> increaseTeamMemberDeathsAtIndex(a);
+                it1 -> increaseTeamDeaths();
             }
             cout << endl;
         }
@@ -116,11 +122,13 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
             cin >> userInputInt;
             for(int b = 0; b < userInputInt; b++){
                 it2 -> increaseTeamMemberKillsAtIndex(a);
+                it2 -> increaseTeamKills();
             }
             cout << "\nFalls: ";
             cin >> userInputInt;
             for(int b = 0; b < userInputInt; b++){
                 it2 -> increaseTeamMemberDeathsAtIndex(a);
+                it2 -> increaseTeamDeaths();
             }
             cout << endl;
         }
@@ -157,7 +165,9 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
             Hwinner = humanTeams[0];
 
             humanIt -> increaseWins();
+            humanIt -> increaseWinStreak();
             cpuIt -> increaseLosses();
+            cpuIt -> decreaseWinStreak();
 
             for(int a = 0; a < humanIt -> getNumberOfPlayers(); a++){
                 humanIt -> increaseTeamMemberWinsAtIndex(a);
@@ -170,7 +180,9 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
             Cwinner = cpuTeams[0];
 
             cpuIt -> increaseWins();
+            cpuIt -> increaseWinStreak();
             humanIt -> increaseLosses();
+            humanIt -> decreaseWinStreak();
 
         }
 
@@ -190,11 +202,13 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
             cin >> userInputInt;
             for(int b = 0; b < userInputInt; b++){
                 humanIt -> increaseTeamMemberKillsAtIndex(a);
+                humanIt -> increaseTeamKills();
             }
             cout << "\nFalls: ";
             cin >> userInputInt;
             for(int b = 0; b < userInputInt; b++){
                 humanIt -> increaseTeamMemberDeathsAtIndex(a);
+                humanIt -> increaseTeamDeaths();
             }
             cout << endl;
         }
@@ -204,12 +218,14 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
             cout << "KO's: ";
             cin >> userInputInt;
             for(int b = 0; b < userInputInt; b++){
-                cpuIt -> increaseTeamMemberKillsAtIndex(0);
+                cpuIt -> increaseTeamMemberKillsAtIndex(a);
+                cpuIt -> increaseTeamKills();
             }
             cout << "\nFalls: ";
             cin >> userInputInt;
             for(int b = 0; b < userInputInt; b++){
                 cpuIt -> increaseTeamMemberDeathsAtIndex(a);
+                cpuIt -> increaseTeamDeaths();
             }
             cout << endl;
         }
@@ -242,7 +258,9 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
         if(randomNum <= breakPoint){ //then cpuTeams[0] won
             Cwinner = cpuTeams[0];
             it1 -> increaseWins();
+            it1 -> increaseWinStreak();
             it2 -> increaseLosses();
+            it2 -> decreaseWinStreak();
 
             //now need to distribute kills and deaths
             //kills
@@ -272,6 +290,7 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
                     indexOfMember++;
                 }
                 it1 -> increaseTeamMemberKillsAtIndex(indexOfMember);
+                it1 -> increaseTeamKills();
             }
 
             //for losing team
@@ -291,6 +310,7 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
                     indexOfMember++;
                 }
                 it2 -> increaseTeamMemberKillsAtIndex(indexOfMember);
+                it2 -> increaseTeamKills();
             }
             //all kills have now been distributed
 
@@ -299,6 +319,7 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
             for(int i = 0; i < cpuTeams[1].getNumberOfPlayers(); i++){
                 for(int j = 0; j < stockLives; j++){
                     it2 -> increaseTeamMemberDeathsAtIndex(i);
+                    it2 -> increaseTeamDeaths();
                 }
             }
 
@@ -328,6 +349,7 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
                     }
                     if(deathCounter[indexOfMember] < stockLives){
                         it1 -> increaseTeamMemberDeathsAtIndex(indexOfMember);
+                        it1 -> increaseTeamDeaths();
                         deathCounter[indexOfMember]++;
                         retry = false;
                     }
@@ -339,7 +361,9 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
         else{
             Cwinner = cpuTeams[1];
             it1 -> increaseLosses();
+            it1 -> decreaseWinStreak();
             it2 -> increaseWins();
+            it2 -> increaseWinStreak();
 
             //now need to distribute kills and deaths
             //kills
@@ -369,6 +393,7 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
                     indexOfMember++;
                 }
                 it2 -> increaseTeamMemberKillsAtIndex(indexOfMember);
+                it2 -> increaseTeamKills();
             }
 
             //for losing team
@@ -388,6 +413,7 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
                     indexOfMember++;
                 }
                 it1 -> increaseTeamMemberKillsAtIndex(indexOfMember);
+                it1 -> increaseTeamKills();
             }
             //all kills have now been distributed
 
@@ -396,6 +422,7 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
             for(int i = 0; i < cpuTeams[0].getNumberOfPlayers(); i++){
                 for(int j = 0; j < stockLives; j++){
                     it1 -> increaseTeamMemberDeathsAtIndex(i);
+                    it1 -> increaseTeamDeaths();
                 }
             }
 
@@ -425,6 +452,7 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
                     }
                     if(deathCounter[indexOfMember] < stockLives){
                         it2 -> increaseTeamMemberDeathsAtIndex(indexOfMember);
+                        it2 -> increaseTeamDeaths();
                         deathCounter[indexOfMember]++;
                         retry = false;
                     }
@@ -432,6 +460,7 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
 
             } //all deaths and kills have been assigned appropriately
         }
+        //debug
         cout << getProbabilityOfWinFor(cpuTeams[0]);
         cout << getProbabilityOfWinFor(cpuTeams[1]);
 

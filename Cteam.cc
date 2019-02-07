@@ -6,6 +6,10 @@ Cteam::Cteam(){
     numberOfPlayers = 0;
     wins = 0;
     losses = 0;
+    teamKills = 0;
+    teamDeaths = 0;
+    winStreak = 0;
+    rank = 1;
 }
 
 string Cteam::getTeamName(){
@@ -28,6 +32,22 @@ Cplayer Cteam::getTeamMemberAtIndex(int index){
     return teamMembers[index];
 }
 
+int Cteam::getTeamKills(){
+    return teamKills;
+}
+
+int Cteam::getTeamDeaths(){
+    return teamDeaths;
+}
+
+int Cteam::getWinStreak(){
+    return winStreak;
+}
+
+int Cteam::getRank(){
+    return rank;
+}
+
 void Cteam::setTeamName(string newTeamName){
     teamName = newTeamName;
 }
@@ -46,6 +66,22 @@ void Cteam::setLosses(int newLosses){
 
 void Cteam::addTeamMember(Cplayer &newTeamMember){
     teamMembers.push_back(newTeamMember);
+}
+
+void Cteam::setTeamKills(int newTeamKills){
+    teamKills = newTeamKills;
+}
+
+void Cteam::setTeamDeaths(int newTeamDeaths){
+    teamDeaths = newTeamDeaths;
+}
+
+void Cteam::setWinStreak(int newWinStreak){
+    winStreak = newWinStreak;
+}
+
+void Cteam::setRank(int newRank){
+    rank = newRank;
 }
 
 int Cteam::getTotalMatchesPlayed(){
@@ -79,6 +115,36 @@ void Cteam::increaseWins(){
 
 void Cteam::increaseLosses(){
     losses++;
+}
+
+void Cteam::increaseTeamKills(){
+    teamKills++;
+}
+
+void Cteam::increaseTeamDeaths(){
+    teamDeaths++;
+}
+
+void Cteam::increaseWinStreak(){
+    if(winStreak >= 0){//positive
+        winStreak++;
+    }
+    else{//negative
+        winStreak = 1;
+    }
+}
+
+void Cteam::decreaseWinStreak(){
+    if(winStreak <= 0){//negative
+        winStreak--;
+    }
+    else{//positive
+        winStreak = -1;
+    }
+}
+
+int Cteam::getKDDifferential(){
+    return (teamKills - teamDeaths);
 }
 
 void Cteam::increaseTeamMemberKillsAtIndex(int index){

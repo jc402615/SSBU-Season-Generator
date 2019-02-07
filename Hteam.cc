@@ -7,6 +7,10 @@ Hteam::Hteam(){
     isMainTeam = false;
     wins = 0;
     losses = 0;
+    teamKills = 0;
+    teamDeaths = 0;
+    winStreak = 0;
+    rank = 1; //everybody is completely tied at the beginning of the season
 }
 
 string Hteam::getTeamName(){
@@ -32,6 +36,22 @@ bool Hteam::getIsMainTeam(){
     return isMainTeam;
 }
 
+int Hteam::getTeamKills(){
+    return teamKills;
+}
+
+int Hteam::getTeamDeaths(){
+    return teamDeaths;
+}
+
+int Hteam::getWinStreak(){
+    return winStreak;
+}
+
+int Hteam::getRank(){
+    return rank;
+}
+
 void Hteam::setTeamName(string newTeamName){
     teamName = newTeamName;
 }
@@ -50,6 +70,22 @@ void Hteam::setLosses(int newLosses){
 
 void Hteam::setIsMainTeam(bool newIsMainTeam){
     isMainTeam = newIsMainTeam;
+}
+
+void Hteam::setTeamKills(int newTeamKills){
+    teamKills = newTeamKills;
+}
+
+void Hteam::setTeamDeaths(int newTeamDeaths){
+    teamDeaths = newTeamDeaths;
+}
+
+void Hteam::setWinStreak(int newWinStreak){
+    winStreak = newWinStreak;
+}
+
+void Hteam::setRank(int newRank){
+    rank = newRank;
 }
 
 void Hteam::increaseTeamMemberWinsAtIndex(int index){
@@ -140,4 +176,33 @@ void Hteam::increaseNumberOfPlayers(){
 
 void Hteam::removeAllTeamMembers(){
     teamMembers.clear();
+}
+
+void Hteam::increaseTeamKills(){
+    teamKills++;
+}
+
+void Hteam::increaseTeamDeaths(){
+    teamDeaths++;
+}
+
+void Hteam::increaseWinStreak(){
+    if(winStreak >= 0){//positive
+        winStreak++;
+    }
+    else{//negative
+        winStreak = 1;
+    }
+}
+
+void Hteam::decreaseWinStreak(){
+    if(winStreak <= 0){//negative
+        winStreak--;
+    }
+    else{//positive
+        winStreak = -1;
+    }
+}
+int Hteam::getKDDifferential(){
+    return (teamKills - teamDeaths);
 }

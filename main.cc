@@ -239,7 +239,7 @@ int main (){
     season.setNumberOfPlayersPerTeam(1);
     season.setBattleAmount(3);
 
-
+    
     //season.createAHTeam("Slayers", userTeams, 1, true);
 
     season.addHumanTeamByNameFrom("Beetles", userTeams);

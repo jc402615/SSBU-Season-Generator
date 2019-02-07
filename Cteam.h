@@ -31,6 +31,10 @@ public:
     int getWins();
     int getLosses();
     Cplayer getTeamMemberAtIndex(int index);
+    int getTeamKills();
+    int getTeamDeaths();
+    int getWinStreak();
+    int getRank();
 
     //setters
     void setTeamName(string newTeamName);
@@ -39,6 +43,10 @@ public:
     void setLosses(int newLosses);
     void addTeamMember(Cplayer &newTeamMember);
     //must increment the numberOfPlayers by 1
+    void setTeamKills(int newTeamKills);
+    void setTeamDeaths(int newTeamDeaths);
+    void setWinStreak(int newWinStreak);
+    void setRank(int newRank);
 
     //helpers
     int getTotalMatchesPlayed();
@@ -47,6 +55,11 @@ public:
     void increaseWins();
     void increaseLosses();
     void removeAllTeamMembers();
+    void increaseTeamKills();
+    void increaseTeamDeaths();
+    void increaseWinStreak();
+    void decreaseWinStreak();
+    int getKDDifferential();
 
     //additional helpers
     void increaseTeamMemberKillsAtIndex(int index);
@@ -60,6 +73,10 @@ private:
     int wins; //number of wins
     int losses; //number of losses
     vector<Cplayer> teamMembers; //holds the cpu player on the team
+    int teamKills;
+    int teamDeaths;
+    int winStreak;
+    int rank;
 
 
 };
