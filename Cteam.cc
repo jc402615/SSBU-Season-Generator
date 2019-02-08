@@ -147,6 +147,13 @@ int Cteam::getKDDifferential(){
     return (teamKills - teamDeaths);
 }
 
+int Cteam::getWinPercentage(){
+    double totalMatchesPlayed = wins + losses;
+    double percentage = (wins/totalMatchesPlayed);
+    int modifiedAnswer = round(1000 * percentage);
+    return modifiedAnswer;
+}
+
 void Cteam::increaseTeamMemberKillsAtIndex(int index){
     teamMembers[index].increaseKills();
 }

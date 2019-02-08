@@ -206,3 +206,11 @@ void Hteam::decreaseWinStreak(){
 int Hteam::getKDDifferential(){
     return (teamKills - teamDeaths);
 }
+
+int Hteam::getWinPercentage(){
+    double totalMatchesPlayed = wins + losses;
+    double percentage = (wins/totalMatchesPlayed);
+    int modifiedAnswer = round(1000 * percentage);
+
+    return modifiedAnswer;
+}

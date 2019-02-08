@@ -129,13 +129,14 @@ void Season::generateRestOfCpuTeams(vector<string> &fighters, vector<string> &id
 }
 
 void Season::printOutAllMatchups(){
+    cin.ignore(); //need to clear leftover \n character from stream
     for(int i = 0; i < matchups.size(); i++){
         if(i < 9){
             cout << "********************************************************************************" << endl;
             cout << "*                            Week " << i + 1 << "                                            *" << endl;
             cout << "********************************************************************************" << endl;
         }
-        else{ //if double digit then one less space 
+        else{ //if double digit then one less space
             cout << "********************************************************************************" << endl;
             cout << "*                            Week " << i + 1 << "                                           *" << endl;
             cout << "********************************************************************************" << endl;
@@ -144,6 +145,11 @@ void Season::printOutAllMatchups(){
         for(int j = 0; j < matchups[0].size(); j++){
             cout << "* ";
             matchups[i][j].printMatchup();
+        }
+
+        //need to pause so that the data fits in the console
+        if((i + 1) % 10 == 0){
+            waitForEnterPress();
         }
     }
 }
@@ -227,6 +233,96 @@ void Season::createAHTeam(string newTeamName, vector<Hteam> &userTeams, int numP
     } //all team members have been added
 
     userTeams.push_back(tempTeam);
+}
+
+void Season::waitForEnterPress(){
+    cout << "Press enter to continue: ";
+    cin.get(); //once enter is pressed the program will continue
+    cout << endl; //so that the cursor is set to the line after the command
+}
+
+bool Season::isWorseThan(Hteam &thisTeam, Hteam &otherTeam){
+    if(thisTeam.getWinPercentage() < otherTeam.getWinPercentage()){
+        //debug
+        cout << "returning initial true" << endl;
+        return true;
+    }
+    else if(thisTeam.getWinPercentage() == otherTeam.getWinPercentage()){
+        if(thisTeam.getKDDifferential() < otherTeam.getKDDifferential()){
+            //debug
+            cout << "return true and equal" << endl;
+            return true;
+        }
+        else{
+            //debug
+            cout << "return false and equal" << endl;
+            return false;
+        }
+    }
+    else{
+        //debug
+        cout << "simply reutnr false" << endl;
+        return false;
+    }
+}
+
+bool Season::isWorseThan(Hteam &thisTeam, Cteam &otherTeam){
+    if(thisTeam.getWinPercentage() < otherTeam.getWinPercentage()){
+        return true;
+    }
+    else if(thisTeam.getWinPercentage() == otherTeam.getWinPercentage()){
+        if(thisTeam.getKDDifferential() < otherTeam.getKDDifferential()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    else{
+        return false;
+    }
+}
+
+bool Season::isWorseThan(Cteam &thisTeam, Hteam &otherTeam){
+    if(thisTeam.getWinPercentage() < otherTeam.getWinPercentage()){
+        return true;
+    }
+    else if(thisTeam.getWinPercentage() == otherTeam.getWinPercentage()){
+        if(thisTeam.getKDDifferential() < otherTeam.getKDDifferential()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    else{
+        return false;
+    }
+}
+
+bool Season::isWorseThan(Cteam &thisTeam, Cteam &otherTeam){
+    if(thisTeam.getWinPercentage() < otherTeam.getWinPercentage()){
+        //debug
+        cout << "returning initial true" << endl;
+        return true;
+    }
+    else if(thisTeam.getWinPercentage() == otherTeam.getWinPercentage()){
+        if(thisTeam.getKDDifferential() < otherTeam.getKDDifferential()){
+            //debug
+            cout << "return true and equal" << endl;
+            return true;
+        }
+        else{
+            //debug
+            cout << "return false and equal" << endl;
+            return false;
+        }
+    }
+    else{
+        //debug
+        cout << "simply reutnr false" << endl;
+        return false;
+    }
 }
 
 void Season::fillCodedOutputWith(vector<string> &encodedOutput, vector<int> &topRow, vector<int> &bottomRow){

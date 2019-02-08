@@ -17,6 +17,7 @@
 #include "Hplayer.h"
 #include <string>
 #include <vector>
+#include <cmath>
 
 using namespace std;
 
@@ -73,6 +74,7 @@ public:
     void increaseWinStreak();
     void decreaseWinStreak();
     int getKDDifferential();
+    int getWinPercentage(); //return value between 1 and 1000
 
 private:
     string teamName;

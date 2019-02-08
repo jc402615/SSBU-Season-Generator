@@ -239,20 +239,26 @@ int main (){
     season.setNumberOfPlayersPerTeam(1);
     season.setBattleAmount(3);
 
-    
+
     //season.createAHTeam("Slayers", userTeams, 1, true);
 
     season.addHumanTeamByNameFrom("Beetles", userTeams);
     season.addHumanTeamByNameFrom("1ers", userTeams);
 
 
+char a;
+cout << "enter a" << endl;
+cin >> a;
 
     season.generateRestOfCpuTeams(fighters, idNames, adjectives, nouns);
     season.generateSchedule(stages);
     season.printOutAllMatchups();
-    season.printOutAllMatchupsForWeek(3);
+    season.printOutAllMatchupsForWeek(9);
 
     cout << "\n\n\n\n\n\n";
+
+
+
     /*
     season.createAHTeam("Murder", userTeams);
     season.createAHTeam("Murder2", userTeams, 1, false);
@@ -327,6 +333,18 @@ void loadUserTeams(vector<Hteam> &userTeams){
             inFile.ignore();
             inFile >> tempInt;
             tempTeam.setLosses(tempInt);
+            inFile.ignore();
+            inFile >> tempInt;
+            tempTeam.setTeamKills(tempInt);
+            inFile.ignore();
+            inFile >> tempInt;
+            tempTeam.setTeamDeaths(tempInt);
+            inFile.ignore();
+            inFile >> tempInt;
+            tempTeam.setWinStreak(tempInt);
+            inFile.ignore();
+            inFile >> tempInt;
+            tempTeam.setRank(tempInt);
             inFile.ignore();
             //now each team member's data needs to be read into temp player, then added to the team
             for(int i = 0; i < tempTeam.getNumberOfPlayers(); i++){
@@ -428,6 +446,10 @@ void saveUserTeams(vector<Hteam> &userTeams){
         outFile << userTeams[i].getIsMainTeam() << endl;
         outFile << userTeams[i].getWins() << endl;
         outFile << userTeams[i].getLosses() << endl;
+        outFile << userTeams[i].getTeamKills() << endl;
+        outFile << userTeams[i].getTeamDeaths() << endl;
+        outFile << userTeams[i].getWinStreak() << endl;
+        outFile << userTeams[i].getRank() << endl;
         for(int j = 0; j < userTeams[i].getNumberOfPlayers(); j++){
             outFile << userTeams[i].getTeamMemberAtIndex(j).getUser() << endl;
             outFile << userTeams[i].getTeamMemberAtIndex(j).getFighter() << endl;

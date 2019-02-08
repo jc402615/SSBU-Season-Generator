@@ -64,7 +64,11 @@ public:
     void printOutAllMatchupsForWeek(int weekNum);
     void createAHTeam(string newTeamName, vector<Hteam> &userTeams, int numPlayers = 0, bool newIsMainTeam = true);
     //the team will placed into userTeams after it has been created
-
+    void waitForEnterPress();
+    bool isWorseThan(Hteam &thisTeam, Hteam &otherTeam);
+    bool isWorseThan(Hteam &thisTeam, Cteam &otherTeam);
+    bool isWorseThan(Cteam &thisTeam, Hteam &otherTeam);
+    bool isWorseThan(Cteam &thisTeam, Cteam &otherTeam);
 private:
 
     void fillCodedOutputWith(vector<string> &encodedOutput, vector<int> &topRow, vector<int> &bottomRow);

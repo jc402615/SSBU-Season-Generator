@@ -17,6 +17,7 @@
 #include "Cplayer.h"
 #include <string>
 #include <vector>
+#include <cmath>
 
 using namespace std;
 
@@ -60,6 +61,7 @@ public:
     void increaseWinStreak();
     void decreaseWinStreak();
     int getKDDifferential();
+    int getWinPercentage();
 
     //additional helpers
     void increaseTeamMemberKillsAtIndex(int index);
@@ -67,6 +69,7 @@ public:
     void increaseTeamMemberDeathsAtIndex(int index);
     void increaseTeamMemberLevelAtIndex(int index);
     void decreaseTeamMemberLevelAtIndex(int index);
+
 private:
     string teamName;
     int numberOfPlayers; //players that make up the team
