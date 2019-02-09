@@ -22,6 +22,7 @@
 #include <string>
 #include <sstream>
 #include <windows.h>
+#include <fstream>
 #include "Cplayer.h"
 #include "Hplayer.h"
 #include "CTeam.h"
@@ -69,6 +70,11 @@ public:
     bool isWorseThan(Hteam &thisTeam, Cteam &otherTeam);
     bool isWorseThan(Cteam &thisTeam, Hteam &otherTeam);
     bool isWorseThan(Cteam &thisTeam, Cteam &otherTeam);
+    void saveComputerTeams();
+    void loadComputerTeams(string activeTeam);
+    void saveHumanTeamNames();
+    void loadActiveHumanTeams(string activeTeam, vector<Hteam> &userTeams);
+
 private:
 
     void fillCodedOutputWith(vector<string> &encodedOutput, vector<int> &topRow, vector<int> &bottomRow);

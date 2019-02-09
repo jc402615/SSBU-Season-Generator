@@ -325,6 +325,134 @@ bool Season::isWorseThan(Cteam &thisTeam, Cteam &otherTeam){
     }
 }
 
+void Season::saveComputerTeams(){
+    ofstream outFile;
+    string folderName = activeHumanTeams[0] -> getTeamName() + " Season";
+    LPCSTR folder = folderName.c_str();
+    CreateDirectory(folder, NULL);
+    string fileLocation = activeHumanTeams[0] -> getTeamName() + " Season\\computerTeams.dat";
+    outFile.open(fileLocation);
+
+    for(size_t i = 0; i < computerTeams.size(); i++){
+        outFile << computerTeams[i].getTeamName() << endl;
+        outFile << computerTeams[i].getNumberOfPlayers() << endl;
+        outFile << computerTeams[i].getWins() << endl;
+        outFile << computerTeams[i].getLosses() << endl;
+        outFile << computerTeams[i].getTeamKills() << endl;
+        outFile << computerTeams[i].getTeamDeaths() << endl;
+        outFile << computerTeams[i].getWinStreak() << endl;
+        outFile << computerTeams[i].getRank() << endl;
+        for(int j = 0; j < computerTeams[i].getNumberOfPlayers(); j++){
+            outFile << computerTeams[i].getTeamMemberAtIndex(j).getId() << endl;
+            outFile << computerTeams[i].getTeamMemberAtIndex(j).getFighter() << endl;
+            outFile << computerTeams[i].getTeamMemberAtIndex(j).getLevel() << endl;
+            outFile << computerTeams[i].getTeamMemberAtIndex(j).getKills() << endl;
+            outFile << computerTeams[i].getTeamMemberAtIndex(j).getDeaths() << endl;
+        }
+    }
+    outFile.close();
+}
+
+void Season::loadComputerTeams(string activeTeam){
+    string fileLocation = activeTeam + " Season\\computerTeams.dat";
+    ifstream inFile;
+    inFile.open(fileLocation);
+    if(inFile.fail()){
+        cout << "could not find \'computerTeams.dat\'" << endl;
+        cout << "now exiting" << endl;
+        exit(1);
+    }
+
+    else{
+        string tempString;
+        int tempInt;
+        Cplayer tempPlayer;
+        Cteam tempTeam;
+
+        getline(inFile, tempString);
+        while(!inFile.eof()){
+            //need to empty previous teamMembers
+            tempTeam.removeAllTeamMembers();
+            tempTeam.setTeamName(tempString);
+            inFile >> tempInt;
+            inFile.ignore();
+            tempTeam.setNumberOfPlayers(tempInt);
+            inFile >> tempInt;
+            inFile.ignore();
+            tempTeam.setWins(tempInt);
+            inFile >> tempInt;
+            inFile.ignore();
+            tempTeam.setLosses(tempInt);
+            inFile >> tempInt;
+            inFile.ignore();
+            tempTeam.setTeamKills(tempInt);
+            inFile >> tempInt;
+            inFile.ignore();
+            tempTeam.setTeamDeaths(tempInt);
+            inFile >> tempInt;
+            inFile.ignore();
+            tempTeam.setWinStreak(tempInt);
+            inFile >> tempInt;
+            inFile.ignore();
+            tempTeam.setRank(tempInt);
+
+            //now need to read in team member data
+            for(int i = 0; i < tempTeam.getNumberOfPlayers(); i++){
+                    getline(inFile, tempString);
+                    tempPlayer.setId(tempString);
+                    getline(inFile, tempString);
+                    tempPlayer.setFighter(tempString);
+                    inFile >> tempInt;
+                    inFile.ignore();
+                    tempPlayer.setLevel(tempInt);
+                    inFile >> tempInt;
+                    inFile.ignore();
+                    tempPlayer.setKills(tempInt);
+                    inFile >> tempInt;
+                    inFile.ignore();
+                    tempPlayer.setDeaths(tempInt);
+                    //now can add the completed Cplayer to the team
+                    tempTeam.addTeamMember(tempPlayer);
+            }
+            //now all team member and stats have been added, so add to collection
+            computerTeams.push_back(tempTeam);
+            getline(inFile, tempString);
+        }
+    }
+    inFile.close();
+}
+
+void Season::saveHumanTeamNames(){
+    ofstream outFile;
+    string folderName = activeHumanTeams[0] -> getTeamName() + " Season";
+    LPCSTR folder = folderName.c_str();
+    CreateDirectory(folder, NULL);
+    string fileLocation = activeHumanTeams[0] -> getTeamName() + " Season\\humanTeams.dat";
+    outFile.open(fileLocation);
+
+    for(int i = 0; i < numberOfHumanTeams; i++){
+        outFile << activeHumanTeams[i] -> getTeamName() << endl;
+    }
+}
+
+void Season::loadActiveHumanTeams(string activeTeam, vector<Hteam> &userTeams){
+    string fileLocation = activeTeam + " Season\\humanTeams.dat";
+    ifstream inFile;
+    inFile.open(fileLocation);
+    if(inFile.fail()){
+        cout << "could not find \'humanTeams.dat\'" << endl;
+        cout << "now exiting" << endl;
+        exit(1);
+    }
+    else{
+        string teamNametoAdd;
+        for(int i = 0; i < numberOfHumanTeams; i++){
+            getline(inFile, teamNametoAdd);
+            addHumanTeamByNameFrom(teamNametoAdd, userTeams);
+        }
+    }
+}
+
 void Season::fillCodedOutputWith(vector<string> &encodedOutput, vector<int> &topRow, vector<int> &bottomRow){
     if(totalNumberOfTeams % 2 == 0){//there is an even amount of teams
         for(int i = 0; i < totalNumberOfTeams - 1; i++){ //for each week i
