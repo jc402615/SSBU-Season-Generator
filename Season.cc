@@ -10,7 +10,7 @@ void Season::makeNew(string activeTeamName){
     LPCSTR folderName = s.c_str();
     CreateDirectory(folderName, NULL); //this folder will hold the season data corresponding to the main team
                                        //including the computerTeams info
-
+//is this stuff necessary since the save functions will create it when done??
 
 }
 
@@ -243,25 +243,17 @@ void Season::waitForEnterPress(){
 
 bool Season::isWorseThan(Hteam &thisTeam, Hteam &otherTeam){
     if(thisTeam.getWinPercentage() < otherTeam.getWinPercentage()){
-        //debug
-        cout << "returning initial true" << endl;
         return true;
     }
     else if(thisTeam.getWinPercentage() == otherTeam.getWinPercentage()){
         if(thisTeam.getKDDifferential() < otherTeam.getKDDifferential()){
-            //debug
-            cout << "return true and equal" << endl;
             return true;
         }
         else{
-            //debug
-            cout << "return false and equal" << endl;
             return false;
         }
     }
     else{
-        //debug
-        cout << "simply reutnr false" << endl;
         return false;
     }
 }
@@ -302,25 +294,17 @@ bool Season::isWorseThan(Cteam &thisTeam, Hteam &otherTeam){
 
 bool Season::isWorseThan(Cteam &thisTeam, Cteam &otherTeam){
     if(thisTeam.getWinPercentage() < otherTeam.getWinPercentage()){
-        //debug
-        cout << "returning initial true" << endl;
         return true;
     }
     else if(thisTeam.getWinPercentage() == otherTeam.getWinPercentage()){
         if(thisTeam.getKDDifferential() < otherTeam.getKDDifferential()){
-            //debug
-            cout << "return true and equal" << endl;
             return true;
         }
         else{
-            //debug
-            cout << "return false and equal" << endl;
             return false;
         }
     }
     else{
-        //debug
-        cout << "simply reutnr false" << endl;
         return false;
     }
 }
@@ -451,6 +435,211 @@ void Season::loadActiveHumanTeams(string activeTeam, vector<Hteam> &userTeams){
             addHumanTeamByNameFrom(teamNametoAdd, userTeams);
         }
     }
+}
+
+void Season::saveImperitiveSeasonData(){
+    ofstream outFile;
+    string folderName = activeHumanTeams[0] -> getTeamName() + " Season";
+    LPCSTR folder = folderName.c_str();
+    CreateDirectory(folder, NULL);
+    string fileLocation = activeHumanTeams[0] -> getTeamName() + " Season\\season.dat";
+    outFile.open(fileLocation);
+
+    outFile << getTotalNumberOfTeams() << endl;
+    outFile << getNumberOfHumanTeams() << endl;
+    outFile << getNumberOfPlayersPerTeam() << endl;
+    outFile << getBattleAmount() << endl;
+}
+
+void Season::loadImperitiveSeasonData(string activeTeam){
+    string fileLocation = activeTeam + " Season\\season.dat";
+    ifstream inFile;
+    inFile.open(fileLocation);
+    if(inFile.fail()){
+        cout << "could not find \'season.dat\'" << endl;
+        cout << "now exiting" << endl;
+        exit(1);
+    }
+    else{
+        int tempInt;
+        inFile >> tempInt;
+        setTotalNumberOfTeams(tempInt);
+        inFile >> tempInt;
+        setNumberOfHumanTeams(tempInt);
+        inFile >> tempInt;
+        setNumberOfPlayersPerTeam(tempInt);
+        inFile >> tempInt;
+        setBattleAmount(tempInt);
+    }
+}
+
+void Season::saveMatchups(){
+    ofstream outFile;
+    string folderName = activeHumanTeams[0] -> getTeamName() + " Season";
+    LPCSTR folder = folderName.c_str();
+    CreateDirectory(folder, NULL);
+    string fileLocation = activeHumanTeams[0] -> getTeamName() + " Season\\matchups.dat";
+    outFile.open(fileLocation);
+
+    for(int i = 0; i < matchups.size(); i++){
+        for(int j = 0; j < matchups[0].size(); j++){
+            if(matchups[i][j].isHumanMatch()){
+                outFile << "0" << endl; //code for humanMatch
+            }
+            else if(matchups[i][j].isMixedMatch()){
+                outFile << "1" << endl; //code for mixed match
+            }
+            else{
+                outFile << "2" << endl; //code for cpu only match
+            }
+
+            matchups[i][j].writeTeamNames(outFile);
+            matchups[i][j].printWinner(outFile);
+            outFile << endl; //so that winner is on its own line
+            outFile << matchups[i][j].getStageName() << endl;
+        }
+    }
+}
+
+void Season::loadMatchups(string activeTeam){
+    string fileLocation = activeTeam + " Season\\matchups.dat";
+    ifstream inFile;
+    inFile.open(fileLocation);
+    if(inFile.fail()){
+        cout << "could not find \'matchups.dat\'" << endl;
+        cout << "now exiting" << endl;
+        exit(1);
+    }
+    else{
+        int matchType;
+        int numberOfWeeks = 0;
+        string firstTeamName;
+        string secondTeamName;
+        string winnerName;
+        string nameOfStage;
+        vector<Cteam>::iterator cpuIt;
+        vector<Cteam>::iterator cpuIt2;
+
+        if(totalNumberOfTeams % 2 == 0){//even amount
+            numberOfWeeks = totalNumberOfTeams - 1;
+        }
+        else{ //odd amount
+            numberOfWeeks = totalNumberOfTeams;
+        }
+
+        for(int i = 0; i < numberOfWeeks; i++){//for each week
+            vector<Match> tempWeek;
+
+            for(int j = 0; j < totalNumberOfTeams/2; j++){ //for this many per week
+                Match tempMatch;
+                inFile >> matchType;
+                inFile.ignore(); //the \n after the int
+                getline(inFile, firstTeamName);
+                getline(inFile, secondTeamName);
+                getline(inFile, winnerName);
+                getline(inFile, nameOfStage);
+
+                switch(matchType){
+                    case 0: {
+                            int a = 0;
+                            while(activeHumanTeams[a] -> getTeamName() != firstTeamName){
+                                a++;
+                            } //now a is the index of the human team to add to the match
+                            tempMatch.addHumanTeam(*(activeHumanTeams[a]));
+
+                            int b = 0;
+                            while(activeHumanTeams[b] -> getTeamName() != secondTeamName){
+                                b++;
+                            } //now b is the index of the 2nd human team to add to the match
+                            tempMatch.addHumanTeam(*(activeHumanTeams[b]));
+
+                            //the teams are now set
+
+                            if(winnerName == firstTeamName){
+                                tempMatch.setHWinner(*(activeHumanTeams[a]));
+                            }
+                            if(winnerName == secondTeamName){
+                                tempMatch.setHWinner(*(activeHumanTeams[b]));
+                            }
+
+                            tempMatch.setStageName(nameOfStage);
+
+                            break;
+                    }
+                    case 1: {
+                        int a = 0;
+
+                        while((activeHumanTeams[a] -> getTeamName()) != firstTeamName){
+                            a++;
+                        } //now a is the index of the human team to add to the match
+                        tempMatch.addHumanTeam(*(activeHumanTeams[a]));
+                        cpuIt = computerTeams.begin();
+                        while(cpuIt -> getTeamName() != secondTeamName){
+                            cpuIt++;
+                        } //now cpuIt is pointing at the cpu team to add to the match
+                        tempMatch.addCpuTeam(*cpuIt);
+                        //the teams are now set
+
+                        if(winnerName == firstTeamName){
+                            tempMatch.setHWinner(*(activeHumanTeams[a]));
+                        }
+                        if(winnerName == secondTeamName){
+                            tempMatch.setCWinner(*cpuIt);
+                        }
+
+                        tempMatch.setStageName(nameOfStage);
+
+                        break;
+                    }
+                    case 2: {
+                        cpuIt = computerTeams.begin();
+                        while(cpuIt -> getTeamName() != firstTeamName){
+                            cpuIt++;
+                        } //now cpuIt is pointing at the first team to add
+                        tempMatch.addCpuTeam(*cpuIt);
+
+                        cpuIt2 = computerTeams.begin();
+                        while(cpuIt2 -> getTeamName() != secondTeamName){
+                            cpuIt2++;
+                        } //now cpuIt2 is pointing at the 2ndcpu team to add to the match
+                        tempMatch.addCpuTeam(*cpuIt2);
+
+                        //the teams are now set
+
+                        if(winnerName == firstTeamName){
+                            tempMatch.setCWinner(*cpuIt);
+                        }
+                        if(winnerName == secondTeamName){
+                            tempMatch.setCWinner(*cpuIt2);
+                        }
+
+                        tempMatch.setStageName(nameOfStage);
+
+                        break;
+                    }
+                    default:{
+                        cout << "error in loadMatchups functions, determining matchup type" << endl;
+                    }
+                } //end switch statements
+                tempWeek.push_back(tempMatch);
+            } //end of innter loop / end of week
+            matchups.push_back(tempWeek);
+        }//end of outer loop / end of all weeks
+    }
+}
+
+void Season::loadCombinedData(string activeTeam, vector<Hteam> &userTeams){
+    loadImperitiveSeasonData(activeTeam);
+    loadComputerTeams(activeTeam);
+    loadActiveHumanTeams(activeTeam, userTeams);
+    loadMatchups(activeTeam);
+}
+
+void Season::saveCombinedData(){
+    saveImperitiveSeasonData();
+    saveComputerTeams();
+    saveHumanTeamNames();
+    saveMatchups();
 }
 
 void Season::fillCodedOutputWith(vector<string> &encodedOutput, vector<int> &topRow, vector<int> &bottomRow){

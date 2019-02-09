@@ -467,26 +467,26 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
     }
 }
 
-void Match::printWinner(){
+void Match::printWinner(ostream &outs){
     if(isHumanMatch()){
         if(Hwinner.getTeamName() == humanTeams[0].getTeamName() ||
            Hwinner.getTeamName() == humanTeams[1].getTeamName())
         {
-               cout << Hwinner.getTeamName();
+               outs << Hwinner.getTeamName();
         }
     }
     else if(isCpuMatch()){
         if(Cwinner.getTeamName() == cpuTeams[0].getTeamName() ||
            Cwinner.getTeamName() == cpuTeams[1].getTeamName())
         {
-               cout << Cwinner.getTeamName();
+               outs << Cwinner.getTeamName();
         }
     }
     else{ //is mixed Match
         if(Hwinner.getTeamName() == humanTeams[0].getTeamName() ||
            Cwinner.getTeamName() == cpuTeams[0].getTeamName())
         {
-               cout << Hwinner.getTeamName();
+               outs << Hwinner.getTeamName();
         }
     }
 
@@ -507,13 +507,13 @@ void Match::printWinner(){
 
 void Match::printMatchup(){
     if(isHumanMatch()){
-        cout << left << setw(22) << humanTeams[0].getTeamName() << " vs. " << setw(22) << humanTeams[1].getTeamName() << "     Winner: "; printWinner(); cout << endl;
+        cout << left << setw(22) << humanTeams[0].getTeamName() << " vs. " << setw(22) << humanTeams[1].getTeamName() << "     Winner: "; printWinner(cout); cout << endl;
     }
     else if(isCpuMatch()){
-        cout << left << setw(22) << cpuTeams[0].getTeamName() << " vs. " << setw(22) << cpuTeams[1].getTeamName() << "     Winner: "; printWinner(); cout << endl;
+        cout << left << setw(22) << cpuTeams[0].getTeamName() << " vs. " << setw(22) << cpuTeams[1].getTeamName() << "     Winner: "; printWinner(cout); cout << endl;
     }
     else{//is mixed match
-        cout << left << setw(22) << humanTeams[0].getTeamName() << " vs. " << setw(22) << cpuTeams[0].getTeamName() << "     Winner: "; printWinner(); cout << endl;
+        cout << left << setw(22) << humanTeams[0].getTeamName() << " vs. " << setw(22) << cpuTeams[0].getTeamName() << "     Winner: "; printWinner(cout); cout << endl;
     }
     cout << right; //reset adjusted alignment
 }
@@ -525,9 +525,33 @@ string Match::getStageName(){
     return stageName;
 }
 
+void Match::setHWinner(Hteam &humanTeam){
+    Hwinner = humanTeam;
+}
+
+void Match::setCWinner(Cteam &cpuTeam){
+    Cwinner = cpuTeam;
+}
+
+
 void Match::randomlySetStage(vector<string> &stages){
     int randNum = rand() % stages.size();
     setStageName(stages[randNum]);
+}
+
+void Match::writeTeamNames(ostream &outs){
+    if(isHumanMatch()){
+        outs << humanTeams[0].getTeamName() << endl;
+        outs << humanTeams[1].getTeamName() << endl;
+    }
+    else if(isMixedMatch()){
+        outs << humanTeams[0].getTeamName() << endl;
+        outs << cpuTeams[0].getTeamName() << endl;
+    }
+    else{
+        outs << cpuTeams[0].getTeamName() << endl;
+        outs << cpuTeams[1].getTeamName() << endl;
+    }
 }
 
 double Match::getProbabilityOfWinFor(Cteam team){

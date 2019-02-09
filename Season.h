@@ -74,7 +74,12 @@ public:
     void loadComputerTeams(string activeTeam);
     void saveHumanTeamNames();
     void loadActiveHumanTeams(string activeTeam, vector<Hteam> &userTeams);
-
+    void saveImperitiveSeasonData();
+    void loadImperitiveSeasonData(string activeTeam);
+    void saveMatchups();
+    void loadMatchups(string activeTeam);
+    void loadCombinedData(string activeTeam, vector<Hteam> &userTeams);
+    void saveCombinedData();
 private:
 
     void fillCodedOutputWith(vector<string> &encodedOutput, vector<int> &topRow, vector<int> &bottomRow);

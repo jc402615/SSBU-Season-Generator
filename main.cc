@@ -195,15 +195,17 @@ int main (){
 
 
     Season season;
+    season.loadCombinedData("Beetles", userTeams);
+
+    /*
     season.setTotalNumberOfTeams(30);
     season.setNumberOfHumanTeams(2);
     season.setNumberOfPlayersPerTeam(1);
     season.setBattleAmount(3);
-
+    */
 
     //season.createAHTeam("Slayers", userTeams, 1, true);
 
-    season.loadActiveHumanTeams("Beetles", userTeams);
     //season.addHumanTeamByNameFrom("Beetles", userTeams);
     //season.addHumanTeamByNameFrom("1ers", userTeams);
 
@@ -211,16 +213,15 @@ int main (){
 char a;
 cout << "enter a" << endl;
 cin >> a;
-    //season.loadComputerTeams("Beetles");
-    season.generateRestOfCpuTeams(fighters, idNames, adjectives, nouns);
-    season.generateSchedule(stages);
+    //season.generateRestOfCpuTeams(fighters, idNames, adjectives, nouns);
+    //season.generateSchedule(stages);
     season.printOutAllMatchups();
-    season.printOutAllMatchupsForWeek(9);
+    //season.printOutAllMatchupsForWeek(9);
 
     cout << "\n\n\n\n\n\n";
 
-season.saveComputerTeams();
-season.saveHumanTeamNames();
+season.saveCombinedData();
+
 /*
 ofstream ofs;
 CreateDirectory("imnewFolder", NULL);

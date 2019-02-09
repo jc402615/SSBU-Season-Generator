@@ -42,12 +42,15 @@ public:
     void playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, int stockLives);
     //runs the match and collects data depending on what type of teams
     //are involved in the match
-    void printWinner();
+    void printWinner(ostream &outs);
     void printMatchup();
     void setStageName(string newStageName);
     string getStageName();
+    void setHWinner(Hteam &humanTeam);
+    void setCWinner(Cteam &cpuTeam);
     void randomlySetStage(vector<string> &stages);
     //uses the names within stages and randomly assigns one to stageName
+    void writeTeamNames(ostream &outs);
 
     //simulation functions
     double getProbabilityOfWinFor(Cteam team);
