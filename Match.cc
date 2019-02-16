@@ -554,6 +554,24 @@ void Match::writeTeamNames(ostream &outs){
     }
 }
 
+int Match::writeTeamNameAndRecord(){
+    if(isHumanMatch()){
+        cout << "     " << humanTeams[0].getTeamName() << " ";  cout << "("; humanTeams[0].printRecord(); cout << ")";
+        cout << "  vs.  " << humanTeams[1].getTeamName() << " "; cout << "("; humanTeams[1].printRecord(); cout << ")";
+        return static_cast<int>((humanTeams[0].getTeamName().size() + humanTeams[1].getTeamName().size()));
+    }
+    else if(isMixedMatch()){
+        cout << "     " << humanTeams[0].getTeamName() << " "; cout << "("; humanTeams[0].printRecord(); cout << ")";
+        cout << "  vs.  " << cpuTeams[0].getTeamName() << " "; cout << "("; cpuTeams[0].printRecord(); cout << ")";
+        return static_cast<int>((humanTeams[0].getTeamName().size() + cpuTeams[0].getTeamName().size()));
+    }
+    else{
+        cout << "     " << cpuTeams[0].getTeamName() << " "; cout << "("; cpuTeams[0].printRecord(); cout << ")";
+        cout << "  vs.  " << cpuTeams[1].getTeamName() << " "; cout << "("; cpuTeams[1].printRecord(); cout << ")";
+        return static_cast<int>((cpuTeams[0].getTeamName().size() + cpuTeams[1].getTeamName().size()));
+    }
+}
+
 double Match::getProbabilityOfWinFor(Cteam team){
     int levelsOfTeam1 = 0;
     int levelsOfTeam2 = 0;

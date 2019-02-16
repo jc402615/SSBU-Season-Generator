@@ -752,6 +752,42 @@ void Season::printTeamStandingsTable(){
     }
 }
 
+void Season::printScheduledMatches(){
+    int week = activeHumanTeams[0] -> getTotalMatchesPlayed() + 1;
+    int matchNumber = 1;
+    for(int i = 0; i < matchups[week].size(); i++){//for each game during the week
+        if(matchups[week - 1][i].isHumanMatch() || matchups[week - 1][i].isMixedMatch()){
+            cout << "* " << matchNumber << ".) "; matchups[week - 1][i].writeTeamNameAndRecord();
+            cout << endl;
+            matchNumber++;
+        }
+    }
+}
+
+int Season::printSeasonStatusMenu(){
+    int week = activeHumanTeams[0] -> getTotalMatchesPlayed() + 1;
+    cout << "***************************************************************" << endl;
+    cout << "                            Week " << week << "                           *" << endl;
+    cout << "***************************************************************" << endl;
+    cout << "                     Your Scheduled Matches                   *" << endl;
+    cout << "***************************************************************" << endl;
+    printScheduledMatches();
+    cout << "***************************************************************" << endl;
+    cout << "                           Actions                            *" << endl;
+    cout << "***************************************************************" << endl;
+    cout << "*  1. Play this week's matchups                               *" << endl;
+    cout << "*  2. View League Schedule                                    *" << endl;
+    cout << "*  3. View Standings                                          *" << endl;
+    cout << "*  4. View Statistics and Records (To be implemented)         *" << endl;
+    cout << "*  5. Save and Continue                                       *" << endl;
+    cout << "*  6. Save and Exit                                           *" << endl;
+    cout << "***************************************************************" << endl;
+    cout << "Your choice: ";
+    int response;
+    cin >> response;
+    return response;
+}
+
 void Season::fillCodedOutputWith(vector<string> &encodedOutput, vector<int> &topRow, vector<int> &bottomRow){
     if(totalNumberOfTeams % 2 == 0){//there is an even amount of teams
         for(int i = 0; i < totalNumberOfTeams - 1; i++){ //for each week i

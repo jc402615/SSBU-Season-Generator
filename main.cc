@@ -216,6 +216,7 @@ int main (){
     cout << "\n\n\n\n\n\n";
     season.updateRanks();
     season.printTeamStandingsTable();
+    season.printSeasonStatusMenu();
 
     season.saveCombinedData();
 

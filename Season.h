@@ -87,6 +87,8 @@ public:
     void saveCombinedData();
     void updateRanks();
     void printTeamStandingsTable();
+    void printScheduledMatches();
+    int printSeasonStatusMenu();
 private:
 
     void fillCodedOutputWith(vector<string> &encodedOutput, vector<int> &topRow, vector<int> &bottomRow);
