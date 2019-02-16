@@ -117,6 +117,7 @@ int main (){
     srand(time(0)); //seeds random number generator
     //read in previous data from disk
     vector<Hteam> userTeams;
+    userTeams.reserve(100);
     vector<string> fighters;   //used for random team generation
     vector<string> idNames;    //used for random team generation
     vector<string> adjectives; //used for random team generation
@@ -130,8 +131,10 @@ int main (){
 
     system("CLS"); //clears the screen -- << flush; to clear iostream
 
+    Season season; //this is the heart of the program
+
     bool returnToIntro = true;
-    bool returnToCharacterName = true;
+    //bool returnToCharacterName = true;
 
     string tempString; //used for data input
     string tempString2; //used for additional data input
@@ -139,50 +142,33 @@ int main (){
     Hteam activeTeam; //the team that is currently in use
     Hplayer tempHplayer;
 
-    printBasicMenu(userTeams);
-/*
+
     while(returnToIntro){
-        printBasicMenu(userTeams); //intro
+        printBasicMenu(userTeams);
+        getline(cin, tempString);
 
-        cin >> tempString;
-
-
-        //need to see if team already exists
-        tempInt = isAlreadyATeam(tempString, userTeams);
-        if( tempInt == -1){
-            cout << tempString << " does not appear to be a team yet." << endl;
-            cout << "Would you like to start this team (y/n): ";
-            cin >> tempString2;
-
-            if(tempString2 == "y" || tempString2 == "Y" || tempString2 == "yes" || tempString2 == "Yes"){
-                returnToIntro = false;
-                activeTeam.setTeamName(tempString);
-                cout << "\nHow many players are on your team (including yourself): ";
-                cin >> tempInt;
-                for(size_t i = 0; i < tempInt; i++){
-                    returnToCharacterName = true;
-                    while(returnToCharacterName){
-                        cout << "Please enter information for player " << i + 1 << " of your team." << endl;
-                        if(activeTeam.addTeamMember(createAHplayer())){
-                            activeTeam.increaseNumberOfPlayers();
-                            returnToCharacterName = false;
-                        }
-                    }
-                } //the team has been completed
-                userTeams.push_back(activeTeam);
-            }
-            else{
-                //they want to enter another team name, return them to main menu
-            }
+        int teamIndex = isAlreadyAMainTeam(tempString, userTeams);
+        if(teamIndex != -1){//the team already has a season
+            returnToIntro = false;
+            //load the season based off team name at teamIndex within userTeams
+            season.loadCombinedData(tempString, userTeams);
         }
         else{
-            //continue using a current team
-            returnToIntro = false;
-            activeTeam = userTeams[tempInt];
+            int teamIndex2 = isAlreadyATeam(tempString, userTeams);
+            if(teamIndex2 != -1){//the team exists, but is not a main team
+                cout << "Sorry that team name is already taken by a team in another league." << endl;
+                cout << "Please try another name." << endl;
+                season.waitForEnterPress();
+            }
+            else{//the team does not exist at all
+                returnToIntro = false;
+                season.makeNew(tempString, userTeams, fighters, idNames, adjectives,
+                               nouns, stages);
+            }
         }
-    } //end of intro sequence, active Team should now be set and ready to move on
+    }
 
-*/
+
     //need season / matches
     //option to view stats / next match or all previous matches of the season
     //option to quit
@@ -194,8 +180,21 @@ int main (){
     //3. view all time stats -> records page
 
 
-    Season season;
-    season.loadCombinedData("Beetles", userTeams);
+    /* manually adding two teams
+    season.setTotalNumberOfTeams(20);
+    season.setNumberOfHumanTeams(2);
+    season.addHumanTeamByNameFrom("Beetles", userTeams);
+    season.addHumanTeamByNameFrom("Fallout", userTeams);
+
+    season.setNumberOfPlayersPerTeam(2);
+    season.setBattleAmount(3);
+
+/* end manually addting
+
+    season.generateRestOfCpuTeams(fighters, idNames, adjectives, nouns);
+    season.generateSchedule(stages);
+
+    //season.loadCombinedData("Beetles", userTeams);
 
     /*
     season.setTotalNumberOfTeams(30);
@@ -210,41 +209,18 @@ int main (){
     //season.addHumanTeamByNameFrom("1ers", userTeams);
 
 
-char a;
-cout << "enter a" << endl;
-cin >> a;
-    //season.generateRestOfCpuTeams(fighters, idNames, adjectives, nouns);
-    //season.generateSchedule(stages);
+
     season.printOutAllMatchups();
     //season.printOutAllMatchupsForWeek(9);
 
     cout << "\n\n\n\n\n\n";
+    season.updateRanks();
+    season.printTeamStandingsTable();
 
-season.saveCombinedData();
+    season.saveCombinedData();
 
-/*
-ofstream ofs;
-CreateDirectory("imnewFolder", NULL);
-ofs.open("imnewFolder\\temp3.txt");
-/*
-    /*
-    season.createAHTeam("Murder", userTeams);
-    season.createAHTeam("Murder2", userTeams, 1, false);
 
-    cout << userTeams[userTeams.size() - 1].getTeamName() << endl;
-    cout << userTeams[userTeams.size() - 1].getNumberOfPlayers() << endl;
-    cout << userTeams[userTeams.size() - 1].getIsMainTeam() << endl;
-*/
-    /*
-    cin >> tempInt;
-    cout << userTeams[userTeams.size() - 1].getTeamName() << endl;
-    cout << userTeams[userTeams.size() - 1].getTeamMemberAtIndex(0).getUser() << endl;
-    cout << userTeams[userTeams.size() - 1].getTeamMemberAtIndex(0).getFighter() << endl;
-    cout << userTeams[userTeams.size() - 1].getTeamMemberAtIndex(0).getCharacter() << endl;
-    cout << userTeams[userTeams.size() - 1].getTeamMemberAtIndex(1).getUser() << endl;
-    cout << userTeams[userTeams.size() - 1].getTeamMemberAtIndex(1).getFighter() << endl;
-    cout << userTeams[userTeams.size() - 1].getTeamMemberAtIndex(1).getCharacter() << endl;
-    */
+
     saveUserTeams(userTeams);
 
     return 0;

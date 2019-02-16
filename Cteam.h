@@ -18,6 +18,7 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include <iomanip>
 
 using namespace std;
 
@@ -62,6 +63,8 @@ public:
     void decreaseWinStreak();
     int getKDDifferential();
     int getWinPercentage();
+    void increaseRank();
+    void writeStandingsData();
 
     //additional helpers
     void increaseTeamMemberKillsAtIndex(int index);

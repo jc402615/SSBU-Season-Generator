@@ -5,13 +5,65 @@ Season::Season(){
     numberOfHumanTeams = 0;
 }
 
-void Season::makeNew(string activeTeamName){
-    string s = activeTeamName + " Season";
-    LPCSTR folderName = s.c_str();
-    CreateDirectory(folderName, NULL); //this folder will hold the season data corresponding to the main team
-                                       //including the computerTeams info
-//is this stuff necessary since the save functions will create it when done??
+void Season::makeNew(string activeTeamName, vector<Hteam> &userTeams,
+                     vector<string> &fighters, vector<string> &idNames,
+                     vector<string> &adjectives, vector<string> &nouns,
+                     vector<string> &stages)
+{
+    int readerInt;
+    string readerString;
+    //team name must be verified to not be an existing team before this function
+    createAHTeam(activeTeamName, userTeams); //creates the main team
+    addHumanTeamByNameFrom(activeTeamName, userTeams); //now the team is part of the season
+cout << "accessing the active team name: " << activeHumanTeams[0] -> getTeamName() << endl;
+cout << "activeHumanTeams size after adding main team : " << activeHumanTeams.size() << endl;
+    //we can now set the number of players per team
+    setNumberOfPlayersPerTeam(activeHumanTeams[0] -> getNumberOfPlayers());
 
+    cout << endl << "How many teams will be in this league in total?:";
+    cin >> readerInt;
+    setTotalNumberOfTeams(readerInt);
+
+    cout << endl << endl << "This will be a Stock Match league." << endl;
+    cout << "How many lives will each character begin a match with: ";
+    cin >> readerInt;
+    setBattleAmount(readerInt);
+
+    cout << endl << endl << "And how many of these " << getTotalNumberOfTeams()
+         << " teams will be user teams (enter 1 if only your team): ";
+    cin >> readerInt;
+    setNumberOfHumanTeams(readerInt);
+    cin.ignore(); //ignore the enter key left behind after the int
+
+    //now create the rest of the human teams if necessary
+    bool retry;
+    for(int i = 1; i < getNumberOfHumanTeams(); i++){
+        retry = true;
+        while(retry == true){
+            cout << "Please enter the name for user team #" << i + 1 << ": ";
+            getline(cin, readerString);
+            if(Season::isAlreadyATeam(readerString, userTeams) == -1){
+                retry = false;
+                createAHTeam(readerString, userTeams, getNumberOfPlayersPerTeam(), false);
+                addHumanTeamByNameFrom(readerString, userTeams);
+            }
+            else{
+                cout << endl << "Sorry that team name is already taken." << endl;
+                cout << "Please try again." <<  endl;
+            }
+        }
+           //if the function returns anything but -1, then the team already exists
+    } //the human teams have been created
+
+    generateRestOfCpuTeams(fighters, idNames, adjectives, nouns);
+
+    saveHumanTeamNames();
+
+    saveComputerTeams();
+
+    saveImperitiveSeasonData();
+
+    generateSchedule(stages);
 }
 
 void Season::setTotalNumberOfTeams(int newTotalNumberOfTeams){
@@ -54,10 +106,7 @@ int Season::getNumberOfComputerTeams(){
 void Season::addHumanTeamByNameFrom(string teamName, vector<Hteam> &userTeams){
     vector<Hteam>::iterator it = userTeams.begin();
     while(it -> getTeamName() != teamName){
-        cout << userTeams.size() << endl;
-        cout << it -> getTeamName() << endl;
         it++;
-        cout << it -> getTeamName() << endl;
     } //leaves iterator pointing at the correct team within userTeams
     activeHumanTeams.push_back(it);
 }
@@ -203,6 +252,7 @@ void Season::generateSchedule(vector<string> &stages){
 
     //the topRow and bottomRow appropriately filled
     fillCodedOutputWith(encodedOutput, topRow, bottomRow);
+
     //randomly switch around weeks so that each season isn't identical
     randomizeWeeklySchedule(encodedOutput);
 
@@ -630,8 +680,8 @@ void Season::loadMatchups(string activeTeam){
 
 void Season::loadCombinedData(string activeTeam, vector<Hteam> &userTeams){
     loadImperitiveSeasonData(activeTeam);
-    loadComputerTeams(activeTeam);
     loadActiveHumanTeams(activeTeam, userTeams);
+    loadComputerTeams(activeTeam);
     loadMatchups(activeTeam);
 }
 
@@ -640,6 +690,66 @@ void Season::saveCombinedData(){
     saveComputerTeams();
     saveHumanTeamNames();
     saveMatchups();
+}
+
+void Season::updateRanks(){
+    //step1 reset everyone's rank to 1
+    for(int i = 0; i < numberOfHumanTeams; i++){ //for each humanTeam
+        activeHumanTeams[i] -> setRank(1);
+    }
+
+    for(int i = 0; i < getNumberOfComputerTeams(); ++i){ //for each cpuTeam
+        computerTeams[i].setRank(1);
+    }
+
+    //step 2 update ranks for all humanTeams
+    for(int i = 0; i < numberOfHumanTeams; i++){ //for each humanTeam
+        for(int j = 0; j < numberOfHumanTeams; j++){ //compare against other human teams
+            if(isWorseThan(*activeHumanTeams[i], *activeHumanTeams[j])){
+                activeHumanTeams[i] -> increaseRank();
+            }
+        }
+        for(int j = 0; j < getNumberOfComputerTeams(); j++){//compare against all computer Teams
+            if(isWorseThan(*activeHumanTeams[i], computerTeams[j])){
+                activeHumanTeams[i] -> increaseRank();
+            }
+        }
+    }
+    //step 3 update ranks for all the cpuTeams
+    for(int i = 0; i < getNumberOfComputerTeams(); ++i){ //for each cpuTeam
+        for(int j = 0; j < numberOfHumanTeams; j++){
+            if(isWorseThan(computerTeams[i], *activeHumanTeams[j])){
+                computerTeams[i].increaseRank();
+            }
+        }
+        for(int j = 0; j < getNumberOfComputerTeams(); j++){
+            if(isWorseThan(computerTeams[i], computerTeams[j])){
+                computerTeams[i].increaseRank();
+            }
+        }
+    }
+    //all ranks have now been updated
+}
+
+void Season::printTeamStandingsTable(){
+    //write header
+    cout << "             Team             " << "   Wins   " << "  Losses  " << "  Kills  " << "  Deaths  " << "  K-D Diff" << endl;
+    for(int counter = 1; counter <= totalNumberOfTeams; counter++){ //for each of the possible ranks
+        //go through human teams
+        for(int i = 0; i < numberOfHumanTeams; i++){
+            if(activeHumanTeams[i] -> getRank() == counter){
+                cout << "#" << setw(2) << setfill('0') << counter << " " << setfill(' ');
+                activeHumanTeams[i] -> writeStandingsData();
+            }
+        }
+        //look through each of the computer teams as well
+        for(int i = 0; i < getNumberOfComputerTeams(); i++){
+            if(computerTeams[i].getRank() == counter){
+                cout << "#" << setw(2) << setfill('0') << counter << " " << setfill(' ');
+                computerTeams[i].writeStandingsData();
+            }
+        }
+    }
 }
 
 void Season::fillCodedOutputWith(vector<string> &encodedOutput, vector<int> &topRow, vector<int> &bottomRow){
@@ -756,4 +866,13 @@ void Season::printCreateAPlayerHelpMenu(){
     cout << "# Fighter:   Which playable fighter will you use?    #" << endl;
     cout << "# Character: (UserName/Profile) of your character    #" << endl;
     cout << "######################################################" << endl;
+}
+
+int Season::isAlreadyATeam(string teamName, vector<Hteam> &userTeams){
+    for(size_t i = 0; i < userTeams.size(); i++){
+        if(userTeams[i].getTeamName() == teamName){
+            return i;
+        }
+    }
+    return -1;
 }

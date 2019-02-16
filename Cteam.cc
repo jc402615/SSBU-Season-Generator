@@ -154,6 +154,20 @@ int Cteam::getWinPercentage(){
     return modifiedAnswer;
 }
 
+void Cteam::increaseRank(){
+    rank++;
+}
+
+void Cteam::writeStandingsData(){
+    cout << left << setw(27) << getTeamName();
+    cout << right << setw(5) << getWins();
+    cout << right << setw(10) << getLosses();
+    cout << right << setw(10) << getTeamKills();
+    cout << right << setw(9) << getTeamDeaths();
+    cout << right << setw(11) << getKDDifferential();
+    cout << endl;
+}
+
 void Cteam::increaseTeamMemberKillsAtIndex(int index){
     teamMembers[index].increaseKills();
 }

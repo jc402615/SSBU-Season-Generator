@@ -214,3 +214,17 @@ int Hteam::getWinPercentage(){
 
     return modifiedAnswer;
 }
+
+void Hteam::increaseRank(){
+    rank++;
+}
+
+void Hteam::writeStandingsData(){
+    cout << left << setw(27) << getTeamName();
+    cout << right << setw(5) << getWins();
+    cout << right << setw(10) << getLosses();
+    cout << right << setw(10) << getTeamKills();
+    cout << right << setw(9) << getTeamDeaths();
+    cout << right << setw(11) << getKDDifferential();
+    cout << endl;
+}

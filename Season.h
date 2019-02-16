@@ -36,7 +36,12 @@ public:
     Season();
 
     //!!!!!!!!!!!!!!!!!!!!!
-    void makeNew(string activeTeamName);  /////contains all the questions and details when starting a brand new season from scratch for new Teams
+    void makeNew(string activeTeamName, vector<Hteam> &userTeams,
+                 vector<string> &fighters, vector<string> &idNames,
+                 vector<string> &adjectives, vector<string> &nouns,
+                 vector<string> &stages);
+                 /////contains all the questions and details when starting a brand new season from scratch for new Teams
+                 //the rest of the vectors are used for cpuTeam generation
 
     void setTotalNumberOfTeams(int newTotalNumberOfTeams);
     void setNumberOfHumanTeams(int newNumberOfHumanTeams);
@@ -80,6 +85,8 @@ public:
     void loadMatchups(string activeTeam);
     void loadCombinedData(string activeTeam, vector<Hteam> &userTeams);
     void saveCombinedData();
+    void updateRanks();
+    void printTeamStandingsTable();
 private:
 
     void fillCodedOutputWith(vector<string> &encodedOutput, vector<int> &topRow, vector<int> &bottomRow);
@@ -96,7 +103,9 @@ private:
                                      vector<string> &nouns);
     Hplayer createAHplayer();
     void printCreateAPlayerHelpMenu();
+    int isAlreadyATeam(string teamName, vector<Hteam> &userTeams);
 
+    //member variables
     int totalNumberOfTeams;
     int numberOfHumanTeams;
     int numberOfPlayersPerTeam;
