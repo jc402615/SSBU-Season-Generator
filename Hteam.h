@@ -78,6 +78,7 @@ public:
     int getWinPercentage(); //return value between 1 and 1000
     void increaseRank();
     void writeStandingsData();
+    void writeNameAndRecordFormatted(int space);
 
 private:
     string teamName;

@@ -47,6 +47,46 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
             stageIndex++;
         } //now stage Index matches the stage that the match will be played at
 
+        //print the matchup setup
+        cout << "***************************************************************" << endl;
+        cout << "*                         Next Match                          *" << endl;
+        cout << "*                  Location: " << getStageName();
+        size_t numberSpaces = 35 - getStageName().length();
+        for(int i = 0; i < numberSpaces; ++i){
+            cout << " ";
+        }
+        cout <<  "*" << endl;
+        cout << "***************************************************************" << endl;
+
+        it1 -> writeNameAndRecordFormatted(25);
+        cout << " vs. ";
+        it2 -> writeNameAndRecordFormatted(25);
+
+        //characters
+        cout << endl << "     ";
+        for(int i = 0; i < humanTeams[0].getNumberOfPlayers(); i++){
+            cout << left << humanTeams[0].getTeamMemberAtIndex(i).getCharacter();
+        }
+        cout << "              ";
+        for(int i = 0; i < humanTeams[1].getNumberOfPlayers(); i++){
+            cout << left << humanTeams[1].getTeamMemberAtIndex(i).getCharacter();
+        }
+
+        cout << endl;
+        cout << "     ";
+        //fighters
+        for(int i = 0; i < humanTeams[0].getNumberOfPlayers(); i++){
+            cout << left << humanTeams[0].getTeamMemberAtIndex(i).getFighter();
+        }
+        cout << "              ";
+        for(int i = 0; i < humanTeams[1].getNumberOfPlayers(); i++){
+            cout << left << humanTeams[1].getTeamMemberAtIndex(i).getFighter();
+        }
+        cout << endl << endl;
+
+
+
+
         //get winner
         string userInput;
         int userInputInt;
@@ -152,6 +192,46 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
         while(humanTeams[0].getTeamMemberAtIndex(0).getStageDataAtIndex(stageIndex).getName() != stageName){
             stageIndex++;
         } //stageIndex now matches the stage
+
+
+        //print the matchup setup
+        cout << "***************************************************************" << endl;
+        cout << "*                         Next Match                          *" << endl;
+        cout << "*                  Location: " << getStageName();
+        size_t numberSpaces = 35 - getStageName().length();
+        for(int i = 0; i < numberSpaces; ++i){
+            cout << " ";
+        }
+        cout <<  "*" << endl;
+        cout << "***************************************************************" << endl;
+
+        humanIt-> writeNameAndRecordFormatted(25);
+        cout << " vs. ";
+        cpuIt -> writeNameAndRecordFormatted(25);
+
+        //characters
+        cout << endl << "     ";
+        for(int i = 0; i < humanTeams[0].getNumberOfPlayers(); i++){
+            cout << left << setw(15) << humanTeams[0].getTeamMemberAtIndex(i).getCharacter();
+        }
+        cout << "              ";
+        for(int i = 0; i < cpuTeams[0].getNumberOfPlayers(); i++){
+            cout << left << setw(15) << cpuTeams[0].getTeamMemberAtIndex(i).getId();
+        }
+
+        cout << endl;
+        cout << "     ";
+        //fighters
+        for(int i = 0; i < humanTeams[0].getNumberOfPlayers(); i++){
+            cout << left << setw(15) << humanTeams[0].getTeamMemberAtIndex(i).getFighter();
+        }
+        cout << "              ";
+        for(int i = 0; i < cpuTeams[0].getNumberOfPlayers(); i++){
+            cout << left << setw(15) << cpuTeams[0].getTeamMemberAtIndex(i).getFighter();
+        }
+        cout << endl << endl;
+        //end match setup
+
 
 
         //get winner
@@ -554,21 +634,51 @@ void Match::writeTeamNames(ostream &outs){
     }
 }
 
-int Match::writeTeamNameAndRecord(){
+int Match::writeTeamNameAndRecord(vector<Hteam> &userTeams, vector<Cteam> &computerTeams){
     if(isHumanMatch()){
-        cout << "     " << humanTeams[0].getTeamName() << " ";  cout << "("; humanTeams[0].printRecord(); cout << ")";
-        cout << "  vs.  " << humanTeams[1].getTeamName() << " "; cout << "("; humanTeams[1].printRecord(); cout << ")";
-        return static_cast<int>((humanTeams[0].getTeamName().size() + humanTeams[1].getTeamName().size()));
+        vector<Hteam>::iterator it1 = userTeams.begin();
+        vector<Hteam>::iterator it2 = userTeams.begin();
+        while(it1 -> getTeamName() != humanTeams[0].getTeamName()){
+            it1++;
+        }
+        while(it2 -> getTeamName() != humanTeams[1].getTeamName()){
+            it2++;
+        }
+        //iterators are pointing at the actual teams
+
+        it1 -> writeNameAndRecordFormatted(25);
+        cout << " vs. ";
+        it2 -> writeNameAndRecordFormatted(25);
     }
     else if(isMixedMatch()){
-        cout << "     " << humanTeams[0].getTeamName() << " "; cout << "("; humanTeams[0].printRecord(); cout << ")";
-        cout << "  vs.  " << cpuTeams[0].getTeamName() << " "; cout << "("; cpuTeams[0].printRecord(); cout << ")";
-        return static_cast<int>((humanTeams[0].getTeamName().size() + cpuTeams[0].getTeamName().size()));
+        vector<Hteam>::iterator it1 = userTeams.begin();
+        vector<Cteam>::iterator it2 = computerTeams.begin();
+        while(it1 -> getTeamName() != humanTeams[0].getTeamName()){
+            it1++;
+        }
+        while(it2 -> getTeamName() != cpuTeams[0].getTeamName()){
+            it2++;
+        }
+        //iterators are pointing at the actual teams
+
+        it1 -> writeNameAndRecordFormatted(25);
+        cout << " vs. ";
+        it2 -> writeNameAndRecordFormatted(25);
     }
     else{
-        cout << "     " << cpuTeams[0].getTeamName() << " "; cout << "("; cpuTeams[0].printRecord(); cout << ")";
-        cout << "  vs.  " << cpuTeams[1].getTeamName() << " "; cout << "("; cpuTeams[1].printRecord(); cout << ")";
-        return static_cast<int>((cpuTeams[0].getTeamName().size() + cpuTeams[1].getTeamName().size()));
+        vector<Cteam>::iterator it1 = computerTeams.begin();
+        vector<Cteam>::iterator it2 = computerTeams.begin();
+        while(it1 -> getTeamName() != cpuTeams[0].getTeamName()){
+            it1++;
+        }
+        while(it2 -> getTeamName() != cpuTeams[1].getTeamName()){
+            it2++;
+        }
+        //iterators are pointing at the actual teams
+
+        it1 -> writeNameAndRecordFormatted(25);
+        cout << " vs. ";
+        it2 -> writeNameAndRecordFormatted(25);
     }
 }
 

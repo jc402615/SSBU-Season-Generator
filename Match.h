@@ -51,7 +51,7 @@ public:
     void randomlySetStage(vector<string> &stages);
     //uses the names within stages and randomly assigns one to stageName
     void writeTeamNames(ostream &outs);
-    int writeTeamNameAndRecord();
+    int writeTeamNameAndRecord(vector<Hteam> &userTeams, vector<Cteam> &computerTeams);
     //returns the length that the string it writes takes up
 
     //simulation functions

@@ -87,8 +87,10 @@ public:
     void saveCombinedData();
     void updateRanks();
     void printTeamStandingsTable();
-    void printScheduledMatches();
-    int printSeasonStatusMenu();
+    void printScheduledMatches(vector<Hteam> &userTeams, vector<Cteam> &computerTeams);
+    int printSeasonStatusMenu(vector<Hteam> &userTeams);
+    void seasonHandler(vector<Hteam> &userTeams);
+    void playWeeklyMatchups(vector<Hteam> &userTeams);
 private:
 
     void fillCodedOutputWith(vector<string> &encodedOutput, vector<int> &topRow, vector<int> &bottomRow);

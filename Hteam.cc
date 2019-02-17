@@ -228,3 +228,38 @@ void Hteam::writeStandingsData(){
     cout << right << setw(11) << getKDDifferential();
     cout << endl;
 }
+
+void Hteam::writeNameAndRecordFormatted(int space){
+    size_t spaceTaken = 0;
+    cout << teamName;
+    spaceTaken += teamName.length();
+
+    cout << " (";
+    spaceTaken += 2;
+
+    cout << wins;
+    if(wins < 10){
+        spaceTaken += 1;
+    }
+    else{
+        spaceTaken +=2;
+    }
+
+    cout << "-";
+    spaceTaken++;
+
+    cout << losses;
+    if(losses < 10){
+        spaceTaken += 1;
+    }
+    else{
+        spaceTaken +=2;
+    }
+
+    cout << ")";
+    spaceTaken++;
+
+    for(int i = 0; i < (space - spaceTaken); i++){
+        cout << " ";
+    }
+}

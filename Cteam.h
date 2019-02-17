@@ -65,6 +65,7 @@ public:
     int getWinPercentage();
     void increaseRank();
     void writeStandingsData();
+    void writeNameAndRecordFormatted(int space);
 
     //additional helpers
     void increaseTeamMemberKillsAtIndex(int index);

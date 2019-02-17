@@ -752,40 +752,133 @@ void Season::printTeamStandingsTable(){
     }
 }
 
-void Season::printScheduledMatches(){
+void Season::printScheduledMatches(vector<Hteam> &userTeams, vector<Cteam> &computerTeams){
     int week = activeHumanTeams[0] -> getTotalMatchesPlayed() + 1;
     int matchNumber = 1;
-    for(int i = 0; i < matchups[week].size(); i++){//for each game during the week
+
+
+    for(int i = 0; i < matchups[week - 1].size(); i++){//for each game during the week
         if(matchups[week - 1][i].isHumanMatch() || matchups[week - 1][i].isMixedMatch()){
-            cout << "* " << matchNumber << ".) "; matchups[week - 1][i].writeTeamNameAndRecord();
+            cout << "* " << matchNumber << ".) ";
+            matchups[week - 1][i].writeTeamNameAndRecord(userTeams, computerTeams);
             cout << endl;
             matchNumber++;
         }
     }
+
+
 }
 
-int Season::printSeasonStatusMenu(){
+int Season::printSeasonStatusMenu(vector<Hteam> &userTeams){
     int week = activeHumanTeams[0] -> getTotalMatchesPlayed() + 1;
     cout << "***************************************************************" << endl;
-    cout << "                            Week " << week << "                           *" << endl;
+    if(week < 10){
+        cout << "                            Week " << week << "                            *" << endl;
+    }
+    else{
+        cout << "                            Week " << week << "                           *" << endl;
+    }
     cout << "***************************************************************" << endl;
     cout << "                     Your Scheduled Matches                   *" << endl;
     cout << "***************************************************************" << endl;
-    printScheduledMatches();
+    printScheduledMatches(userTeams, computerTeams);
     cout << "***************************************************************" << endl;
     cout << "                           Actions                            *" << endl;
     cout << "***************************************************************" << endl;
-    cout << "*  1. Play this week's matchups                               *" << endl;
-    cout << "*  2. View League Schedule                                    *" << endl;
-    cout << "*  3. View Standings                                          *" << endl;
-    cout << "*  4. View Statistics and Records (To be implemented)         *" << endl;
-    cout << "*  5. Save and Continue                                       *" << endl;
-    cout << "*  6. Save and Exit                                           *" << endl;
+    cout << "*  1. Play This Week's Matchups                               *" << endl;
+    cout << "*  2. View This Week's Matches                                *" << endl;
+    cout << "*  3. View League Schedule                                    *" << endl;
+    cout << "*  4. View Standings                                          *" << endl;
+    cout << "*  5. View Statistics and Records (To be implemented)         *" << endl;
+    cout << "*  6. Save and Continue                                       *" << endl;
+    cout << "*  7. Save and Exit                                           *" << endl;
     cout << "***************************************************************" << endl;
     cout << "Your choice: ";
     int response;
     cin >> response;
     return response;
+}
+
+void Season::seasonHandler(vector<Hteam> &userTeams){
+    int response;
+    do{
+        response = printSeasonStatusMenu(userTeams);
+        switch(response){
+            case 1:
+                //play weekly matches , update standing at end of week
+                system("CLS");
+                playWeeklyMatchups(userTeams);
+                system("CLS");
+                break;
+            case 2:{
+                //print this week's matches
+                system("CLS");
+                int week = activeHumanTeams[0] -> getTotalMatchesPlayed() + 1;
+                printOutAllMatchupsForWeek(week);
+                cin.ignore();
+                waitForEnterPress();
+                system("CLS");
+                break;
+            }
+            case 3:{
+                //print league schedule
+                system("CLS");
+                printOutAllMatchups();
+                waitForEnterPress();
+                system("CLS");
+                break;
+            }
+            case 4:
+                //update the standings just to be sure
+                updateRanks();
+                //print standings table
+                system("CLS");
+                printTeamStandingsTable();
+                cin.ignore();
+                waitForEnterPress();
+                system("CLS");
+                break;
+            case 5:
+                //view records
+                system("CLS");
+                cout << "Sorry this feature is not available yet" << endl;
+                cout << "Please be patient ;) - Joey(Developer)." << endl;
+                cin.ignore();
+                waitForEnterPress();
+                system("CLS");
+                break;
+            case 6:
+                //simply save data
+                system("CLS");
+                saveCombinedData();
+                cout << endl << "Data has been saved." << endl;
+                cin.ignore();
+                waitForEnterPress();
+                system("CLS");
+                break;
+            case 7:
+                //save data then exit
+                system("CLS");
+                saveCombinedData();
+                break;
+            default:
+                system("CLS");
+                cout << "Sorry, but " << response << " is not a valid option." << endl;
+                cout << "Please try again." << endl;
+                waitForEnterPress();
+                system("CLS");
+                break;
+        }
+    } while(response != 7);
+    cout << "Data Saved. Now Exiting.";
+    cout << endl << "Please come again soon!" << endl << endl;
+}
+
+void Season::playWeeklyMatchups(vector<Hteam> &userTeams){
+    int week = activeHumanTeams[0] -> getTotalMatchesPlayed() + 1;
+    for(int i = 0; i < matchups[week - 1].size(); i++){
+        matchups[week - 1][i].playStock(userTeams, computerTeams, battleAmount);
+    }
 }
 
 void Season::fillCodedOutputWith(vector<string> &encodedOutput, vector<int> &topRow, vector<int> &bottomRow){

@@ -167,59 +167,10 @@ int main (){
             }
         }
     }
-
-
-    //need season / matches
-    //option to view stats / next match or all previous matches of the season
-    //option to quit
-
-    //print season menu
-    // bunch of stars showing week of season and next match/stage/opponent including record
-    //1. play match
-    //2. view season standing/ stat page
-    //3. view all time stats -> records page
-
-
-    /* manually adding two teams
-    season.setTotalNumberOfTeams(20);
-    season.setNumberOfHumanTeams(2);
-    season.addHumanTeamByNameFrom("Beetles", userTeams);
-    season.addHumanTeamByNameFrom("Fallout", userTeams);
-
-    season.setNumberOfPlayersPerTeam(2);
-    season.setBattleAmount(3);
-
-/* end manually addting
-
-    season.generateRestOfCpuTeams(fighters, idNames, adjectives, nouns);
-    season.generateSchedule(stages);
-
-    //season.loadCombinedData("Beetles", userTeams);
-
-    /*
-    season.setTotalNumberOfTeams(30);
-    season.setNumberOfHumanTeams(2);
-    season.setNumberOfPlayersPerTeam(1);
-    season.setBattleAmount(3);
-    */
-
-    //season.createAHTeam("Slayers", userTeams, 1, true);
-
-    //season.addHumanTeamByNameFrom("Beetles", userTeams);
-    //season.addHumanTeamByNameFrom("1ers", userTeams);
-
-
-
-    season.printOutAllMatchups();
-    //season.printOutAllMatchupsForWeek(9);
+    system("CLS");
+    season.seasonHandler(userTeams);
 
     cout << "\n\n\n\n\n\n";
-    season.updateRanks();
-    season.printTeamStandingsTable();
-    season.printSeasonStatusMenu();
-
-    season.saveCombinedData();
-
 
 
     saveUserTeams(userTeams);
