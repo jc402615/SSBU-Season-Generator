@@ -198,7 +198,12 @@ void Cteam::writeNameAndRecordFormatted(int space){
     cout << ")";
     spaceTaken++;
 
-    for(int i = 0; i < (space - spaceTaken); i++){
+    int spaces = space - spaceTaken;
+    if(spaces < 0){
+        spaces = 0;
+    }
+
+    for(int i = 0; i < spaces; i++){
         cout << " ";
     }
 }

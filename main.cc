@@ -174,7 +174,8 @@ int main (){
 
 
     saveUserTeams(userTeams);
-
+    //debug
+    cout << "userTeams has been saved as well" << endl;
     return 0;
 } // end of main function
 

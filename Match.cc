@@ -49,38 +49,51 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
 
         //print the matchup setup
         cout << "***************************************************************" << endl;
-        cout << "*                         Next Match                          *" << endl;
-        cout << "*                  Location: " << getStageName();
-        size_t numberSpaces = 35 - getStageName().length();
+        cout << "*                          Next Match                          *" << endl;
+        cout << "*                    Location: " << getStageName();
+        size_t numberSpaces = 31 - getStageName().length();
         for(int i = 0; i < numberSpaces; ++i){
             cout << " ";
         }
-        cout <<  "*" << endl;
-        cout << "***************************************************************" << endl;
 
-        it1 -> writeNameAndRecordFormatted(25);
-        cout << " vs. ";
-        it2 -> writeNameAndRecordFormatted(25);
+        cout << "*   "; humanTeams[0].writeNameAndRecordFormatted(25);
+        cout << " vs. "; humanTeams[1].writeNameAndRecordFormatted(25);
+        cout << "   *" << endl;
+        cout << "***************************************************************";
+
+
+        //headers
+        cout << endl << endl;
+        cout << "     " << "________";
+        for(int i = 2; i <= (humanTeams[0].getNumberOfPlayers() * 2); i++){
+            cout << "       ";
+            cout << "________";
+        }
+        cout << endl << "     "; //5 spaces
+        cout << "Player 1";
+        for(int i = 2; i <= (humanTeams[0].getNumberOfPlayers() * 2); i++){
+            cout << "       "; //7 spaces
+            cout << "Player " << i;
+        }
+        cout << endl;
 
         //characters
-        cout << endl << "     ";
         for(int i = 0; i < humanTeams[0].getNumberOfPlayers(); i++){
-            cout << left << humanTeams[0].getTeamMemberAtIndex(i).getCharacter();
+            cout << left << setw(15) << humanTeams[0].getTeamMemberAtIndex(i).getCharacter();
         }
         cout << "              ";
         for(int i = 0; i < humanTeams[1].getNumberOfPlayers(); i++){
-            cout << left << humanTeams[1].getTeamMemberAtIndex(i).getCharacter();
+            cout << left << setw(15) << humanTeams[1].getTeamMemberAtIndex(i).getCharacter();
         }
 
         cout << endl;
-        cout << "     ";
+        cout << "         "; //5 + 4 = 9 spaces
         //fighters
         for(int i = 0; i < humanTeams[0].getNumberOfPlayers(); i++){
-            cout << left << humanTeams[0].getTeamMemberAtIndex(i).getFighter();
+            cout << left << setw(15) << humanTeams[0].getTeamMemberAtIndex(i).getFighter();
         }
-        cout << "              ";
         for(int i = 0; i < humanTeams[1].getNumberOfPlayers(); i++){
-            cout << left << humanTeams[1].getTeamMemberAtIndex(i).getFighter();
+            cout << left << setw(15) << humanTeams[1].getTeamMemberAtIndex(i).getFighter();
         }
         cout << endl << endl;
 
@@ -196,25 +209,41 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
 
         //print the matchup setup
         cout << "***************************************************************" << endl;
-        cout << "*                         Next Match                          *" << endl;
-        cout << "*                  Location: " << getStageName();
-        size_t numberSpaces = 35 - getStageName().length();
+        cout << "*                          Next Match                         *" << endl;
+        cout << "*                    Location: " << getStageName();
+        size_t numberSpaces = 31 - getStageName().length();
         for(int i = 0; i < numberSpaces; ++i){
             cout << " ";
         }
         cout <<  "*" << endl;
         cout << "***************************************************************" << endl;
 
-        humanIt-> writeNameAndRecordFormatted(25);
-        cout << " vs. ";
-        cpuIt -> writeNameAndRecordFormatted(25);
+        cout << "*   "; humanTeams[0].writeNameAndRecordFormatted(25);
+        cout << " vs. "; cpuTeams[0].writeNameAndRecordFormatted(25);
+        cout << "   *" << endl;
+        cout << "***************************************************************";
+
+        //headers
+        cout << endl << endl;
+        cout << "     " << "________";
+        for(int i = 2; i <= (humanTeams[0].getNumberOfPlayers() * 2); i++){
+            cout << "       ";
+            cout << "________";
+        }
+        cout << endl << "     "; //5 spaces
+        cout << "Player 1";
+        for(int i = 2; i <= (humanTeams[0].getNumberOfPlayers() * 2); i++){
+            cout << "       "; //7 spaces
+            cout << "Player " << i;
+        }
+
+        cout << endl;
 
         //characters
         cout << endl << "     ";
         for(int i = 0; i < humanTeams[0].getNumberOfPlayers(); i++){
             cout << left << setw(15) << humanTeams[0].getTeamMemberAtIndex(i).getCharacter();
         }
-        cout << "              ";
         for(int i = 0; i < cpuTeams[0].getNumberOfPlayers(); i++){
             cout << left << setw(15) << cpuTeams[0].getTeamMemberAtIndex(i).getId();
         }
@@ -225,9 +254,17 @@ void Match::playStock(vector<Hteam> &userTeams, vector<Cteam> &computerTeams, in
         for(int i = 0; i < humanTeams[0].getNumberOfPlayers(); i++){
             cout << left << setw(15) << humanTeams[0].getTeamMemberAtIndex(i).getFighter();
         }
-        cout << "              ";
         for(int i = 0; i < cpuTeams[0].getNumberOfPlayers(); i++){
             cout << left << setw(15) << cpuTeams[0].getTeamMemberAtIndex(i).getFighter();
+        }
+
+        cout << endl;
+        cout << "     "; //5 spaces
+        for(int i = 0; i < humanTeams[0].getNumberOfPlayers(); i++){
+            cout << "               ";
+        }
+        for(int i = 0; i < humanTeams[0].getNumberOfPlayers(); i++){
+            cout << "Lv." << cpuTeams[0].getTeamMemberAtIndex(i).getLevel() << "           ";
         }
         cout << endl << endl;
         //end match setup
@@ -563,10 +600,14 @@ void Match::printWinner(ostream &outs){
         }
     }
     else{ //is mixed Match
-        if(Hwinner.getTeamName() == humanTeams[0].getTeamName() ||
-           Cwinner.getTeamName() == cpuTeams[0].getTeamName())
-        {
-               outs << Hwinner.getTeamName();
+        if(Hwinner.getTeamName() == humanTeams[0].getTeamName()){
+            outs << Hwinner.getTeamName();
+        }
+        else if(Cwinner.getTeamName() == cpuTeams[0].getTeamName()){
+            outs << Cwinner.getTeamName();
+        }
+        else{
+            //no winner print nothing
         }
     }
 

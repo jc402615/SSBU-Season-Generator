@@ -738,14 +738,24 @@ void Season::printTeamStandingsTable(){
         //go through human teams
         for(int i = 0; i < numberOfHumanTeams; i++){
             if(activeHumanTeams[i] -> getRank() == counter){
-                cout << "#" << setw(2) << setfill('0') << counter << " " << setfill(' ');
+                if(counter < 10){
+                    cout << "#0" << counter << " ";
+                }
+                else{
+                    cout <<"#" << counter << " ";
+                }
                 activeHumanTeams[i] -> writeStandingsData();
             }
         }
         //look through each of the computer teams as well
         for(int i = 0; i < getNumberOfComputerTeams(); i++){
             if(computerTeams[i].getRank() == counter){
-                cout << "#" << setw(2) << setfill('0') << counter << " " << setfill(' ');
+                if(counter < 10){
+                    cout << "#0" << counter << " ";
+                }
+                else{
+                    cout <<"#" << counter << " ";
+                }
                 computerTeams[i].writeStandingsData();
             }
         }
